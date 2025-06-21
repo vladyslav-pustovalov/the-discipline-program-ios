@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct UserView: View {
+    var user: User?
+    
     var body: some View {
-        Text("User")
+        if let user {
+            VStack {
+                List {
+                    Text("Email: \(user.login)")
+                    Text("First name: \(user.firstName ?? "")")
+                    Text("Last name: \(user.lastName ?? "")")
+                    Text("Level: \(user.trainingLevel?.name ?? "")")
+                    Text("Birthday: \(Constants.Formatter.dateFormatter.string(from: user.dateOfBirth ?? Date.now))")
+                    Text("Phone: \(user.phoneNumber ?? "")")
+                }
+            }
+        } else {
+            ContentUnavailableView {
+                Text("Something went wrong with loading user's data")
+            }
+        }
     }
 }
 
 #Preview {
-    UserView()
+    var user: User? = User.mock
+    return UserView(user: user)
 }

@@ -12,13 +12,13 @@ import SwiftData
 final class User: Codable {
     
     @Attribute(.unique) private(set) var id: Int?
-    private(set) var email: String
+    private(set) var login: String
     private(set) var password: String
     private(set) var userRole: UserRole
     
     private(set) var trainingLevel: TrainingLevel?
     
-    private(set) var firstName: String?
+    var firstName: String?
     private(set) var lastName: String?
     private(set) var dateOfBirth: Date?
     private(set) var team: Team?
@@ -26,7 +26,7 @@ final class User: Codable {
 
     init(
         id: Int? = nil,
-         email: String,
+         login: String,
          password: String,
          userRole: UserRole,
          trainingLevel: TrainingLevel? = nil,
@@ -37,7 +37,7 @@ final class User: Codable {
          phoneNumber: String? = nil
     ) {
         self.id = id
-        self.email = email
+        self.login = login
         self.password = password
         self.userRole = userRole
         self.trainingLevel = trainingLevel
@@ -50,7 +50,7 @@ final class User: Codable {
 
     enum CodingKeys: String, CodingKey {
         case id
-        case email
+        case login
         case password
         case userRole
         case trainingLevel
@@ -65,24 +65,37 @@ final class User: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let id = try container.decodeIfPresent(Int.self, forKey: .id)
-        let email = try container.decode(String.self, forKey: .email)
+        let login = try container.decode(String.self, forKey: .login)
         let password = try container.decode(String.self, forKey: .password)
         let userRole = try container.decode(UserRole.self, forKey: .userRole)
         let trainingLevel = try container.decodeIfPresent(TrainingLevel.self, forKey: .trainingLevel)
         let firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         let lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        let dateOfBirth = try container.decodeIfPresent(Date.self, forKey: .dateOfBirth)
+        let dateString = try container.decodeIfPresent(String.self, forKey: .dateOfBirth)
         let team = try container.decodeIfPresent(Team.self, forKey: .team)
         let phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        
+        var dateOfBirth: Date?
+        if let date = dateString {
+            if let dateFromString = Constants.Formatter.dateFormatter.date(from: date) {
+                dateOfBirth = dateFromString
+            } else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .dateOfBirth,
+                    in: container,
+                    debugDescription: "Invalid date format"
+                )
+            }
+        }
 
-        self.init(id: id, email: email, password: password, userRole: userRole, trainingLevel: trainingLevel, firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, team: team, phoneNumber: phoneNumber)
+        self.init(id: id, login: login, password: password, userRole: userRole, trainingLevel: trainingLevel, firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, team: team, phoneNumber: phoneNumber)
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encodeIfPresent(id, forKey: .id)
-        try container.encode(email, forKey: .email)
+        try container.encode(login, forKey: .login)
         try container.encode(password, forKey: .password)
         try container.encode(userRole, forKey: .userRole)
         try container.encodeIfPresent(trainingLevel, forKey: .trainingLevel)
@@ -101,7 +114,7 @@ extension User {
         
         return User(
             id: 1,
-            email: "user@email.com",
+            login: "user@email.com",
             password: "12345",
             userRole: UserRole.roleUser,
             trainingLevel: TrainingLevel.mock,

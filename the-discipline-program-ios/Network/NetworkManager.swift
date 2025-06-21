@@ -1,5 +1,5 @@
 //
-//  NetworkService.swift
+//  NetworkManager.swift
 //  the-discipline-program-ios
 //
 //  Created by Vladyslav Pustovalov on 18/06/2025.
@@ -7,78 +7,118 @@
 
 import Foundation
 
-final class NetworkService {
-    static let shared = NetworkService()
+final class NetworkManager {
+    private struct NetworkError: Codable {
+        let error: String?
+    }
+    
+    static let shared = NetworkManager()
     
     private let session = URLSession.shared
     private let baseURL = "\(Constants.API.baseURL)\(Constants.API.basePath)\(Constants.API.versionAPI)"
     
-    private func performRequest(url: String) async -> Result<Data, Respon
-    
-    func login(email: String, password: String) async throws -> JwtDTO {
-        guard let url = URL(string: "\(baseURL)/auth/signin") else {
+    private func performRequest(stringURL: String, method: String, headers: [String: String], body: Data?) async throws -> Result<Data, NetworkResponseStatus> {
+        guard let url = URL(string: stringURL) else {
             throw URLError(.badURL)
         }
-
-        let credentials = SignInDTO(login: email, password: password)
+        
         var request = URLRequest(url: url)
-        request.httpMethod = Constants.HTTPMethods.post
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(credentials)
-
-        let (data, _) = try await session.data(for: request)
-
-        let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
-        return jwt
+        request.httpMethod = method
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        request.httpBody = body
+        
+        let (data, response) = try await session.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return .failure(NetworkResponseStatus(statusCode: nil, message: "Invalid response"))
+        }
+        
+        let networkResponseStatus = NetworkResponseStatus(statusCode: httpResponse.statusCode)
+        
+        switch networkResponseStatus {
+        case .success(let status, _):
+            if status == .ok {
+                return .success(data)
+            } else {
+                return .failure(networkResponseStatus)
+            }
+        default:
+            let decoder = JSONDecoder()
+            if let model = try? decoder.decode(NetworkError.self, from: data) {
+                return .failure(NetworkResponseStatus(statusCode: httpResponse.statusCode, message: model.error))
+            }
+            return .failure(networkResponseStatus)
+        }
     }
     
-    func loadProgram(authToken: String, userId: Int, date: Date) async throws -> Program {
-        var components = URLComponents(string: "\(baseURL)/program")
-        components?.queryItems = [
-            URLQueryItem(name: "userId", value: String(userId)),
-            URLQueryItem(name: "scheduledDate", value: Constants.Formatter.dateFormatter.string(from: date))
+    func login(email: String, password: String) async throws -> Result<JwtDTO, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+        ]
+        let body = try JSONEncoder().encode(SignInDTO(login: email, password: password))
+
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/auth/signin",
+            method: Constants.HTTPMethods.post,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(let data):
+            let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
+            return .success(jwt)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
+    
+    func loadProgram(authToken: String, userId: Int, date: Date) async throws -> Result<Program, NetworkResponseStatus> {
+        let stringDate = Constants.Formatter.dateFormatter.string(from: date)
+        print("String date: \(stringDate)")
+        let stringURL = "\(baseURL)/program?userId=\(userId)&scheduledDate=\(stringDate)"
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
         ]
         
-        guard let url = components?.url else {
-            throw URLError(.badURL)
+        let result = try await performRequest(
+            stringURL: stringURL,
+            method: Constants.HTTPMethods.get,
+            headers: headers,
+            body: nil
+        )
+        
+        switch result {
+        case .success(let data):
+            let program = try JSONDecoder().decode(Program.self, from: data)
+            return .success(program)
+        case .failure(let status):
+            return .failure(status)
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = Constants.HTTPMethods.get
-        request.setValue(
-            "application/json",
-            forHTTPHeaderField: "Content-Type"
-        )
-        request.setValue(
-            authToken,
-            forHTTPHeaderField: "Authorization"
-        )
-        
-        let (data, _) = try await session.data(for: request)
-        
-        let program = try JSONDecoder().decode(Program.self, from: data)
-        return program
     }
     
-    func loadUser(authToken: String, userId: Int) async throws -> User {
-        guard let url = URL(string: "\(baseURL)/user/\(userId)") else {
-            throw URLError(.badURL)
+    func loadUser(authToken: String, userId: Int) async throws -> Result<User, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/user/\(userId)",
+            method: Constants.HTTPMethods.get,
+            headers: headers,
+            body: nil
+        )
+        
+        switch result {
+        case .success(let data):
+            let user = try JSONDecoder().decode(User.self, from: data)
+            return .success(user)
+        case .failure(let status):
+            return .failure(status)
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = Constants.HTTPMethods.get
-        request.setValue(
-            "application/json",
-            forHTTPHeaderField: "Content-Type"
-        )
-        request.setValue(
-            authToken,
-            forHTTPHeaderField: "Authorization"
-        )
-        
-        let (data, _) = try await session.data(for: request)
-        
-        let user = try JSONDecoder().decode(User.self, from: data)
-        return user
     }
 }

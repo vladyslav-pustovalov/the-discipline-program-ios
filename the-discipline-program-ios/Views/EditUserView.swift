@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct EditUserView: View {
+    @Binding var user: User
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    EditUserView()
+    @Previewable @State var user = User.mock
+    return EditUserView(user: $user)
 }

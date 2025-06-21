@@ -10,10 +10,10 @@ import Foundation
 
 @Model
 final class Program: Codable {
-    private(set) var id: Int
-    private(set) var scheduledDate: Date
-    private(set) var isRestDay: Bool
-    private(set) var dailyProgram: DailyProgram?
+    var id: Int
+    var scheduledDate: Date
+    var isRestDay: Bool
+    var dailyProgram: DailyProgram?
     
     init(id: Int, scheduledDate: Date, isRestDay: Bool, dailyProgram: DailyProgram?) {
         self.id = id
@@ -31,16 +31,12 @@ final class Program: Codable {
     
     required convenience init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         let id = try container.decode(Int.self, forKey: .id)
         let dateString = try container.decode(String.self, forKey: .scheduledDate)
         let isRestDay = try container.decode(Bool.self, forKey: .isRestDay)
         let dailyProgram = try container.decode(DailyProgram.self, forKey: .dailyProgram)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let scheduledDate = formatter.date(from: dateString) else {
+        guard let scheduledDate = Constants.Formatter.dateFormatter.date(from: dateString) else {
             throw DecodingError.dataCorruptedError(
                 forKey: .scheduledDate,
                 in: container,

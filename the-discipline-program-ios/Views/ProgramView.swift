@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProgramView: View {
     var program: Program?
-    private var formatter: DateFormatter {
+    private var programViewDateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd.MM.yy"
         return formatter
@@ -40,17 +40,11 @@ struct ProgramView: View {
                     }
                 }
             }
-            .navigationTitle("\(formatter.string(from: program.scheduledDate))")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Previous day") {}
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Next day") {}
-                }
-            }
+            .navigationTitle("\(programViewDateFormatter.string(from: program.scheduledDate))")
         } else {
-            Text("The program is Nil")
+            ContentUnavailableView {
+                Text("Something went wrong with loading today's program")
+            }
         }
     }
 }
