@@ -14,21 +14,22 @@ final class User: Codable {
     @Attribute(.unique) private(set) var id: Int?
     private(set) var email: String
     private(set) var password: String
-    private(set) var role: Role?
-    private(set) var level: Level?
+    private(set) var userRole: UserRole
+    
+    private(set) var trainingLevel: TrainingLevel?
+    
     private(set) var firstName: String?
     private(set) var lastName: String?
     private(set) var dateOfBirth: Date?
     private(set) var team: Team?
     private(set) var phoneNumber: String?
 
-    // MARK: - Initializer
     init(
         id: Int? = nil,
          email: String,
          password: String,
-         role: Role? = nil,
-         level: Level? = nil,
+         userRole: UserRole,
+         trainingLevel: TrainingLevel? = nil,
          firstName: String? = nil,
          lastName: String? = nil,
          dateOfBirth: Date? = nil,
@@ -38,8 +39,8 @@ final class User: Codable {
         self.id = id
         self.email = email
         self.password = password
-        self.role = role
-        self.level = level
+        self.userRole = userRole
+        self.trainingLevel = trainingLevel
         self.firstName = firstName
         self.lastName = lastName
         self.dateOfBirth = dateOfBirth
@@ -47,13 +48,12 @@ final class User: Codable {
         self.phoneNumber = phoneNumber
     }
 
-    // MARK: - Codable
     enum CodingKeys: String, CodingKey {
         case id
         case email
         case password
-        case role
-        case level
+        case userRole
+        case trainingLevel
         case firstName
         case lastName
         case dateOfBirth
@@ -67,15 +67,15 @@ final class User: Codable {
         let id = try container.decodeIfPresent(Int.self, forKey: .id)
         let email = try container.decode(String.self, forKey: .email)
         let password = try container.decode(String.self, forKey: .password)
-        let role = try container.decodeIfPresent(Role.self, forKey: .role)
-        let level = try container.decodeIfPresent(Level.self, forKey: .level)
+        let userRole = try container.decode(UserRole.self, forKey: .userRole)
+        let trainingLevel = try container.decodeIfPresent(TrainingLevel.self, forKey: .trainingLevel)
         let firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         let lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
         let dateOfBirth = try container.decodeIfPresent(Date.self, forKey: .dateOfBirth)
         let team = try container.decodeIfPresent(Team.self, forKey: .team)
         let phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
 
-        self.init(id: id, email: email, password: password, role: role, level: level, firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, team: team, phoneNumber: phoneNumber)
+        self.init(id: id, email: email, password: password, userRole: userRole, trainingLevel: trainingLevel, firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, team: team, phoneNumber: phoneNumber)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -84,8 +84,8 @@ final class User: Codable {
         try container.encodeIfPresent(id, forKey: .id)
         try container.encode(email, forKey: .email)
         try container.encode(password, forKey: .password)
-        try container.encodeIfPresent(role, forKey: .role)
-        try container.encodeIfPresent(level, forKey: .level)
+        try container.encode(userRole, forKey: .userRole)
+        try container.encodeIfPresent(trainingLevel, forKey: .trainingLevel)
         try container.encodeIfPresent(firstName, forKey: .firstName)
         try container.encodeIfPresent(lastName, forKey: .lastName)
         try container.encodeIfPresent(dateOfBirth, forKey: .dateOfBirth)
@@ -103,8 +103,8 @@ extension User {
             id: 1,
             email: "user@email.com",
             password: "12345",
-            role: .athlete,
-            level: .ameteur,
+            userRole: UserRole.roleUser,
+            trainingLevel: TrainingLevel.mock,
             firstName: "TestF",
             lastName: "TestL",
             dateOfBirth: formatter.date(from: "2000-10-20")!,
