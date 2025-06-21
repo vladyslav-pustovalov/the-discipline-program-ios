@@ -32,8 +32,8 @@
 		C972290B2DD8DCDA00E21BBF = {
 			isa = PBXGroup;
 			children = (
-				C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */,
 				C97229152DD8DCDA00E21BBF /* Products */,
+				C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */,
 			);
 			sourceTree = "<group>";
 		};

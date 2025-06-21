@@ -6,6 +6,6 @@
 //
 
 struct JwtDTO: Codable {
-    let userId: String
+    let userId: Int
     let accessToken: String
 }
