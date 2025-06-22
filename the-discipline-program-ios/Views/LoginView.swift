@@ -11,22 +11,76 @@ struct LoginView: View {
     @EnvironmentObject var appState: AppState
     @StateObject private var viewModel: ViewModel
     
+    private var isDisabled: Bool {
+        viewModel.email.isEmpty || viewModel.password.isEmpty
+    }
+    
     init() {
         _viewModel = StateObject(wrappedValue: ViewModel())
     }
     
     var body: some View {
-        Form {
-            TextField("Email", text: $viewModel.email)
-            TextField("Password", text: $viewModel.password)
-            Button("Login", action: viewModel.performLogin)
-                .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
+        ZStack {
+            Color.gray.opacity(0.03)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Welcome!")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top, 100)
+                
+                VStack(spacing: 15) {
+                    TextField("Email", text: $viewModel.email)
+                        .padding()
+                        .frame(width: 300)
+                        .background(.gray.opacity(0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .disableAutocorrection(true)
+                    
+                    SecureField("Password", text: $viewModel.password)
+                        .padding()
+                        .frame(width: 300)
+                        .background(.gray.opacity(0.1))
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+                .padding()
+                
+                Button(action: viewModel.performLogin) {
+                    Text("Sign In")
+                        .frame(maxWidth: .infinity)
+                        .foregroundStyle(.white)
+                        .font(.title2)
+                        .bold()
+                }
+                .frame(width: 300, height: 60)
+                .background(
+                    LinearGradient(
+                        colors: isDisabled
+                        ? [.gray.opacity(0.6)]
+                        : [.blue, .yellow],
+                        startPoint: .bottomLeading,
+                        endPoint: .topTrailing
+                    )
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .disabled(isDisabled)
+                
+                Spacer()
+                                
+                }
+                
+                Spacer()
+                
+            
         }
         .alert("Authentication failed", isPresented: $viewModel.showingAlert) {
                     Button("OK", role: .cancel) { }
         } message: {
             Text("Error status: \(viewModel.authStatus?.code)")
-            Text("Error message: \(viewModel.authStatus?.description)")   
+            Text("Error message: \(viewModel.authStatus?.description)")
         }
         .onAppear {
             self.viewModel.setup(self.appState)
@@ -35,8 +89,6 @@ struct LoginView: View {
 }
 
 #Preview {
-    @Previewable @State var authToken: String? = ""
-    @Previewable @State var userId: Int? = 1
-    @Previewable @State var isAuthenticated = false
-    return LoginView()
+    LoginView()
+        .environmentObject(AppState())
 }

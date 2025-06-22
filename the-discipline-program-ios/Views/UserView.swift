@@ -27,9 +27,7 @@ struct UserView: View {
                     Text("Phone: \(user.phoneNumber ?? "")")
                 }
                 
-                Button("Sign Out", role: .destructive) {
-                    viewModel.signOut()
-                }
+                Button("Sign Out", role: .destructive, action: viewModel.signOut)
                     .buttonStyle(.bordered)
                     .padding(5)
                 
@@ -55,5 +53,6 @@ struct UserView: View {
 }
 
 #Preview {
-    return UserView()
+    UserView()
+        .environmentObject(AppState())
 }
