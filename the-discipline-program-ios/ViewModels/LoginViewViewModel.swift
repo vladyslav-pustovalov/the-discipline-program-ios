@@ -5,11 +5,14 @@
 //  Created by Vladyslav Pustovalov on 22/06/2025.
 //
 
+import KeychainAccess
 import SwiftUI
 
 extension LoginView {
     
     class ViewModel: ObservableObject {
+        let keychain = Keychain(service: Constants.Bundle.id)
+
         private var appState: AppState?
         
         var email = "vlad@mail.com"
@@ -36,7 +39,7 @@ extension LoginView {
                     switch result {
                     case .success(let jwt):
                         print("Token: \(jwt.accessToken), ID: \(jwt.userId)")
-                        saveJWTDataToDefaults(jwt: jwt)
+                        saveJWTData(jwt: jwt)
                         authToken = jwt.accessToken
                         userId = jwt.userId
                         await MainActor.run {
@@ -55,10 +58,10 @@ extension LoginView {
             }
         }
         
-        func saveJWTDataToDefaults(jwt: JwtDTO) {
-            UserDefaults.standard.set(jwt.accessToken, forKey: Constants.Defaults.accessToken)
+        func saveJWTData(jwt: JwtDTO) {
+            try? keychain.set(jwt.accessToken, key: Constants.Bundle.tokenKey)
             UserDefaults.standard.set(jwt.userId, forKey: Constants.Defaults.userId)
-            print("JWT data is saved to defaults")
+            print("JWT data is saved")
         }
     }
 }

@@ -34,5 +34,10 @@ enum Constants {
         static let accessToken = "AccessToken"
         static let userId = "UserID"
     }
+    
+    enum Bundle {
+        static let id = "me.vladpustovalov.the-discipline-program-ios"
+        static let tokenKey = "accessToken"
+    }
 }
 
