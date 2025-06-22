@@ -5,11 +5,14 @@
 //  Created by Vladyslav Pustovalov on 22/06/2025.
 //
 
+import KeychainAccess
 import SwiftUI
 
 extension UserView {
     
     class ViewModel: ObservableObject {
+        let keychain = Keychain(service: Constants.Bundle.id)
+        
         private var appState: AppState?
         var authToken: String?
         var userId: Int?
@@ -17,7 +20,7 @@ extension UserView {
         @Published var userError: NetworkResponseStatus?
         
         init() {
-            authToken = UserDefaults.standard.string(forKey: Constants.Defaults.accessToken)
+            authToken = try? keychain.get(Constants.Bundle.tokenKey)
             userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
             loadUser()
         }
