@@ -8,56 +8,29 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = "vlad@mail.com"
-    @State private var password = "vlad123"
-    @State private var showingAlert = false
-    @State private var authStatus: NetworkResponseStatus?
+    @EnvironmentObject var appState: AppState
+    @StateObject private var viewModel: ViewModel
     
-    @Binding var authToken: String?
-    @Binding var userId: Int?
-    @Binding var isAuthenticated: Bool
+    init() {
+        _viewModel = StateObject(wrappedValue: ViewModel())
+    }
     
     var body: some View {
         Form {
-            TextField("Email", text: $email)
-            TextField("Password", text: $password)
-            Button("Login", action: performLogin)
-                .disabled(email.isEmpty || password.isEmpty)
+            TextField("Email", text: $viewModel.email)
+            TextField("Password", text: $viewModel.password)
+            Button("Login", action: viewModel.performLogin)
+                .disabled(viewModel.email.isEmpty || viewModel.password.isEmpty)
         }
-        .alert("Authentication failed", isPresented: $showingAlert) {
+        .alert("Authentication failed", isPresented: $viewModel.showingAlert) {
                     Button("OK", role: .cancel) { }
         } message: {
-            if let authStatus {
-                Text("Error status: \(authStatus.code)")
-                Text("Error message: \(authStatus.description)")
-            }
+            Text("Error status: \(viewModel.authStatus?.code)")
+            Text("Error message: \(viewModel.authStatus?.description)")   
         }
-    }
-    
-    func performLogin() {
-        Task {
-            do {
-                let result = try await NetworkManager.shared.login(email: email, password: password)
-                switch result {
-                case .success(let jwt):
-                    saveJWTDataToDefaults(jwt: jwt)
-                    authToken = jwt.accessToken
-                    userId = jwt.userId
-                    isAuthenticated = true
-                case .failure(let status):
-                    authStatus = status
-                    showingAlert = true
-                }
-            } catch {
-                print("❌ Login failed: \(error)")
-                print("Error message: \(error.localizedDescription)")
-            }
+        .onAppear {
+            self.viewModel.setup(self.appState)
         }
-    }
-    
-    func saveJWTDataToDefaults(jwt: JwtDTO) {
-        UserDefaults.standard.set(jwt.accessToken, forKey: Constants.Defaults.accessToken)
-        UserDefaults.standard.set(jwt.userId, forKey: Constants.Defaults.userId)
     }
 }
 
@@ -65,6 +38,5 @@ struct LoginView: View {
     @Previewable @State var authToken: String? = ""
     @Previewable @State var userId: Int? = 1
     @Previewable @State var isAuthenticated = false
-    
-    return LoginView(authToken: $authToken, userId: $userId, isAuthenticated: $isAuthenticated)
+    return LoginView()
 }

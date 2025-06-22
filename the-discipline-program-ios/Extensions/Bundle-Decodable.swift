@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 extension Bundle {
     func decode<T: Decodable>(_ file: String) -> T {

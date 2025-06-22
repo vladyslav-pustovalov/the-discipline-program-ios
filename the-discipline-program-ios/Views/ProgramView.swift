@@ -8,16 +8,22 @@
 import SwiftUI
 
 struct ProgramView: View {
-    var program: Program?
+    @StateObject private var viewModel: ViewModel
+    @EnvironmentObject var appState: AppState
+    
     private var programViewDateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE dd.MM.yy"
         return formatter
     }
     
+    init(for date: Date) {
+        _viewModel = StateObject(wrappedValue: ViewModel(programDate: date))
+    }
+    
     var body: some View {
-        if let program {
-            VStack {
+        VStack {
+            if let program = viewModel.program {
                 if program.isRestDay {
                     Text("Today is the rest day")
                 } else {
@@ -39,16 +45,35 @@ struct ProgramView: View {
                         fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
                     }
                 }
+            } else if viewModel.programError?.code == 404 {
+                ContentUnavailableView {
+                    Text("There is not program for today")
+                }
+            } else {
+                ContentUnavailableView {
+                    Text("Something went wrong with loading today's program")
+                }
             }
-            .navigationTitle("\(programViewDateFormatter.string(from: program.scheduledDate))")
-        } else {
-            ContentUnavailableView {
-                Text("Something went wrong with loading today's program")
+        }
+        .navigationTitle("\(programViewDateFormatter.string(from: viewModel.programDate))")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Previous day") {
+                    viewModel.loadPreviousDay()
+                }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Next day") {
+                    viewModel.loadNextDay()
+                }
+            }
+        }
+        .onAppear {
+            self.viewModel.setup(self.appState)
         }
     }
 }
 
 #Preview {
-    ProgramView(program: Program.mock)
+    ProgramView(for: Date.now)
 }

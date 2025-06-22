@@ -5,11 +5,9 @@
 //  Created by Vladyslav Pustovalov on 09/06/2025.
 //
 
-import SwiftData
 import Foundation
 
-@Model
-final class Program: Codable {
+struct Program: Codable {
     var id: Int
     var scheduledDate: Date
     var isRestDay: Bool
@@ -29,7 +27,7 @@ final class Program: Codable {
         case dailyProgram
     }
     
-    required convenience init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let id = try container.decode(Int.self, forKey: .id)
         let dateString = try container.decode(String.self, forKey: .scheduledDate)

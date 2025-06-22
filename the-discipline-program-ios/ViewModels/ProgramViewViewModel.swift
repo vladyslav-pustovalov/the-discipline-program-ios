@@ -1,0 +1,90 @@
+//
+//  ProgramViewViewModel.swift
+//  the-discipline-program-ios
+//
+//  Created by Vladyslav Pustovalov on 22/06/2025.
+//
+
+import SwiftUI
+
+extension ProgramView {
+    
+    class ViewModel: ObservableObject {
+        private var appState: AppState?
+        var authToken: String?
+        var userId: Int?
+        @Published var programDate: Date
+        @Published var program: Program?
+        @Published var programError: NetworkResponseStatus?
+        
+        init(programDate: Date) {
+            authToken = UserDefaults.standard.string(forKey: Constants.Defaults.accessToken)
+            userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
+            self.programDate = programDate
+            loadProgram(for: programDate)
+        }
+        
+        func setup(_ appState: AppState) {
+            self.appState = appState
+        }
+        
+        func loadProgram(for date: Date) {
+            Task {
+                
+                print("Date inside loadProgram: \(date)")
+                
+                do {
+                    guard let userId else {
+                        print("Nil userId in loadProgram")
+                        return
+                    }
+                    guard let authToken else {
+                        print("Nil authToken in loadProgram")
+                        return
+                    }
+                    let result = try await NetworkManager.shared.loadProgram(
+                        authToken: authToken,
+                        userId: userId,
+                        date: date
+                    )
+                    
+                    switch result {
+                    case .success(let tempProgram):
+                        print("Program: \(tempProgram.scheduledDate)")
+                        await MainActor.run {
+                            program = tempProgram
+                        }
+                    case .failure(let error):
+                        if error.code == 403 {
+                            await MainActor.run {
+                                appState?.isAuthenticated = false
+                            }
+                            return
+                        }
+                        if error.code == 404 {
+                            print("Program Not Found")
+                            await MainActor.run {
+                                self.program = nil
+                                self.programError = error
+                            }
+                        }
+                        throw error
+                    }
+                } catch {
+                    print("❌ Program failed: \(error)")
+                    print("Error message: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        func loadNextDay() {
+            programDate = Calendar.current.date(byAdding: .day, value: 1, to: programDate)!
+            loadProgram(for: programDate)
+        }
+
+        func loadPreviousDay() {
+            programDate = Calendar.current.date(byAdding: .day, value: -1, to: programDate)!
+            loadProgram(for: programDate)
+        }
+    }
+}

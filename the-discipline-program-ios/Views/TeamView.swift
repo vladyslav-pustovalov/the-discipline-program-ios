@@ -1,18 +1,18 @@
+////
+////  TeamView.swift
+////  the-discipline-program-ios
+////
+////  Created by Vladyslav Pustovalov on 17/05/2025.
+////
 //
-//  TeamView.swift
-//  the-discipline-program-ios
+//import SwiftUI
 //
-//  Created by Vladyslav Pustovalov on 17/05/2025.
+//struct TeamView: View {
+//    var body: some View {
+//        Text("Team")
+//    }
+//}
 //
-
-import SwiftUI
-
-struct TeamView: View {
-    var body: some View {
-        Text("Team")
-    }
-}
-
-#Preview {
-    TeamView()
-}
+//#Preview {
+//    TeamView()
+//}

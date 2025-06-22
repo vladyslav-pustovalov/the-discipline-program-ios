@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct UserView: View {
-    var user: User?
+    @EnvironmentObject private var appState: AppState
+    @StateObject private var viewModel: ViewModel
+    
+    init() {
+        _viewModel = StateObject(wrappedValue: ViewModel())
+    }
     
     var body: some View {
-        if let user {
+        if let user = viewModel.user {
             VStack {
                 List {
                     Text("Email: \(user.login)")
@@ -21,6 +26,25 @@ struct UserView: View {
                     Text("Birthday: \(Constants.Formatter.dateFormatter.string(from: user.dateOfBirth ?? Date.now))")
                     Text("Phone: \(user.phoneNumber ?? "")")
                 }
+                
+                Button("Sign Out", role: .destructive) {
+                    viewModel.signOut()
+                }
+                    .buttonStyle(.bordered)
+                    .padding(5)
+                
+                Rectangle()
+                    .frame(height: 0.2)
+                    .opacity(0.5)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Edit") {
+                    }
+                }
+            }
+            .onAppear {
+                self.viewModel.setup(self.appState)
             }
         } else {
             ContentUnavailableView {
@@ -31,6 +55,5 @@ struct UserView: View {
 }
 
 #Preview {
-    var user: User? = User.mock
-    return UserView(user: user)
+    return UserView()
 }
