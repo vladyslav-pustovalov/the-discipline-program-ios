@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ProgramView: View {
-    @Bindable private var viewModel: ViewModel
     @Environment(AppState.self) var appState
+    @Bindable private var viewModel: ViewModel
     
     private var programViewDateFormatter: DateFormatter {
         let formatter = DateFormatter()
