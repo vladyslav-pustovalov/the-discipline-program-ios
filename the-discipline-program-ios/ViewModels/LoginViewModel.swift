@@ -1,5 +1,5 @@
 //
-//  LoginViewViewModel.swift
+//  LoginViewModel.swift
 //  the-discipline-program-ios
 //
 //  Created by Vladyslav Pustovalov on 22/06/2025.
