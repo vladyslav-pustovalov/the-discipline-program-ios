@@ -10,14 +10,14 @@ import SwiftUI
 
 extension UserView {
     
-    class ViewModel: ObservableObject {
+    @Observable class ViewModel {
         let keychain = Keychain(service: Constants.Bundle.id)
         
         private var appState: AppState?
         var authToken: String?
         var userId: Int?
-        @Published var user: User?
-        @Published var userError: NetworkResponseStatus?
+        var user: User?
+        var userError: NetworkResponseStatus?
         
         init() {
             authToken = try? keychain.get(Constants.Bundle.tokenKey)

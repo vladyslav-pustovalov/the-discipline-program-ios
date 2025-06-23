@@ -9,14 +9,14 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(AppState.self) var appState
-    @StateObject private var viewModel: ViewModel
+    @Bindable private var viewModel: ViewModel
     
     private var isDisabled: Bool {
         viewModel.email.isEmpty || viewModel.password.isEmpty
     }
     
     init() {
-        _viewModel = StateObject(wrappedValue: ViewModel())
+        viewModel = ViewModel()
     }
     
     var body: some View {

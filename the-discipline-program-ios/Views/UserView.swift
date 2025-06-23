@@ -9,10 +9,10 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AppState.self) var appState
-    @StateObject private var viewModel: ViewModel
+    @Bindable private var viewModel: ViewModel
     
     init() {
-        _viewModel = StateObject(wrappedValue: ViewModel())
+        viewModel = ViewModel()
     }
     
     var body: some View {
