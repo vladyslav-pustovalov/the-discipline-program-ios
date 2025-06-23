@@ -60,7 +60,7 @@ struct LoginView: View {
                     LinearGradient(
                         colors: isDisabled
                         ? [.gray.opacity(0.6)]
-                        : [.blue, .yellow],
+                        : [.gray, .black],
                         startPoint: .bottomLeading,
                         endPoint: .topTrailing
                     )
