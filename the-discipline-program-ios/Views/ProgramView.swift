@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgramView: View {
-    @StateObject private var viewModel: ViewModel
+    @Bindable private var viewModel: ViewModel
     @Environment(AppState.self) var appState
     
     private var programViewDateFormatter: DateFormatter {
@@ -18,7 +18,7 @@ struct ProgramView: View {
     }
     
     init(for date: Date) {
-        _viewModel = StateObject(wrappedValue: ViewModel(programDate: date))
+        viewModel = ViewModel(programDate: date)
     }
     
     var body: some View {

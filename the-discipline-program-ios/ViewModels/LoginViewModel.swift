@@ -10,7 +10,7 @@ import SwiftUI
 
 extension LoginView {
     
-    class ViewModel: ObservableObject {
+    @Observable class ViewModel {
         let keychain = Keychain(service: Constants.Bundle.id)
 
         private var appState: AppState?

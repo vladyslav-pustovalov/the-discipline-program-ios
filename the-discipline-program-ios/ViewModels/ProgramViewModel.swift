@@ -10,15 +10,15 @@ import SwiftUI
 
 extension ProgramView {
     
-    class ViewModel: ObservableObject {
+    @Observable class ViewModel {
         let keychain = Keychain(service: Constants.Bundle.id)
 
         private var appState: AppState?
         var authToken: String?
         var userId: Int?
-        @Published var programDate: Date
-        @Published var program: Program?
-        @Published var programError: NetworkResponseStatus?
+        var programDate: Date
+        var program: Program?
+        var programError: NetworkResponseStatus?
         
         init(programDate: Date) {
             authToken = try? keychain.get(Constants.Bundle.tokenKey)
