@@ -21,9 +21,11 @@ extension ProgramView {
         var programError: NetworkResponseStatus?
         
         init(programDate: Date) {
+            self.programDate = programDate
+
             authToken = try? keychain.get(Constants.Bundle.tokenKey)
             userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
-            self.programDate = programDate
+            
             loadProgram(for: programDate)
         }
         

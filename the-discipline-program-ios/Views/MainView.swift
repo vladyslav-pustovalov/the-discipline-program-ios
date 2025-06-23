@@ -9,8 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct MainView: View {
-    @State var programDate = Constants.Formatter.dateFormatter.date(from: "2024-06-07")!
     @Environment(AppState.self) var appState
+    @State var programDate = Constants.Formatter.dateFormatter.date(from: "2024-06-07")!
     @State public var auth = false
     
     var body: some View {
