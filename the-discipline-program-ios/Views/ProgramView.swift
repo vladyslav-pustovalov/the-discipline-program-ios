@@ -76,4 +76,5 @@ struct ProgramView: View {
 
 #Preview {
     ProgramView(for: Date.now)
+        .environment(AppState())
 }
