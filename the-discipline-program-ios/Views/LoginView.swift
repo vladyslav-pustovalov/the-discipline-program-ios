@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     @StateObject private var viewModel: ViewModel
     
     private var isDisabled: Bool {
@@ -90,5 +90,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
-        .environmentObject(AppState())
+        .environment(AppState())
 }

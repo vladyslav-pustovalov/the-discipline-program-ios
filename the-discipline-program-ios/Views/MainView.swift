@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainView: View {
     @State var programDate = Constants.Formatter.dateFormatter.date(from: "2024-06-07")!
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     @State public var auth = false
     
     var body: some View {

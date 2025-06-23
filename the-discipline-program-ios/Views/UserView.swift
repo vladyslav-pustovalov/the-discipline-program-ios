@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserView: View {
-    @EnvironmentObject private var appState: AppState
+    @Environment(AppState.self) var appState
     @StateObject private var viewModel: ViewModel
     
     init() {
@@ -54,5 +54,5 @@ struct UserView: View {
 
 #Preview {
     UserView()
-        .environmentObject(AppState())
+        .environment(AppState())
 }

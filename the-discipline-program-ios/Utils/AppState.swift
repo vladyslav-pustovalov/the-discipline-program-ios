@@ -7,6 +7,6 @@
 
 import Foundation
 
-class AppState: ObservableObject {
-    @Published var isAuthenticated: Bool = false
+@Observable class AppState {
+    var isAuthenticated: Bool = false
 }

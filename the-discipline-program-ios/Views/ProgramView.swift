@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProgramView: View {
     @StateObject private var viewModel: ViewModel
-    @EnvironmentObject var appState: AppState
+    @Environment(AppState.self) var appState
     
     private var programViewDateFormatter: DateFormatter {
         let formatter = DateFormatter()
