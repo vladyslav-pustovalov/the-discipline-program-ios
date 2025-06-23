@@ -16,7 +16,7 @@ extension UserView {
         private var appState: AppState?
         var authToken: String?
         var userId: Int?
-        var user: User?
+        var user: User? = User.mock
         var userError: NetworkResponseStatus?
         
         init() {
