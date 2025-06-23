@@ -26,16 +26,18 @@ struct UserView: View {
                     Text("Birthday: \(Constants.Formatter.dateFormatter.string(from: user.dateOfBirth ?? Date.now))")
                     Text("Phone: \(user.phoneNumber ?? "")")
                 }
-                
-                Button("Sign Out", role: .destructive, action: viewModel.signOut)
-                    .buttonStyle(.bordered)
-                    .padding(5)
-                
-                Rectangle()
-                    .frame(height: 0.2)
-                    .opacity(0.5)
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(role: .destructive, action: viewModel.signOut) {
+                        Text("Sign Out")
+                            .padding(5)
+                            .background(.gray.opacity(0.3))
+                            .foregroundStyle(.red)
+                            .clipShape(.buttonBorder)
+                    }
+                        
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
                     }
