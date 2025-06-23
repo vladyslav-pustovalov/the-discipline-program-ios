@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AppState.self) var appState
-    @Bindable private var viewModel: ViewModel
+    @Bindable var viewModel: ViewModel
     
     init() {
         viewModel = ViewModel()
@@ -40,6 +40,7 @@ struct UserView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
+                        EditUserView(user: $viewModel.user)
                     }
                 }
             }

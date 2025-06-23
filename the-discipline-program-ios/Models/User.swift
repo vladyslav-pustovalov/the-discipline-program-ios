@@ -8,18 +8,18 @@
 import Foundation
 
 struct User: Codable {
-    private(set) var id: Int?
-    private(set) var login: String
-    private(set) var password: String
-    private(set) var userRole: UserRole
+    var id: Int?
+    var login: String
+    var password: String
+    var userRole: UserRole
     
-    private(set) var trainingLevel: TrainingLevel?
+    var trainingLevel: TrainingLevel?
     
     var firstName: String?
-    private(set) var lastName: String?
-    private(set) var dateOfBirth: Date?
-    private(set) var team: Team?
-    private(set) var phoneNumber: String?
+    var lastName: String?
+    var dateOfBirth: Date?
+    var team: Team?
+    var phoneNumber: String?
 }
 
 extension User {

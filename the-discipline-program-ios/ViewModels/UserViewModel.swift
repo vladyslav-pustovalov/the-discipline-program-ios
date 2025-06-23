@@ -31,9 +31,6 @@ extension UserView {
         
         func loadUser() {
             Task {
-                
-                print("Try to load user")
-                
                 do {
                     guard let userId else {
                         print("Nil userId in loadUser")
