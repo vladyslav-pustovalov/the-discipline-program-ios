@@ -22,11 +22,6 @@ extension LoginView {
         var authStatus: NetworkResponseStatus?
         var authToken: String?
         var userId: Int?
-                
-        init() {
-            self.authToken = UserDefaults.standard.string(forKey: Constants.Defaults.accessToken)
-            self.userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
-        }
         
         func setup(_ appState: AppState) {
             self.appState = appState
@@ -44,7 +39,6 @@ extension LoginView {
                         userId = jwt.userId
                         await MainActor.run {
                             appState?.isAuthenticated = true
-
                         }
                     case .failure(let status):
                         print("Login fail: \(status.code); \(status.description)")
