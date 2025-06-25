@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ProgramView: View {
-    @Environment(AppState.self) var appState
     @Bindable private var viewModel: ViewModel
     
     private var programViewDateFormatter: DateFormatter {
@@ -68,13 +67,9 @@ struct ProgramView: View {
                 }
             }
         }
-        .onAppear {
-            self.viewModel.setup(self.appState)
-        }
     }
 }
 
 #Preview {
     ProgramView(for: Date.now)
-        .environment(AppState())
 }

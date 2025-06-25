@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var authViewModel = AuthViewModel()
+    
     var body: some View {
-        MainView()
+        Group {
+            if authViewModel.isAuthenticated {
+                MainView()
+            } else {
+                LoginView()
+            }
+        }
+        .environment(authViewModel)
     }
 }
 
 #Preview {
     ContentView()
-        .environment(AppState())
 }

@@ -7,17 +7,17 @@
 
 import Foundation
 
-final class NetworkManager {
+class NetworkService {
     private struct NetworkError: Codable {
         let error: String?
     }
     
-    static let shared = NetworkManager()
+    static let shared = NetworkService()
     
     private let session = URLSession.shared
-    private let baseURL = "\(Constants.API.baseURL)\(Constants.API.basePath)\(Constants.API.versionAPI)"
+    let baseURL = "\(Constants.API.baseURL)\(Constants.API.basePath)\(Constants.API.versionAPI)"
     
-    private func performRequest(stringURL: String, method: String, headers: [String: String], body: Data?) async throws -> Result<Data, NetworkResponseStatus> {
+    func performRequest(stringURL: String, method: String, headers: [String: String], body: Data?) async throws -> Result<Data, NetworkResponseStatus> {
         guard let url = URL(string: stringURL) else {
             throw URLError(.badURL)
         }
@@ -50,28 +50,6 @@ final class NetworkManager {
                 return .failure(NetworkResponseStatus(statusCode: httpResponse.statusCode, message: model.error))
             }
             return .failure(networkResponseStatus)
-        }
-    }
-    
-    func login(email: String, password: String) async throws -> Result<JwtDTO, NetworkResponseStatus> {
-        let headers = [
-            "Content-Type": "application/json",
-        ]
-        let body = try JSONEncoder().encode(SignInDTO(login: email, password: password))
-
-        let result = try await performRequest(
-            stringURL: "\(baseURL)/auth/signin",
-            method: Constants.HTTPMethods.post,
-            headers: headers,
-            body: body
-        )
-        
-        switch result {
-        case .success(let data):
-            let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
-            return .success(jwt)
-        case .failure(let status):
-            return .failure(status)
         }
     }
     

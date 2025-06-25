@@ -8,18 +8,11 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Environment(AppState.self) var appState
-    @Bindable private var viewModel: ViewModel
-    
-    private var isDisabled: Bool {
-        viewModel.email.isEmpty || viewModel.password.isEmpty
-    }
-    
-    init() {
-        viewModel = ViewModel()
-    }
+    @Environment(AuthViewModel.self) var viewModel
     
     var body: some View {
+        @Bindable var viewModel = viewModel
+        
         ZStack {
             Color.gray.opacity(0.03)
                 .ignoresSafeArea()
@@ -48,7 +41,9 @@ struct LoginView: View {
                 }
                 .padding()
                 
-                Button(action: viewModel.performLogin) {
+                Button {
+                    viewModel.performLogin(email: viewModel.email, password: viewModel.password)
+                } label: {
                     Text("Sign In")
                         .frame(maxWidth: .infinity)
                         .foregroundStyle(.white)
@@ -58,7 +53,7 @@ struct LoginView: View {
                 .frame(width: 300, height: 60)
                 .background(
                     LinearGradient(
-                        colors: isDisabled
+                        colors: viewModel.isLoginButtonDisabled
                         ? [.gray.opacity(0.6)]
                         : [.gray, .black],
                         startPoint: .bottomLeading,
@@ -66,7 +61,7 @@ struct LoginView: View {
                     )
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                .disabled(isDisabled)
+                .disabled(viewModel.isLoginButtonDisabled)
                 
                 Spacer()
                                 
@@ -82,13 +77,9 @@ struct LoginView: View {
             Text("Error status: \(viewModel.authStatus?.code)")
             Text("Error message: \(viewModel.authStatus?.description)")
         }
-        .onAppear {
-            self.viewModel.setup(self.appState)
-        }
     }
 }
 
 #Preview {
     LoginView()
-        .environment(AppState())
 }

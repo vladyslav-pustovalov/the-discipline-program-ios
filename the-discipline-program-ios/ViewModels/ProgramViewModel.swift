@@ -13,7 +13,6 @@ extension ProgramView {
     @Observable class ViewModel {
         let keychain = Keychain(service: Constants.Bundle.id)
 
-        private var appState: AppState?
         var authToken: String?
         var userId: Int?
         var programDate: Date
@@ -27,10 +26,6 @@ extension ProgramView {
             userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
             
             loadProgram(for: programDate)
-        }
-        
-        func setup(_ appState: AppState) {
-            self.appState = appState
         }
         
         func loadProgram(for date: Date) {
@@ -47,7 +42,7 @@ extension ProgramView {
                         print("Nil authToken in loadProgram")
                         return
                     }
-                    let result = try await NetworkManager.shared.loadProgram(
+                    let result = try await NetworkService.shared.loadProgram(
                         authToken: authToken,
                         userId: userId,
                         date: date
@@ -61,9 +56,7 @@ extension ProgramView {
                         }
                     case .failure(let error):
                         if error.code == 403 {
-                            await MainActor.run {
-                                appState?.isAuthenticated = false
-                            }
+
                             return
                         }
                         if error.code == 404 {

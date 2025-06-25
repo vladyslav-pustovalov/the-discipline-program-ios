@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserView: View {
-    @Environment(AppState.self) var appState
+    @Environment(AuthViewModel.self) var authViewModel
     @Bindable var viewModel: ViewModel
     
     init() {
@@ -29,7 +29,7 @@ struct UserView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(role: .destructive, action: viewModel.signOut) {
+                    Button(role: .destructive, action: authViewModel.signOut) {
                         Text("Sign Out")
                             .padding(5)
                             .background(.gray.opacity(0.3))
@@ -44,9 +44,6 @@ struct UserView: View {
                     }
                 }
             }
-            .onAppear {
-                self.viewModel.setup(self.appState)
-            }
         } else {
             ContentUnavailableView {
                 Text("Something went wrong with loading user's data")
@@ -57,5 +54,4 @@ struct UserView: View {
 
 #Preview {
     UserView()
-        .environment(AppState())
 }
