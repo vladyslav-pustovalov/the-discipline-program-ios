@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AuthService: NetworkService {
+final class AuthService: NetworkService {
     
     func login(email: String, password: String) async throws -> Result<JwtDTO, NetworkResponseStatus> {
         let headers = [
