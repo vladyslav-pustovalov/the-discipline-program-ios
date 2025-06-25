@@ -8,7 +8,8 @@
 import KeychainAccess
 import SwiftUI
 
-@Observable class ProgramViewModel {
+@Observable
+class ProgramViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<Program> = .idle
     
