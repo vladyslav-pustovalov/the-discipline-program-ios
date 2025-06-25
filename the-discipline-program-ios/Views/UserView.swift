@@ -9,14 +9,14 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AuthViewModel.self) var authViewModel
-    @Bindable var viewModel: ViewModel
+    @State var userViewModel: UserViewModel
     
     init() {
-        viewModel = ViewModel()
+        _userViewModel = State(wrappedValue: UserViewModel())
     }
     
     var body: some View {
-        if let user = viewModel.user {
+        if let user = userViewModel.user {
             VStack {
                 List {
                     Text("Email: \(user.login)")
@@ -40,7 +40,7 @@ struct UserView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
-                        EditUserView(user: $viewModel.user)
+                        EditUserView(user: $userViewModel.user)
                     }
                 }
             }
@@ -54,4 +54,5 @@ struct UserView: View {
 
 #Preview {
     UserView()
+        .environment(AuthViewModel())
 }
