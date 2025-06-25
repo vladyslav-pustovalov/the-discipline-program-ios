@@ -13,7 +13,6 @@ extension UserView {
     @Observable class ViewModel {
         let keychain = Keychain(service: Constants.Bundle.id)
         
-        private var appState: AppState?
         var authToken: String?
         var userId: Int?
         var user: User? = User.mock
@@ -23,10 +22,6 @@ extension UserView {
             authToken = try? keychain.get(Constants.Bundle.tokenKey)
             userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
             loadUser()
-        }
-        
-        func setup(_ appState: AppState) {
-            self.appState = appState
         }
         
         func loadUser() {
@@ -41,7 +36,7 @@ extension UserView {
                         return
                     }
                     
-                    let result = try await NetworkManager.shared.loadUser(
+                    let result = try await NetworkService.shared.loadUser(
                         authToken: authToken,
                         userId: userId
                     )
@@ -54,7 +49,7 @@ extension UserView {
                         }
                     case .failure(let error):
                         if error.code == 403 {
-                            signOut()
+                            
                         }
                         if error.code == 404 {
                             print("User Not Found")
@@ -70,16 +65,6 @@ extension UserView {
                     print("Error message: \(error.localizedDescription)")
                 }
                 
-            }
-        }
-        
-        func signOut() {
-            UserDefaults.standard.removeObject(forKey: Constants.Defaults.accessToken)
-            UserDefaults.standard.removeObject(forKey: Constants.Defaults.userId)
-            Task {
-                await MainActor.run {
-                    appState?.isAuthenticated = false
-                }
             }
         }
     }
