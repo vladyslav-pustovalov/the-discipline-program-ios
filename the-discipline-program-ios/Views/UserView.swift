@@ -9,11 +9,11 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AuthViewModel.self) var authViewModel
-    @State var userViewModel: UserViewModel
+    @State var userViewModel = UserViewModel()
     
-    init() {
-        _userViewModel = State(wrappedValue: UserViewModel())
-    }
+//    init() {
+//        _userViewModel = State(wrappedValue: UserViewModel())
+//    }
     
     var body: some View {
         if let user = userViewModel.user {
@@ -40,7 +40,7 @@ struct UserView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
-                        EditUserView(user: $userViewModel.user)
+                        
                     }
                 }
             }
