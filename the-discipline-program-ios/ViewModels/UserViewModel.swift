@@ -9,12 +9,12 @@ import KeychainAccess
 import SwiftUI
 
 @Observable class UserViewModel {
-    let keychain = Keychain(service: Constants.Bundle.id)
+    private let keychain = Keychain(service: Constants.Bundle.id)
+    private(set) var state: LoadingState<User> = .idle
     
     var authToken: String?
     var userId: Int?
-    var user: User?
-    var userError: NetworkResponseStatus?
+    var user: User? = User.mock
     
     private let userService: UserService
     
@@ -22,10 +22,10 @@ import SwiftUI
         self.userService = userService
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
-        loadUser()
     }
     
     func loadUser() {
+        state = .loading
         Task {
             do {
                 guard let userId else {
@@ -47,19 +47,20 @@ import SwiftUI
                     print("User loaded: \(tempUser.login)")
                     await MainActor.run {
                         user = tempUser
+                        state = .loaded(tempUser)
                     }
                 case .failure(let error):
                     if error.code == 403 {
                         
                     }
+                    
                     if error.code == 404 {
                         print("User Not Found")
                         await MainActor.run {
                             self.user = nil
-                            self.userError = error
                         }
                     }
-                    throw error
+                    state = .error(error)
                 }
             } catch {
                 print("❌ User failed: \(error)")
