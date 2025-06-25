@@ -16,7 +16,10 @@ import SwiftUI
     var user: User? = User.mock
     var userError: NetworkResponseStatus?
     
-    init() {
+    private let userService: UserService
+    
+    init(userService: UserService = UserService()) {
+        self.userService = userService
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
         loadUser()
@@ -34,7 +37,7 @@ import SwiftUI
                     return
                 }
                 
-                let result = try await NetworkService.shared.loadUser(
+                let result = try await userService.loadUser(
                     authToken: authToken,
                     userId: userId
                 )

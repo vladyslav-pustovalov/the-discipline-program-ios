@@ -13,11 +13,14 @@ import SwiftUI
     
     var authToken: String?
     var userId: Int?
-    var programDate: Date
     var program: Program?
     var programError: NetworkResponseStatus?
     
-    init(programDate: Date) {
+    private let programService: ProgramService
+    var programDate: Date
+    
+    init(programService: ProgramService = ProgramService(), programDate: Date) {
+        self.programService = programService
         self.programDate = programDate
         
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
@@ -32,15 +35,18 @@ import SwiftUI
             print("Date inside loadProgram: \(date)")
             
             do {
+                
                 guard let userId else {
                     print("Nil userId in loadProgram")
                     return
                 }
+                
                 guard let authToken else {
                     print("Nil authToken in loadProgram")
                     return
                 }
-                let result = try await NetworkService.shared.loadProgram(
+                
+                let result = try await programService.loadProgram(
                     authToken: authToken,
                     userId: userId,
                     date: date
@@ -52,11 +58,13 @@ import SwiftUI
                     await MainActor.run {
                         program = tempProgram
                     }
+                    
                 case .failure(let error):
+                    
                     if error.code == 403 {
-                        
                         return
                     }
+                    
                     if error.code == 404 {
                         print("Program Not Found")
                         await MainActor.run {
@@ -64,6 +72,7 @@ import SwiftUI
                             self.programError = error
                         }
                     }
+                    
                     throw error
                 }
             } catch {
