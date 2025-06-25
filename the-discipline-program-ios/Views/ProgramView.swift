@@ -21,8 +21,8 @@ struct ProgramView: View {
     }
     
     var body: some View {
-        VStack {
-            if let program = programViewModel.program {
+        VStack {            
+            LoadingView(state: programViewModel.state) { program in
                 if program.isRestDay {
                     Text("Today is the rest day")
                 } else {
@@ -44,13 +44,15 @@ struct ProgramView: View {
                         fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
                     }
                 }
-            } else if programViewModel.programError?.code == 404 {
-                ContentUnavailableView {
-                    Text("There is not program for today")
-                }
-            } else {
-                ContentUnavailableView {
-                    Text("Something went wrong with loading today's program")
+            } errorContent: { error in
+                if error.code == 404 {
+                    ContentUnavailableView {
+                        Text("There is no program for today")
+                    }
+                } else {
+                    ContentUnavailableView {
+                        Text("Something went wrong with loading today's program")
+                    }
                 }
             }
         }

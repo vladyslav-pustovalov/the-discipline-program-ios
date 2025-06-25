@@ -9,12 +9,12 @@ import KeychainAccess
 import SwiftUI
 
 @Observable class ProgramViewModel {
-    let keychain = Keychain(service: Constants.Bundle.id)
+    private let keychain = Keychain(service: Constants.Bundle.id)
+    private(set) var state: LoadingState<Program> = .idle
     
     var authToken: String?
     var userId: Int?
     var program: Program?
-    var programError: NetworkResponseStatus?
     
     private let programService: ProgramService
     var programDate: Date
@@ -30,17 +30,16 @@ import SwiftUI
     }
     
     func loadProgram(for date: Date) {
+        state = .loading
         Task {
             
             print("Date inside loadProgram: \(date)")
             
             do {
-                
                 guard let userId else {
                     print("Nil userId in loadProgram")
                     return
                 }
-                
                 guard let authToken else {
                     print("Nil authToken in loadProgram")
                     return
@@ -57,23 +56,21 @@ import SwiftUI
                     print("Program: \(tempProgram.scheduledDate)")
                     await MainActor.run {
                         program = tempProgram
+                        state = .loaded(tempProgram)
                     }
                     
                 case .failure(let error):
-                    
                     if error.code == 403 {
-                        return
+                        
                     }
                     
                     if error.code == 404 {
                         print("Program Not Found")
                         await MainActor.run {
                             self.program = nil
-                            self.programError = error
                         }
                     }
-                    
-                    throw error
+                    state = .error(error)
                 }
             } catch {
                 print("❌ Program failed: \(error)")
@@ -83,13 +80,17 @@ import SwiftUI
     }
     
     func loadNextDay() {
-        programDate = Calendar.current.date(byAdding: .day, value: 1, to: programDate)!
-        loadProgram(for: programDate)
+        if let date = Calendar.current.date(byAdding: .day, value: 1, to: programDate) {
+            loadProgram(for: date)
+            programDate = date
+        }
     }
     
     func loadPreviousDay() {
-        programDate = Calendar.current.date(byAdding: .day, value: -1, to: programDate)!
-        loadProgram(for: programDate)
+        if let date = Calendar.current.date(byAdding: .day, value: -1, to: programDate) {
+            loadProgram(for: date)
+            programDate = date
+        }
     }
 }
 

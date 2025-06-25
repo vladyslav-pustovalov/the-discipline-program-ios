@@ -11,12 +11,8 @@ struct UserView: View {
     @Environment(AuthViewModel.self) var authViewModel
     @State var userViewModel = UserViewModel()
     
-//    init() {
-//        _userViewModel = State(wrappedValue: UserViewModel())
-//    }
-    
     var body: some View {
-        if let user = userViewModel.user {
+        LoadingView(state: userViewModel.state) { user in
             VStack {
                 List {
                     Text("Email: \(user.login)")
@@ -36,7 +32,7 @@ struct UserView: View {
                             .foregroundStyle(.red)
                             .clipShape(.buttonBorder)
                     }
-                        
+                    
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Edit") {
@@ -44,9 +40,15 @@ struct UserView: View {
                     }
                 }
             }
-        } else {
+        } errorContent: { error in
             ContentUnavailableView {
-                Text("Something went wrong with loading user's data")
+                Text("\(error.code)")
+                Text("\(error.localizedDescription)")
+            }
+        }
+        .onAppear {
+            if case .idle = userViewModel.state {
+                userViewModel.loadUser()
             }
         }
     }
