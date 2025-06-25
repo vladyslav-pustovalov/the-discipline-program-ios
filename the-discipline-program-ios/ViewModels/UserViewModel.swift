@@ -8,64 +8,61 @@
 import KeychainAccess
 import SwiftUI
 
-extension UserView {
+@Observable class UserViewModel {
+    let keychain = Keychain(service: Constants.Bundle.id)
     
-    @Observable class ViewModel {
-        let keychain = Keychain(service: Constants.Bundle.id)
-        
-        var authToken: String?
-        var userId: Int?
-        var user: User? = User.mock
-        var userError: NetworkResponseStatus?
-        
-        init() {
-            authToken = try? keychain.get(Constants.Bundle.tokenKey)
-            userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
-            loadUser()
-        }
-        
-        func loadUser() {
-            Task {
-                do {
-                    guard let userId else {
-                        print("Nil userId in loadUser")
-                        return
-                    }
-                    guard let authToken else {
-                        print("Nil authToken in loadUser")
-                        return
-                    }
-                    
-                    let result = try await NetworkService.shared.loadUser(
-                        authToken: authToken,
-                        userId: userId
-                    )
-                    
-                    switch result {
-                    case .success(let tempUser):
-                        print("User loaded: \(tempUser.login)")
-                        await MainActor.run {
-                            user = tempUser
-                        }
-                    case .failure(let error):
-                        if error.code == 403 {
-                            
-                        }
-                        if error.code == 404 {
-                            print("User Not Found")
-                            await MainActor.run {
-                                self.user = nil
-                                self.userError = error
-                            }
-                        }
-                        throw error
-                    }
-                } catch {
-                    print("❌ User failed: \(error)")
-                    print("Error message: \(error.localizedDescription)")
+    var authToken: String?
+    var userId: Int?
+    var user: User? = User.mock
+    var userError: NetworkResponseStatus?
+    
+    init() {
+        authToken = try? keychain.get(Constants.Bundle.tokenKey)
+        userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
+        loadUser()
+    }
+    
+    func loadUser() {
+        Task {
+            do {
+                guard let userId else {
+                    print("Nil userId in loadUser")
+                    return
+                }
+                guard let authToken else {
+                    print("Nil authToken in loadUser")
+                    return
                 }
                 
+                let result = try await NetworkService.shared.loadUser(
+                    authToken: authToken,
+                    userId: userId
+                )
+                
+                switch result {
+                case .success(let tempUser):
+                    print("User loaded: \(tempUser.login)")
+                    await MainActor.run {
+                        user = tempUser
+                    }
+                case .failure(let error):
+                    if error.code == 403 {
+                        
+                    }
+                    if error.code == 404 {
+                        print("User Not Found")
+                        await MainActor.run {
+                            self.user = nil
+                            self.userError = error
+                        }
+                    }
+                    throw error
+                }
+            } catch {
+                print("❌ User failed: \(error)")
+                print("Error message: \(error.localizedDescription)")
             }
+            
         }
     }
 }

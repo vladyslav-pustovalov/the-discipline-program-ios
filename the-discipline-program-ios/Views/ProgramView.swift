@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProgramView: View {
-    @Bindable private var viewModel: ViewModel
+    @State private var programViewModel: ProgramViewModel
     
     private var programViewDateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -17,12 +17,12 @@ struct ProgramView: View {
     }
     
     init(for date: Date) {
-        viewModel = ViewModel(programDate: date)
+        _programViewModel = State(wrappedValue: ProgramViewModel(programDate: date))
     }
     
     var body: some View {
         VStack {
-            if let program = viewModel.program {
+            if let program = programViewModel.program {
                 if program.isRestDay {
                     Text("Today is the rest day")
                 } else {
@@ -44,7 +44,7 @@ struct ProgramView: View {
                         fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
                     }
                 }
-            } else if viewModel.programError?.code == 404 {
+            } else if programViewModel.programError?.code == 404 {
                 ContentUnavailableView {
                     Text("There is not program for today")
                 }
@@ -54,16 +54,16 @@ struct ProgramView: View {
                 }
             }
         }
-        .navigationTitle("\(programViewDateFormatter.string(from: viewModel.programDate))")
+        .navigationTitle("\(programViewDateFormatter.string(from: programViewModel.programDate))")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button("Previous day") {
-                    viewModel.loadPreviousDay()
+                    programViewModel.loadPreviousDay()
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Next day") {
-                    viewModel.loadNextDay()
+                    programViewModel.loadNextDay()
                 }
             }
         }
