@@ -8,7 +8,8 @@
 import KeychainAccess
 import SwiftUI
 
-@Observable class UserViewModel {
+@Observable
+class UserViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<User> = .idle
     
@@ -68,5 +69,10 @@ import SwiftUI
             }
             
         }
+    }
+    
+    @MainActor
+    func updateUser(_ user: User) {
+        self.state = .loaded(user)
     }
 }

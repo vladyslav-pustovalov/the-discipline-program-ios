@@ -8,7 +8,8 @@
 import KeychainAccess
 import SwiftUI
 
-@Observable class AuthViewModel {
+@Observable
+class AuthViewModel {
     let keychain = Keychain(service: Constants.Bundle.id)
     
     var isAuthenticated = false
