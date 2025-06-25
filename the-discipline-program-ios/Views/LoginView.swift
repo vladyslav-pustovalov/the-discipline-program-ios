@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Environment(AuthViewModel.self) var viewModel
+    @Environment(AuthViewModel.self) var authViewModel
     
     var body: some View {
-        @Bindable var viewModel = viewModel
+        @Bindable var authViewModel = authViewModel
         
         ZStack {
             Color.gray.opacity(0.03)
@@ -24,7 +24,7 @@ struct LoginView: View {
                     .padding(.top, 100)
                 
                 VStack(spacing: 15) {
-                    TextField("Email", text: $viewModel.email)
+                    TextField("Email", text: $authViewModel.email)
                         .padding()
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
@@ -33,7 +33,7 @@ struct LoginView: View {
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
                     
-                    SecureField("Password", text: $viewModel.password)
+                    SecureField("Password", text: $authViewModel.password)
                         .padding()
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
@@ -42,7 +42,7 @@ struct LoginView: View {
                 .padding()
                 
                 Button {
-                    viewModel.performLogin(email: viewModel.email, password: viewModel.password)
+                    authViewModel.performLogin()
                 } label: {
                     Text("Sign In")
                         .frame(maxWidth: .infinity)
@@ -53,7 +53,7 @@ struct LoginView: View {
                 .frame(width: 300, height: 60)
                 .background(
                     LinearGradient(
-                        colors: viewModel.isLoginButtonDisabled
+                        colors: authViewModel.isLoginButtonDisabled
                         ? [.gray.opacity(0.6)]
                         : [.gray, .black],
                         startPoint: .bottomLeading,
@@ -61,7 +61,7 @@ struct LoginView: View {
                     )
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                .disabled(viewModel.isLoginButtonDisabled)
+                .disabled(authViewModel.isLoginButtonDisabled)
                 
                 Spacer()
                                 
@@ -71,15 +71,16 @@ struct LoginView: View {
                 
             
         }
-        .alert("Authentication failed", isPresented: $viewModel.showingAlert) {
+        .alert("Authentication failed", isPresented: $authViewModel.showingAlert) {
                     Button("OK", role: .cancel) { }
         } message: {
-            Text("Error status: \(viewModel.authStatus?.code)")
-            Text("Error message: \(viewModel.authStatus?.description)")
+            Text("Error status: \(authViewModel.authStatus?.code)")
+            Text("Error message: \(authViewModel.authStatus?.description)")
         }
     }
 }
 
 #Preview {
     LoginView()
+        .environment(AuthViewModel())
 }

@@ -35,7 +35,7 @@ import SwiftUI
         self.authService = authService
     }
     
-    func performLogin(email: String, password: String) {
+    func performLogin() {
 //        isLoading = true
         
         Task {

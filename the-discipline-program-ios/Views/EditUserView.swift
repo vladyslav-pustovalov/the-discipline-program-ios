@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct EditUserView: View {
-    @Binding var user: User?
+    @Binding var user: User
     
     var body: some View {
-        Text("Hello user")
+        
     }
 }
 
 #Preview {
-    @Previewable @State var user: User? = User.mock
+    @Previewable @State var user: User = User.mock
     return EditUserView(user: $user)
 }

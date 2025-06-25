@@ -13,7 +13,7 @@ import SwiftUI
     
     var authToken: String?
     var userId: Int?
-    var user: User? = User.mock
+    var user: User?
     var userError: NetworkResponseStatus?
     
     private let userService: UserService
