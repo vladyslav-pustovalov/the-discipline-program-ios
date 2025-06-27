@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainView: View {
     @State var programDate = Date.now
+    @State var userViewModel = UserViewModel()
     
     var body: some View {
         TabView {
@@ -21,7 +22,7 @@ struct MainView: View {
             }
             
             NavigationStack {
-                UserView()
+                UserView(userViewModel: userViewModel)
             }
             .tabItem {
                 Label("User", systemImage: "person.circle")

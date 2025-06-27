@@ -20,33 +20,36 @@ class EditUserViewModel {
     
     var authToken: String?
     
-    var login: String
-    var firstName: String?
-    var lastName: String?
-    var phoneNumber: String?
+    var firstName: String
+    var lastName: String
+    var phoneNumber: String
+    var dateOfBirth: Date
     
     init(user: User, userService: UserService = UserService()) {
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         self.userService = userService
         self.user = user
-        self.login = user.login
-        self.firstName = user.firstName
-        self.lastName = user.lastName
-        self.phoneNumber = user.phoneNumber
+        self.firstName = user.firstName ?? ""
+        self.lastName = user.lastName ?? ""
+        self.phoneNumber = user.phoneNumber ?? ""
+        self.dateOfBirth = user.dateOfBirth ?? Date()
     }
     
     private func updatedUser() -> User {
-        return User(
-            id: user.id,
-            login: login,
-            password: user.password,
-            userRole: user.userRole,
-            trainingLevel: user.trainingLevel,
-            firstName: firstName,
-            lastName: lastName,
-            dateOfBirth: user.dateOfBirth,
-            phoneNumber: phoneNumber
-        )
+        var updatedUser = User(id: user.id, login: user.login, password: user.password, userRole: user.userRole, trainingLevel: user.trainingLevel)
+        //TODO: check if need conditions
+        if !firstName.isEmpty {
+            updatedUser.firstName = firstName
+        }
+        if !lastName.isEmpty {
+            updatedUser.lastName = lastName
+        }
+        if !phoneNumber.isEmpty {
+            updatedUser.phoneNumber = phoneNumber
+        }
+        updatedUser.dateOfBirth = dateOfBirth
+        
+        return updatedUser
     }
     
     @MainActor
@@ -62,7 +65,6 @@ class EditUserViewModel {
             
             switch result {
             case .success(let updatedUser):
-                print("User is updated: \(updatedUser.login)")
                 user = updatedUser
                 state = .loaded(user)
                 isUpdateSuccessful = true

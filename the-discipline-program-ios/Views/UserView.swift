@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AuthViewModel.self) var authViewModel
-    @State var userViewModel = UserViewModel()
+    var userViewModel: UserViewModel
     
     var body: some View {
         VStack {
@@ -19,8 +19,8 @@ struct UserView: View {
                         Text("Email: \(user.login)")
                         Text("First name: \(user.firstName ?? "")")
                         Text("Last name: \(user.lastName ?? "")")
-                        Text("Level: \(user.trainingLevel?.name ?? "")")
-                        Text("Birthday: \(Constants.Formatter.dateFormatter.string(from: user.dateOfBirth ?? Date.now))")
+                        Text("Level: \(user.trainingLevel != nil ? user.trainingLevel!.name : "")")
+                        UserBirthdayView(date: user.dateOfBirth)
                         Text("Phone: \(user.phoneNumber ?? "")")
                     }
                 }
@@ -28,6 +28,7 @@ struct UserView: View {
                     ToolbarItem(placement: .primaryAction) {
                         NavigationLink("Edit") {
                             EditUserView(user: user) { updatedUser in
+                                print("✅ onSave closure called with user: \(updatedUser.login)") // <-- Add this
                                 userViewModel.updateUser(updatedUser)
                             }
                         }
@@ -59,14 +60,28 @@ struct UserView: View {
             }
         }
         .onAppear {
-            if case .idle = userViewModel.state {
-                userViewModel.loadUser()
-            }
+//            if case .idle = userViewModel.state {
+//                userViewModel.loadUser()
+//            }
+            userViewModel.loadUser()
+        }
+    }
+}
+
+private struct UserBirthdayView: View {
+    var date: Date?
+    
+    var body: some View {
+        if let date {
+            Text("Birthday: \(Constants.Formatter.dateFormatter.string(from: date))")
+        } else {
+            Text("Birthday: ")
         }
     }
 }
 
 #Preview {
-    UserView()
+    @State var userViewModel = UserViewModel()
+    return UserView(userViewModel: userViewModel)
         .environment(AuthViewModel())
 }
