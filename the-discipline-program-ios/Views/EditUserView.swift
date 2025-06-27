@@ -21,7 +21,10 @@ struct EditUserView: View {
     var body: some View {
         Form {
             Section(header: Text("User Details")) {
-                TextField("Login", text: $editUserViewModel.login)
+                TextField("First Name", text: $editUserViewModel.firstName)
+                TextField("Last Name", text: $editUserViewModel.lastName)
+                TextField("Phone Number", text: $editUserViewModel.phoneNumber)
+                DatePicker("Date of Birth", selection: $editUserViewModel.dateOfBirth, displayedComponents: .date)
             }
         }
         .navigationTitle("Edit User")

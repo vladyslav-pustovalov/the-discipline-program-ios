@@ -36,7 +36,11 @@ final class UserService: NetworkService {
             "Content-Type": "application/json",
             "Authorization": authToken
         ]
-        let body = try JSONEncoder().encode(user)
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .formatted(Constants.Formatter.dateFormatter)
+        encoder.outputFormatting = .prettyPrinted
+        let body = try encoder.encode(user)
+        print(String(data: body, encoding: .utf8)!)
         
         let result = try await performRequest(
             stringURL: "\(baseURL)/user",

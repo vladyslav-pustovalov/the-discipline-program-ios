@@ -51,7 +51,7 @@ struct Program: Codable, Equatable {
         try container.encode(id, forKey: .id)
         try container.encode(scheduledDate, forKey: .scheduledDate)
         try container.encode(isRestDay, forKey: .isRestDay)
-        try container.encode(dailyProgram, forKey: .dailyProgram)
+        try container.encodeIfPresent(dailyProgram, forKey: .dailyProgram)
     }
 }
 
