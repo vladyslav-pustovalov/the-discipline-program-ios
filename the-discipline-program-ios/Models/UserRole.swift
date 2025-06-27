@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 17/05/2025.
 //
 
-struct UserRole: Codable {
+struct UserRole: Codable, Equatable {
     private(set) var id: Int
     private(set) var name: String
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProgramView: View {
+    @Environment(AuthViewModel.self) var authViewModel
     @State private var programViewModel: ProgramViewModel
     
     private var programViewDateFormatter: DateFormatter {
@@ -32,10 +33,14 @@ struct ProgramView: View {
                                 Text("Training number: \(training.trainingNumber)")
                                     .font(.headline)
                                 ForEach(training.blocks, id: \.name) { block in
-                                    Section("Section: \(block.name)") {
+                                    Section {
                                         ForEach(block.exercises, id: \.self) { exercise in
                                             Text(exercise)
                                         }
+                                    } header: {
+                                        Text("\(block.name)")
+                                            .font(.headline)
+                                            .foregroundStyle(.black)
                                     }
                                 }
                             }
@@ -48,6 +53,13 @@ struct ProgramView: View {
                 if error.code == 404 {
                     ContentUnavailableView {
                         Text("There is no program for today")
+                    }
+                } else if error.code == 403 {
+                    ContentUnavailableView {
+                        Text("Forbidden")
+                    }
+                    .onAppear {
+                        authViewModel.signOut()
                     }
                 } else {
                     ContentUnavailableView {
@@ -69,9 +81,15 @@ struct ProgramView: View {
                 }
             }
         }
+        .onAppear {
+            if case .idle = programViewModel.state {
+                programViewModel.loadProgram(for: programViewModel.programDate)
+            }
+        }
     }
 }
 
 #Preview {
     ProgramView(for: Date.now)
+        .environment(AuthViewModel())
 }

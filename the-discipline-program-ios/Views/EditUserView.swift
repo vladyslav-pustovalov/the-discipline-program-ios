@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct EditUserView: View {
+    @Environment(\.dismiss) var dismiss
     @State private var editUserViewModel: EditUserViewModel
     
     var onSave: (User) -> Void
-    
-    @Environment(\.dismiss) var dismiss
     
     init(user: User, onSave: @escaping (User) -> Void) {
         self._editUserViewModel = State(initialValue: EditUserViewModel(user: user))
@@ -32,24 +31,19 @@ struct EditUserView: View {
                 Button("Cancel", action: { dismiss() })
             }
             ToolbarItem(placement: .confirmationAction) {
-                if editUserViewModel.isSaving {
+                if case .loading = editUserViewModel.state {
                     ProgressView()
                 } else {
-                    Button("Save", action: handleSave)
+                    Button("Save") {
+                        editUserViewModel.saveUpdatedUser()
+                        onSave(editUserViewModel.user)
+                        dismiss()
+                    }
                 }
             }
         }
-    }
-    
-    private func handleSave() {
-        Task {
-            do {
-                let updatedUser = try await editUserViewModel.save()
-                onSave(updatedUser)
-                dismiss()
-            } catch {
-                print("Failed to save user")
-            }
+        .alert("Something went wrong during user update", isPresented: $editUserViewModel.showingAlert) {
+            Button("Ok") {}
         }
     }
 }

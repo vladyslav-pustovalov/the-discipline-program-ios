@@ -25,23 +25,12 @@ struct UserView: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button(role: .destructive, action: authViewModel.signOut) {
-                            Text("Sign Out")
-                                .padding(5)
-                                .background(.gray.opacity(0.3))
-                                .foregroundStyle(.red)
-                                .clipShape(.buttonBorder)
-                        }
-                        
-                    }
                     ToolbarItem(placement: .primaryAction) {
                         NavigationLink("Edit") {
                             EditUserView(user: user) { updatedUser in
                                 userViewModel.updateUser(updatedUser)
                             }
                         }
-                        
                     }
                 }
             } errorContent: { error in
@@ -49,9 +38,26 @@ struct UserView: View {
                     Text("\(error.code)")
                     Text("\(error.localizedDescription)")
                 }
+                .onAppear {
+                    if error.code == 403 {
+                        authViewModel.signOut()
+                    }
+                }
             }
         }
         .navigationTitle("Profile")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(role: .destructive, action: authViewModel.signOut) {
+                    Text("Sign Out")
+                        .padding(5)
+                        .background(.gray.opacity(0.3))
+                        .foregroundStyle(.red)
+                        .clipShape(.buttonBorder)
+                }
+                
+            }
+        }
         .onAppear {
             if case .idle = userViewModel.state {
                 userViewModel.loadUser()

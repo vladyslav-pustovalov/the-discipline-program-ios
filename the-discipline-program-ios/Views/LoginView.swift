@@ -44,11 +44,15 @@ struct LoginView: View {
                 Button {
                     authViewModel.performLogin()
                 } label: {
-                    Text("Sign In")
-                        .frame(maxWidth: .infinity)
-                        .foregroundStyle(.white)
-                        .font(.title2)
-                        .bold()
+                    if authViewModel.isLoading {
+                        ProgressView()
+                    } else {
+                        Text("Sign In")
+                            .frame(maxWidth: .infinity)
+                            .foregroundStyle(.white)
+                            .font(.title2)
+                            .bold()
+                    }
                 }
                 .frame(width: 300, height: 60)
                 .background(

@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 09/06/2025.
 //
 
-struct DailyProgram: Codable {
+struct DailyProgram: Codable, Equatable {
     var dayTrainings: [DayTrainig]
 }
 

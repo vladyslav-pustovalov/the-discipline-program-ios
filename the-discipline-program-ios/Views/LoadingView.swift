@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoadingView<Value, Content: View, ErrorContent: View>: View {
+struct LoadingView<Value: Equatable, Content: View, ErrorContent: View>: View {
     let state: LoadingState<Value>
     @ViewBuilder let content: (Value) -> Content
     @ViewBuilder let errorContent: (NetworkResponseStatus) -> ErrorContent

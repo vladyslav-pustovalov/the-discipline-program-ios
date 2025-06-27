@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 09/06/2025.
 //
 
-struct Block: Codable {
+struct Block: Codable, Equatable {
     private(set) var name: String
     private(set) var exercises: [String]
 }
