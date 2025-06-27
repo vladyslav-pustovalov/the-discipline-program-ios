@@ -24,8 +24,12 @@ final class AuthService: NetworkService {
         
         switch result {
         case .success(let data):
-            let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
-            return .success(jwt)
+            do {
+                let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
+                return .success(jwt)
+            } catch {
+                return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during auth response decoding"))
+            }
         case .failure(let status):
             return .failure(status)
         }

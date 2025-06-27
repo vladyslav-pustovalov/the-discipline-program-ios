@@ -47,8 +47,12 @@ final class UserService: NetworkService {
         
         switch result {
         case .success(let data):
-            let user = try JSONDecoder().decode(User.self, from: data)
-            return .success(user)
+            do {
+                let user = try JSONDecoder().decode(User.self, from: data)
+                return .success(user)
+            } catch {
+                return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during user data decoding"))
+            }
         case .failure(let status):
             return .failure(status)
         }
