@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 09/06/2025.
 //
 
-struct DayTrainig: Codable {
+struct DayTrainig: Codable, Equatable {
     private(set) var trainingNumber: Int
     private(set) var blocks: [Block]
 }

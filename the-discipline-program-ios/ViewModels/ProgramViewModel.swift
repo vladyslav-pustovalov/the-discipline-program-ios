@@ -26,60 +26,52 @@ class ProgramViewModel {
         
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
-        
-        loadProgram(for: programDate)
     }
     
+    @MainActor
     func loadProgram(for date: Date) {
         state = .loading
         Task {
             
             print("Date inside loadProgram: \(date)")
             
-            do {
-                guard let userId else {
-                    print("Nil userId in loadProgram")
-                    return
-                }
-                guard let authToken else {
-                    print("Nil authToken in loadProgram")
-                    return
+            guard let userId else {
+                print("Nil userId in loadProgram")
+                return
+            }
+            guard let authToken else {
+                print("Nil authToken in loadProgram")
+                return
+            }
+            
+            let result = try await programService.loadProgram(
+                authToken: authToken,
+                userId: userId,
+                date: date
+            )
+            
+            switch result {
+            case .success(let tempProgram):
+                print("Program: \(tempProgram.scheduledDate)")
+                program = tempProgram
+                state = .loaded(tempProgram)
+                
+            case .failure(let error):
+                if error.code == 403 {
+                    
                 }
                 
-                let result = try await programService.loadProgram(
-                    authToken: authToken,
-                    userId: userId,
-                    date: date
-                )
-                
-                switch result {
-                case .success(let tempProgram):
-                    print("Program: \(tempProgram.scheduledDate)")
-                    await MainActor.run {
-                        program = tempProgram
-                        state = .loaded(tempProgram)
-                    }
-                    
-                case .failure(let error):
-                    if error.code == 403 {
-                        
-                    }
-                    
-                    if error.code == 404 {
-                        print("Program Not Found")
-                        await MainActor.run {
-                            self.program = nil
-                        }
-                    }
-                    state = .error(error)
+                if error.code == 404 {
+                    print("Program Not Found")
+                    self.program = nil
                 }
-            } catch {
-                print("❌ Program failed: \(error)")
-                print("Error message: \(error.localizedDescription)")
+                
+                state = .error(error)
             }
         }
     }
     
+    @MainActor
     func loadNextDay() {
         if let date = Calendar.current.date(byAdding: .day, value: 1, to: programDate) {
             loadProgram(for: date)
@@ -87,6 +79,7 @@ class ProgramViewModel {
         }
     }
     
+    @MainActor
     func loadPreviousDay() {
         if let date = Calendar.current.date(byAdding: .day, value: -1, to: programDate) {
             loadProgram(for: date)

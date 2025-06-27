@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Program: Codable {
+struct Program: Codable, Equatable {
     var id: Int
     var scheduledDate: Date
     var isRestDay: Bool
@@ -32,7 +32,7 @@ struct Program: Codable {
         let id = try container.decode(Int.self, forKey: .id)
         let dateString = try container.decode(String.self, forKey: .scheduledDate)
         let isRestDay = try container.decode(Bool.self, forKey: .isRestDay)
-        let dailyProgram = try container.decode(DailyProgram.self, forKey: .dailyProgram)
+        let dailyProgram = try container.decodeIfPresent(DailyProgram.self, forKey: .dailyProgram)
         
         guard let scheduledDate = Constants.Formatter.dateFormatter.date(from: dateString) else {
             throw DecodingError.dataCorruptedError(

@@ -30,4 +30,27 @@ final class UserService: NetworkService {
             return .failure(status)
         }
     }
+    
+    func updateUser(authToken: String, user: User) async throws -> Result<User, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        let body = try JSONEncoder().encode(user)
+        
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/user",
+            method: Constants.HTTPMethods.put,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(let data):
+            let user = try JSONDecoder().decode(User.self, from: data)
+            return .success(user)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
 }

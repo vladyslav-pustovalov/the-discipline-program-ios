@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Team: Codable {
+struct Team: Codable, Equatable {
     private(set) var id: Int
     private(set) var name: String
 }

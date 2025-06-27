@@ -25,49 +25,39 @@ class UserViewModel {
         userId = UserDefaults.standard.integer(forKey: Constants.Defaults.userId)
     }
     
+    @MainActor
     func loadUser() {
         state = .loading
         Task {
-            do {
-                guard let userId else {
-                    print("Nil userId in loadUser")
-                    return
-                }
-                guard let authToken else {
-                    print("Nil authToken in loadUser")
-                    return
-                }
-                
-                let result = try await userService.loadUser(
-                    authToken: authToken,
-                    userId: userId
-                )
-                
-                switch result {
-                case .success(let tempUser):
-                    print("User loaded: \(tempUser.login)")
-                    await MainActor.run {
-                        user = tempUser
-                        state = .loaded(tempUser)
-                    }
-                case .failure(let error):
-                    if error.code == 403 {
-                        
-                    }
-                    
-                    if error.code == 404 {
-                        print("User Not Found")
-                        await MainActor.run {
-                            self.user = nil
-                        }
-                    }
-                    state = .error(error)
-                }
-            } catch {
-                print("❌ User failed: \(error)")
-                print("Error message: \(error.localizedDescription)")
+            guard let userId else {
+                print("Nil userId in loadUser")
+                return
+            }
+            guard let authToken else {
+                print("Nil authToken in loadUser")
+                return
             }
             
+            let result = try await userService.loadUser(
+                authToken: authToken,
+                userId: userId
+            )
+            
+            switch result {
+            case .success(let tempUser):
+                print("User loaded: \(tempUser.login)")
+                user = tempUser
+                state = .loaded(tempUser)
+            case .failure(let error):
+                if error.code == 403 {
+                    print("Forbidden")
+                }
+                if error.code == 404 {
+                    print("User Not Found")
+                    self.user = nil
+                }
+                state = .error(error)
+            }
         }
     }
     

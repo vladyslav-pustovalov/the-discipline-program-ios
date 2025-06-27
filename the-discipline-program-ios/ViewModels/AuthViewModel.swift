@@ -14,12 +14,12 @@ class AuthViewModel {
     
     var isAuthenticated = false
     var showingAlert = false
-//    var isLoading = false
+    var isLoading = false
     
     var userId: Int?
     var authToken: String?
     var authStatus: NetworkResponseStatus?
-
+    
     var email = "vlad@mail.com"
     var password = "vlad123"
     var isLoginButtonDisabled: Bool {
@@ -31,34 +31,29 @@ class AuthViewModel {
     init(authService: AuthService = AuthService()) {
         if let token = try? keychain.get(Constants.Bundle.tokenKey) {
             authToken = token
-            isAuthenticated = true
+            //            isAuthenticated = true
         }
         self.authService = authService
     }
     
     func performLogin() {
-//        isLoading = true
+        isLoading = true
         
         Task {
-            do {
-                let result = try await authService.login(email: email, password: password)
-//                isLoading = false
-                switch result {
-                case .success(let jwt):
-                    print("Token: \(jwt.accessToken), ID: \(jwt.userId)")
-                    saveJWTData(jwt: jwt)
-                    authToken = jwt.accessToken
-                    userId = jwt.userId
-                    isAuthenticated = true
-                case .failure(let status):
-                    print("Login fail: \(status.code); \(status.description)")
-                    authStatus = status
-                    showingAlert = true
-                }
-            } catch {
-                print("❌ Login failed: \(error)")
-                print("Error message: \(error.localizedDescription)")
+            let result = try await authService.login(email: email, password: password)
+            switch result {
+            case .success(let jwt):
+                print("Token: \(jwt.accessToken), ID: \(jwt.userId)")
+                saveJWTData(jwt: jwt)
+                authToken = jwt.accessToken
+                userId = jwt.userId
+                isAuthenticated = true
+            case .failure(let status):
+                print("Login fail: \(status.code); \(status.description)")
+                authStatus = status
+                showingAlert = true
             }
+            isLoading = false
         }
     }
     
