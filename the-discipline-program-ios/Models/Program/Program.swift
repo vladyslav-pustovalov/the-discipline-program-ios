@@ -8,43 +8,10 @@
 import Foundation
 
 struct Program: Codable, Equatable {
-    var id: Int
-    var scheduledDate: Date
-    var isRestDay: Bool
-    var dailyProgram: DailyProgram?
-    
-    init(id: Int, scheduledDate: Date, isRestDay: Bool, dailyProgram: DailyProgram?) {
-        self.id = id
-        self.scheduledDate = scheduledDate
-        self.isRestDay = isRestDay
-        self.dailyProgram = dailyProgram ?? nil
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case scheduledDate
-        case isRestDay
-        case dailyProgram
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let id = try container.decode(Int.self, forKey: .id)
-        let scheduledDate = try container.decode(Date.self, forKey: .scheduledDate)
-        let isRestDay = try container.decode(Bool.self, forKey: .isRestDay)
-        let dailyProgram = try container.decodeIfPresent(DailyProgram.self, forKey: .dailyProgram)
-        
-        self.init(id: id, scheduledDate: scheduledDate, isRestDay: isRestDay, dailyProgram: dailyProgram)
-    }
-    
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(id, forKey: .id)
-        try container.encode(scheduledDate, forKey: .scheduledDate)
-        try container.encode(isRestDay, forKey: .isRestDay)
-        try container.encodeIfPresent(dailyProgram, forKey: .dailyProgram)
-    }
+    private(set) var id: Int
+    private(set) var scheduledDate: Date
+    private(set) var isRestDay: Bool
+    private(set) var dailyProgram: DailyProgram?
 }
 
 extension Program {
