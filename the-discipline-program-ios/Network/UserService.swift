@@ -24,7 +24,7 @@ final class UserService: NetworkService {
         
         switch result {
         case .success(let data):
-            let user = try JSONDecoder().decode(User.self, from: data)
+            let user = try BaseDecoder().decode(User.self, from: data)
             return .success(user)
         case .failure(let status):
             return .failure(status)
@@ -36,11 +36,8 @@ final class UserService: NetworkService {
             "Content-Type": "application/json",
             "Authorization": authToken
         ]
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .formatted(Constants.Formatter.dateFormatter)
-        encoder.outputFormatting = .prettyPrinted
-        let body = try encoder.encode(user)
-        print(String(data: body, encoding: .utf8)!)
+        
+        let body = try BaseEncoder().encode(user)
         
         let result = try await performRequest(
             stringURL: "\(baseURL)/user",
@@ -52,7 +49,7 @@ final class UserService: NetworkService {
         switch result {
         case .success(let data):
             do {
-                let user = try JSONDecoder().decode(User.self, from: data)
+                let user = try BaseDecoder().decode(User.self, from: data)
                 return .success(user)
             } catch {
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during user data decoding"))

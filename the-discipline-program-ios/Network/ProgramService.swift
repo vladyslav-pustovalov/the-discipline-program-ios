@@ -28,7 +28,7 @@ final class ProgramService: NetworkService {
         switch result {
         case .success(let data):
             do {
-                let program = try JSONDecoder().decode(Program.self, from: data)
+                let program = try BaseDecoder().decode(Program.self, from: data)
                 return .success(program)
             } catch {
                 print("Error during program decoding: \(error.localizedDescription)")

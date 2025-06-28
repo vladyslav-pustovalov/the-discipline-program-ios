@@ -57,22 +57,9 @@ struct User: Codable, Equatable {
         let trainingLevel = try container.decodeIfPresent(TrainingLevel.self, forKey: .trainingLevel)
         let firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
         let lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        let dateString = try container.decodeIfPresent(String.self, forKey: .dateOfBirth)
+        let dateOfBirth = try container.decodeIfPresent(Date.self, forKey: .dateOfBirth)
         let team = try container.decodeIfPresent(Team.self, forKey: .team)
         let phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
-        
-        var dateOfBirth: Date?
-        if let dateString {
-            if let date = Constants.Formatter.dateFormatter.date(from: dateString) {
-                dateOfBirth = date
-            } else {
-                throw DecodingError.dataCorruptedError(
-                    forKey: .dateOfBirth,
-                    in: container,
-                    debugDescription: "Invalid date format"
-                )
-            }
-        }
         
         self.init(id: id, login: login, password: password, userRole: userRole, trainingLevel: trainingLevel, firstName: firstName, lastName: lastName, dateOfBirth: dateOfBirth, team: team, phoneNumber: phoneNumber)
     }

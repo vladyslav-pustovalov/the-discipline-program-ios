@@ -30,17 +30,9 @@ struct Program: Codable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let id = try container.decode(Int.self, forKey: .id)
-        let dateString = try container.decode(String.self, forKey: .scheduledDate)
+        let scheduledDate = try container.decode(Date.self, forKey: .scheduledDate)
         let isRestDay = try container.decode(Bool.self, forKey: .isRestDay)
         let dailyProgram = try container.decodeIfPresent(DailyProgram.self, forKey: .dailyProgram)
-        
-        guard let scheduledDate = Constants.Formatter.dateFormatter.date(from: dateString) else {
-            throw DecodingError.dataCorruptedError(
-                forKey: .scheduledDate,
-                in: container,
-                debugDescription: "Invalid date format"
-            )
-        }
         
         self.init(id: id, scheduledDate: scheduledDate, isRestDay: isRestDay, dailyProgram: dailyProgram)
     }
