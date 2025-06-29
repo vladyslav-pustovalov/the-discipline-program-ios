@@ -43,22 +43,24 @@ struct EditUserView: View {
         }
         .alert("Something went wrong during user update", isPresented: $editUserViewModel.showingAlert) {
             Button("Ok", role: .cancel) {}
+        } message: {
+            if case .error(let error) = editUserViewModel.state {
+                Text("Status code: \(error.code), \(error.description)")
+            }
         }
     }
     
     private func trySaveUpdatedUser() {
         Task {
-            do {
-                try await editUserViewModel.saveUpdatedUser()
-                onSave(editUserViewModel.user)
+            await editUserViewModel.saveUpdatedUser()
+            if case .loaded(let user) = editUserViewModel.state {
+                onSave(user)
                 dismiss()
-            } catch {
             }
         }
     }
 }
 
-//#Preview {
-//    @Previewable @State var user: User = User.mock
-//    return EditUserView(user: user)
-//}
+#Preview {
+    EditUserView(user: User.mock) { _ in }
+}

@@ -45,7 +45,6 @@ class UserViewModel {
             
             switch result {
             case .success(let tempUser):
-                print("User loaded: \(tempUser.login), \(tempUser.trainingLevel?.name)")
                 user = tempUser
                 state = .loaded(tempUser)
             case .failure(let error):
@@ -61,10 +60,7 @@ class UserViewModel {
         }
     }
     
-//    @MainActor
     func updateUser(_ user: User) {
-        print("🔄 Updating state on main thread: \(Thread.isMainThread)") // <-- Diagnostic print
-
         self.state = .loaded(user)
     }
 }
