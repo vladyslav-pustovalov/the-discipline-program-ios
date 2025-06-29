@@ -37,16 +37,9 @@ class EditUserViewModel {
     
     private func updatedUser() -> User {
         var updatedUser = User(id: user.id, login: user.login, password: user.password, userRole: user.userRole, trainingLevel: user.trainingLevel)
-        //TODO: check if need conditions
-        if !firstName.isEmpty {
-            updatedUser.firstName = firstName
-        }
-        if !lastName.isEmpty {
-            updatedUser.lastName = lastName
-        }
-        if !phoneNumber.isEmpty {
-            updatedUser.phoneNumber = phoneNumber
-        }
+        updatedUser.firstName = firstName
+        updatedUser.lastName = lastName
+        updatedUser.phoneNumber = phoneNumber
         updatedUser.dateOfBirth = dateOfBirth
         
         return updatedUser
