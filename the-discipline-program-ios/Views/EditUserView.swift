@@ -37,16 +37,23 @@ struct EditUserView: View {
                 if case .loading = editUserViewModel.state {
                     ProgressView()
                 } else {
-                    Button("Save") {
-                        editUserViewModel.saveUpdatedUser()
-                        onSave(editUserViewModel.user)
-                        dismiss()
-                    }
+                    Button("Save", action: trySaveUpdatedUser)
                 }
             }
         }
         .alert("Something went wrong during user update", isPresented: $editUserViewModel.showingAlert) {
-            Button("Ok") {}
+            Button("Ok", role: .cancel) {}
+        }
+    }
+    
+    private func trySaveUpdatedUser() {
+        Task {
+            do {
+                try await editUserViewModel.saveUpdatedUser()
+                onSave(editUserViewModel.user)
+                dismiss()
+            } catch {
+            }
         }
     }
 }
