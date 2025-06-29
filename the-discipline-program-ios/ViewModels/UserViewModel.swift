@@ -61,7 +61,7 @@ class UserViewModel {
         }
     }
     
-    @MainActor
+//    @MainActor
     func updateUser(_ user: User) {
         print("🔄 Updating state on main thread: \(Thread.isMainThread)") // <-- Diagnostic print
 
