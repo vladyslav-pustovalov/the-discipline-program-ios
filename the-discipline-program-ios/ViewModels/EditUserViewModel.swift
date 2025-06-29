@@ -13,7 +13,7 @@ class EditUserViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<User> = .idle
     var showingAlert = false
-
+    
     private let userService: UserService
     var user: User
     
@@ -45,13 +45,15 @@ class EditUserViewModel {
     }
     
     @MainActor
-    func saveUpdatedUser() async throws {
+    func saveUpdatedUser() async {
         state = .loading
-            guard let authToken else {
-                print("authToken is null in update user")
-                return
-            }
-            
+        
+        guard let authToken else {
+            print("authToken is null in update user")
+            return
+        }
+        
+        do {
             let result = try await userService.updateUser(authToken: authToken, user: updatedUser())
             
             switch result {
@@ -61,7 +63,10 @@ class EditUserViewModel {
             case .failure(let error):
                 showingAlert = true
                 state = .error(error)
-                throw error
             }
+        } catch {
+            showingAlert = true
+            state = .error(NetworkResponseStatus(statusCode: nil, message: error.localizedDescription))
+        }
     }
 }

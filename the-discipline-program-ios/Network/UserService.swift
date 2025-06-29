@@ -51,7 +51,7 @@ final class UserService: NetworkService {
             do {
                 let user = try BaseDecoder().decode(User.self, from: data)
                 return .success(user)
-            } catch {
+            } catch is DecodingError {
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during user data decoding"))
             }
         case .failure(let status):

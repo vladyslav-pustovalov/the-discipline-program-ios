@@ -9,7 +9,11 @@ import SwiftUI
 
 struct UserView: View {
     @Environment(AuthViewModel.self) var authViewModel
-    var userViewModel: UserViewModel
+    @State var userViewModel: UserViewModel
+    
+    init() {
+        _userViewModel = State(wrappedValue: UserViewModel())
+    }
     
     var body: some View {
         VStack {
@@ -28,7 +32,6 @@ struct UserView: View {
                     ToolbarItem(placement: .primaryAction) {
                         NavigationLink("Edit") {
                             EditUserView(user: user) { updatedUser in
-                                print("✅ onSave closure called with user: \(updatedUser.login)") // <-- Add this
                                 userViewModel.updateUser(updatedUser)
                             }
                         }
@@ -60,10 +63,9 @@ struct UserView: View {
             }
         }
         .onAppear {
-//            if case .idle = userViewModel.state {
-//                userViewModel.loadUser()
-//            }
-            userViewModel.loadUser()
+            if case .idle = userViewModel.state {
+                userViewModel.loadUser()
+            }
         }
     }
 }
@@ -81,7 +83,6 @@ private struct UserBirthdayView: View {
 }
 
 #Preview {
-    @State var userViewModel = UserViewModel()
-    return UserView(userViewModel: userViewModel)
+    UserView()
         .environment(AuthViewModel())
 }

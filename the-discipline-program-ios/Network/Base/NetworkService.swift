@@ -45,8 +45,7 @@ class NetworkService {
                 return .failure(networkResponseStatus)
             }
         default:
-            let decoder = JSONDecoder()
-            if let model = try? decoder.decode(NetworkError.self, from: data) {
+            if let model = try? BaseDecoder().decode(NetworkError.self, from: data) {
                 return .failure(NetworkResponseStatus(statusCode: httpResponse.statusCode, message: model.error))
             }
             return .failure(networkResponseStatus)
