@@ -48,12 +48,13 @@ class AuthViewModel {
                 authToken = jwt.accessToken
                 userId = jwt.userId
                 isAuthenticated = true
+                isLoading = false
             case .failure(let status):
                 print("Login fail: \(status.code); \(status.description)")
                 authStatus = status
                 showingAlert = true
+                isLoading = false
             }
-            isLoading = false
         }
     }
     

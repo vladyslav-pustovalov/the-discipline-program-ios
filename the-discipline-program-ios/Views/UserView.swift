@@ -29,6 +29,11 @@ struct UserView: View {
                     }
                 }
                 .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        NavigationLink("Change Password") {
+                            ChangePasswordView()
+                        }
+                    }
                     ToolbarItem(placement: .primaryAction) {
                         NavigationLink("Edit") {
                             EditUserView(user: user) { updatedUser in
