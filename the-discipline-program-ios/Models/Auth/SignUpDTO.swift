@@ -6,11 +6,11 @@
 //
 
 struct SignUpDTO: Codable {
-    let login: String
+    let username: String
     let password: String
     let userRole: UserRole
 }
 
 extension SignUpDTO {
-    static var mock = SignUpDTO(login: "vlad@mail.com", password: "vlad123", userRole: UserRole.roleAdmin)
+    static var mock = SignUpDTO(username: "vlad@mail.com", password: "vlad123", userRole: UserRole.roleAdmin)
 }
