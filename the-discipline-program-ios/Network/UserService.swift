@@ -58,4 +58,27 @@ final class UserService: NetworkService {
             return .failure(status)
         }
     }
+    
+    func changeUserPassword(authToken: String, userId: Int, newPassword: String, oldPassword: String) async throws -> Result<Bool, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        let body = try BaseEncoder().encode(ChangePasswordDTO(userId: userId, oldPassword: oldPassword, newPassword: newPassword))
+        
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/user/\(userId)/changePassword",
+            method: Constants.HTTPMethods.patch,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(_):
+            return .success(true)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
 }
