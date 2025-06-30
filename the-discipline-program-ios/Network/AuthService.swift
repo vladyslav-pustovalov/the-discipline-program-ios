@@ -13,7 +13,7 @@ final class AuthService: NetworkService {
         let headers = [
             "Content-Type": "application/json",
         ]
-        let body = try JSONEncoder().encode(SignInDTO(login: email, password: password))
+        let body = try BaseEncoder().encode(SignInDTO(username: email, password: password))
 
         let result = try await performRequest(
             stringURL: "\(baseURL)/auth/signin",
@@ -25,7 +25,7 @@ final class AuthService: NetworkService {
         switch result {
         case .success(let data):
             do {
-                let jwt = try JSONDecoder().decode(JwtDTO.self, from: data)
+                let jwt = try BaseDecoder().decode(JwtDTO.self, from: data)
                 return .success(jwt)
             } catch {
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during auth response decoding"))

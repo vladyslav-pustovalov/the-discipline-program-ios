@@ -6,10 +6,10 @@
 //
 
 struct SignInDTO: Codable {
-    let login: String
+    let username: String
     let password: String
 }
 
 extension SignInDTO {
-    static var mock = SignInDTO(login: "vlad@mail.com", password: "vlad123")
+    static var mock = SignInDTO(username: "vlad@mail.com", password: "vlad123")
 }

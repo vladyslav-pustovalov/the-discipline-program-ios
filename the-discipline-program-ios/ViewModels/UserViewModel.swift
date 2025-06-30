@@ -15,7 +15,7 @@ class UserViewModel {
     
     var authToken: String?
     var userId: Int?
-    var user: User? = User.mock
+    var user: User?
     
     private let userService: UserService
     

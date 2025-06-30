@@ -9,8 +9,7 @@ import Foundation
 
 struct User: Codable, Equatable {
     var id: Int
-    var login: String
-    var password: String
+    var username: String
     var userRole: UserRole
     
     var trainingLevel: TrainingLevel?
@@ -29,8 +28,7 @@ extension User {
         
         return User(
             id: 1,
-            login: "user@email.com",
-            password: "12345",
+            username: "user@email.com",
             userRole: UserRole.roleUser,
             trainingLevel: TrainingLevel.mock,
             firstName: "TestF",

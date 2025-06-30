@@ -20,7 +20,7 @@ struct UserView: View {
             LoadingView(state: userViewModel.state) { user in
                 VStack {
                     List {
-                        Text("Email: \(user.login)")
+                        Text("Email: \(user.username)")
                         Text("First name: \(user.firstName ?? "")")
                         Text("Last name: \(user.lastName ?? "")")
                         Text("Level: \(user.trainingLevel != nil ? user.trainingLevel!.name : "")")

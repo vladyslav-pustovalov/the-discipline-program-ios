@@ -31,7 +31,7 @@ class AuthViewModel {
     init(authService: AuthService = AuthService()) {
         if let token = try? keychain.get(Constants.Bundle.tokenKey) {
             authToken = token
-            //            isAuthenticated = true
+            //TODO: isAuthenticated = true
         }
         self.authService = authService
     }
