@@ -23,10 +23,10 @@ struct MainView: View {
             
             if authViewModel.userRole == UserRole(id: 2, name: "ADMIN") {
                 NavigationStack {
-                    Text("Create program")
+                    CreateProgramView()
                 }
                 .tabItem {
-                    Label("Create Program", systemImage: "list.dash")
+                    Label("Create Program", systemImage: "document.badge.plus")
                 }
             }
             

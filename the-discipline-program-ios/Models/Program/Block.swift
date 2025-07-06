@@ -6,8 +6,8 @@
 //
 
 struct Block: Codable, Equatable {
-    private(set) var name: String
-    private(set) var exercises: [String]
+    var name: String
+    var exercises: [String]
 }
 
 extension Block {

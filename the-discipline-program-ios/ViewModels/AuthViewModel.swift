@@ -38,7 +38,9 @@ class AuthViewModel {
         let userRoleData = UserDefaults.standard.data(forKey: Constants.Defaults.userRole)
         
         if let userRoleData {
+            print("userrole data is not null")
             if let role = try? BaseDecoder().decode(UserRole.self, from: userRoleData) {
+                print("userrole = \(role.name)")
                 userRole = role
             }
         }
@@ -53,7 +55,7 @@ class AuthViewModel {
             let result = try await authService.login(email: email, password: password)
             switch result {
             case .success(let jwt):
-                print("Token: \(jwt.accessToken), ID: \(jwt.userId)")
+                print("Token: \(jwt.accessToken), ID: \(jwt.userId), Role: \(jwt.userRole.name)")
                 saveJWTData(jwt: jwt)
                 authToken = jwt.accessToken
                 userId = jwt.userId
@@ -72,14 +74,14 @@ class AuthViewModel {
     func signOut() {
         try? keychain.remove(Constants.Bundle.tokenKey)
         UserDefaults.standard.removeObject(forKey: Constants.Defaults.userId)
+        UserDefaults.standard.removeObject(forKey: Constants.Defaults.userRole)
         isAuthenticated = false
     }
     
     func saveJWTData(jwt: JwtDTO) {
         try? keychain.set(jwt.accessToken, key: Constants.Bundle.tokenKey)
         UserDefaults.standard.set(jwt.userId, forKey: Constants.Defaults.userId)
-        if let data = try? BaseEncoder().encode(userRole) {
-            print("user role is encoded")
+        if let data = try? BaseEncoder().encode(jwt.userRole) {
             UserDefaults.standard.set(data, forKey: Constants.Defaults.userRole)
         }
         print("JWT data is saved")
