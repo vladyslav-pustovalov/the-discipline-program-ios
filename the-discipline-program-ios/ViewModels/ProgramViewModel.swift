@@ -58,7 +58,7 @@ class ProgramViewModel {
                 
             case .failure(let error):
                 if error.code == 403 {
-                    
+                    AuthViewModel().signOut()
                 }
                 
                 if error.code == 404 {

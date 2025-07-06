@@ -34,6 +34,7 @@ enum Constants {
     enum Defaults {
         static let accessToken = "AccessToken"
         static let userId = "UserID"
+        static let userRole = "UserRole"
     }
     
     enum Bundle {
