@@ -6,8 +6,8 @@
 //
 
 struct DayTrainig: Codable, Equatable {
-    private(set) var trainingNumber: Int
-    private(set) var blocks: [Block]
+    var trainingNumber: Int
+    var blocks: [Block]
 }
 
 extension DayTrainig {

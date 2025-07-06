@@ -6,7 +6,7 @@
 //
 
 struct DailyProgram: Codable, Equatable {
-    private(set) var dayTrainings: [DayTrainig]
+    var dayTrainings: [DayTrainig]
 }
 
 extension DailyProgram {
