@@ -18,10 +18,11 @@ class AuthViewModel {
     
     var userId: Int?
     var authToken: String?
+    var userRole: UserRole?
     var authStatus: NetworkResponseStatus?
     
-    var email = "vlad@mail.com"
-    var password = "vlad123"
+    var email = "vladyslav.pustovalov@gmail.com"
+    var password = "12345"
     var isLoginButtonDisabled: Bool {
         email.isEmpty || password.isEmpty
     }
@@ -31,8 +32,17 @@ class AuthViewModel {
     init(authService: AuthService = AuthService()) {
         if let token = try? keychain.get(Constants.Bundle.tokenKey) {
             authToken = token
-            //TODO: isAuthenticated = true
+            isAuthenticated = true
         }
+        
+        let userRoleData = UserDefaults.standard.data(forKey: Constants.Defaults.userRole)
+        
+        if let userRoleData {
+            if let role = try? BaseDecoder().decode(UserRole.self, from: userRoleData) {
+                userRole = role
+            }
+        }
+        
         self.authService = authService
     }
     
@@ -47,6 +57,7 @@ class AuthViewModel {
                 saveJWTData(jwt: jwt)
                 authToken = jwt.accessToken
                 userId = jwt.userId
+                userRole = jwt.userRole
                 isAuthenticated = true
                 isLoading = false
             case .failure(let status):
@@ -67,6 +78,10 @@ class AuthViewModel {
     func saveJWTData(jwt: JwtDTO) {
         try? keychain.set(jwt.accessToken, key: Constants.Bundle.tokenKey)
         UserDefaults.standard.set(jwt.userId, forKey: Constants.Defaults.userId)
+        if let data = try? BaseEncoder().encode(userRole) {
+            print("user role is encoded")
+            UserDefaults.standard.set(data, forKey: Constants.Defaults.userRole)
+        }
         print("JWT data is saved")
     }
 }

@@ -11,5 +11,6 @@ final class BaseEncoder: JSONEncoder, @unchecked Sendable {
     override init() {
         super.init()
         super.dateEncodingStrategy = .formatted(Constants.Formatter.dateFormatter)
+        super.outputFormatting = .prettyPrinted
     }
 }

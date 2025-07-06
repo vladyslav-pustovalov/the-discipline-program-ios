@@ -68,7 +68,7 @@ final class UserService: NetworkService {
         let body = try BaseEncoder().encode(ChangePasswordDTO(userId: userId, oldPassword: oldPassword, newPassword: newPassword))
         
         let result = try await performRequest(
-            stringURL: "\(baseURL)/user/\(userId)/changePassword",
+            stringURL: "\(baseURL)/user/changePassword",
             method: Constants.HTTPMethods.patch,
             headers: headers,
             body: body

@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct MainView: View {
+    @Environment(AuthViewModel.self) var authViewModel
     @State var programDate = Date.now
     
     var body: some View {
@@ -18,6 +19,15 @@ struct MainView: View {
             }
             .tabItem {
                 Label("Program", systemImage: "list.dash")
+            }
+            
+            if authViewModel.userRole == UserRole(id: 2, name: "ADMIN") {
+                NavigationStack {
+                    Text("Create program")
+                }
+                .tabItem {
+                    Label("Create Program", systemImage: "list.dash")
+                }
             }
             
             NavigationStack {
