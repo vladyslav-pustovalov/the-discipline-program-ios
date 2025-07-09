@@ -69,4 +69,34 @@ final class ProgramService: NetworkService {
             return .failure(status)
         }
     }
+    
+    func updateProgram(authToken: String, program: Program) async throws -> Result<Program, NetworkResponseStatus> {
+        let stringURL = "\(baseURL)/program"
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        let body = try BaseEncoder().encode(program)
+        
+        let result = try await performRequest(
+            stringURL: stringURL,
+            method: Constants.HTTPMethods.put,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(let data):
+            do {
+                let program = try BaseDecoder().decode(Program.self, from: data)
+                return .success(program)
+            } catch {
+                print("Error during program decoding: \(error.localizedDescription)")
+                return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during program data decoding"))
+            }
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
 }
