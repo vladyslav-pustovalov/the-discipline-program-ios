@@ -18,6 +18,11 @@ struct CreateProgramView: View {
         Form {
             Section {
                 DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
+                Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
+                    ForEach(createProgramViewModel.trainigLevels) { level in
+                        Text("\(level.name)").tag(level)
+                    }
+                }
                 
                 ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
                     NavigationLink("Training number: \(createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber)") {
@@ -47,11 +52,27 @@ struct CreateProgramView: View {
                 }
             }
         }
-        .alert("Something went wrong during creating a program", isPresented: $createProgramViewModel.showingAlert) {
-            Button("Ok", role: .cancel) {}
+        .alert(createProgramViewModel.alertMessage, isPresented: $createProgramViewModel.showingAlert) {
+            Button("Ok", role: .cancel) {
+                createProgramViewModel.alertMessage = ""
+            }
         } message: {
             if case .error(let error) = createProgramViewModel.state {
                 Text("Status code: \(error.code), \(error.description)")
+            }
+        }
+        .alert(createProgramViewModel.alertMessage, isPresented: $createProgramViewModel.showingAlreadyExistsAlert) {
+            Button("Yes") {
+                tryUpdateProgram()
+                createProgramViewModel.alertMessage = ""
+            }
+            Button("No", role: .cancel) {
+                createProgramViewModel.alertMessage = ""
+            }
+        }
+        .onAppear {
+            Task {
+                await createProgramViewModel.loadTrainingLevels()
             }
         }
     }
@@ -59,10 +80,18 @@ struct CreateProgramView: View {
     private func trySaveNewProgram() {
         Task {
             await createProgramViewModel.saveNewProgram()
-            
-            if case .loaded(let program) = createProgramViewModel.state {
-                
-            }
+        }
+    }
+    
+    private func tryUpdateProgram() {
+        Task {
+            await createProgramViewModel.updateProgram()
+        }
+    }
+    
+    private func tryLoadTrainingLevels() {
+        Task {
+            await createProgramViewModel.loadTrainingLevels()
         }
     }
 }
