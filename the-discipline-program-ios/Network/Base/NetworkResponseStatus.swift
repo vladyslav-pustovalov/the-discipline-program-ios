@@ -5,6 +5,8 @@
 //  Created by Vladyslav Pustovalov on 20/06/2025.
 //
 
+import Foundation
+
 enum NetworkResponseStatus: Error, Equatable {
     
     static func == (lhs: NetworkResponseStatus, rhs: NetworkResponseStatus) -> Bool {
@@ -15,11 +17,11 @@ enum NetworkResponseStatus: Error, Equatable {
     case informational(status: InformationalStatus, message: String?)
     case success(status: SuccessStatus, message: String?)
     case redirection(status: RedirectionStatus, message: String?)
-    case clientError(status: ClientErrorStatus, message: String?)
+    case clientError(status: ClientErrorStatus, message: String?, httpResponse: HTTPURLResponse?)
     case serverError(status: ServerErrorStatus, message: String?)
     case nsurlError(status: NSURLError, message: String?)
     
-    init(statusCode: Int?, message: String? = nil) {
+    init(statusCode: Int?, message: String? = nil, httpResponse: HTTPURLResponse? = nil) {
         guard let code = statusCode else {
             self = .internalStatus(status: .internetAccessError, message: message)
             return
@@ -41,7 +43,7 @@ enum NetworkResponseStatus: Error, Equatable {
         }
         
         if let status = ClientErrorStatus(rawValue: code) {
-            self = .clientError(status: status, message: message)
+            self = .clientError(status: status, message: message, httpResponse: httpResponse)
             return
         }
         
@@ -68,7 +70,7 @@ enum NetworkResponseStatus: Error, Equatable {
             return "Success Status: \(status), \(message ?? "")"
         case .redirection(let status, let message):
             return "Redirection Status: \(status), \(message ?? "")"
-        case .clientError(let status, let message):
+        case .clientError(let status, let message, let httpResponse):
             return "Client Error Status: \(status), \(message ?? "")"
         case .serverError(let status, let message):
             return "Server Error Status: \(status), \(message ?? "")"
@@ -87,12 +89,21 @@ enum NetworkResponseStatus: Error, Equatable {
             return status.code
         case .redirection(let status, _):
             return status.code
-        case .clientError(let status, _):
+        case .clientError(let status, _, _):
             return status.code
         case .serverError(let status, _):
             return status.code
         case .nsurlError(let status, _):
             return status.code
+        }
+    }
+    
+    var httpResponse: HTTPURLResponse? {
+        switch self {
+        case .clientError(_, _, let response):
+            return response
+        default:
+            return nil
         }
     }
 }

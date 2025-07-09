@@ -35,7 +35,7 @@ class NetworkService {
             return .failure(NetworkResponseStatus(statusCode: nil, message: "Invalid response"))
         }
         
-        let networkResponseStatus = NetworkResponseStatus(statusCode: httpResponse.statusCode)
+        let networkResponseStatus = NetworkResponseStatus(statusCode: httpResponse.statusCode, httpResponse: response as? HTTPURLResponse)
         
         switch networkResponseStatus {
         case .success(let status, _):
