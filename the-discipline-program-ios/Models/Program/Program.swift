@@ -8,10 +8,11 @@
 import Foundation
 
 struct Program: Codable, Equatable {
-    private(set) var id: Int
-    private(set) var scheduledDate: Date
-    private(set) var isRestDay: Bool
-    private(set) var dailyProgram: DailyProgram?
+    var id: Int
+    var scheduledDate: Date
+    var trainingLevel: TrainingLevel?
+    var isRestDay: Bool
+    var dailyProgram: DailyProgram?
 }
 
 extension Program {
