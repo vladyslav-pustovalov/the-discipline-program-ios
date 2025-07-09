@@ -5,9 +5,9 @@
 //  Created by Vladyslav Pustovalov on 17/05/2025.
 //
 
-struct TrainingLevel: Codable, Equatable {
-    private(set) var id: Int
-    private(set) var name: String
+struct TrainingLevel: Codable, Equatable, Identifiable, Hashable {
+    var id: Int
+    var name: String
 }
 
 extension TrainingLevel {
