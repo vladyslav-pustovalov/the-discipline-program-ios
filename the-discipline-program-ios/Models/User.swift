@@ -23,17 +23,14 @@ struct User: Codable, Equatable {
 
 extension User {
     static var mock: User {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        return User(
+        User(
             id: 1,
             username: "user@email.com",
             userRole: UserRole.roleUser,
             trainingLevel: TrainingLevel.mock,
             firstName: "TestF",
             lastName: "TestL",
-            dateOfBirth: formatter.date(from: "2000-10-20")!,
+            dateOfBirth: Constants.Formatter.dateFormatter.date(from: "2000-10-20")!,
             team: Team.mock,
             phoneNumber: "778877"
         )
