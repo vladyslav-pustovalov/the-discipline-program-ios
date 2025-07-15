@@ -18,7 +18,7 @@ extension Bundle {
             fatalError("Failed to locate \(file) in bundle")
         }
         
-        let decoder = JSONDecoder()
+        let decoder = BaseDecoder()
         
         do {
             return try decoder.decode(T.self, from: data)
