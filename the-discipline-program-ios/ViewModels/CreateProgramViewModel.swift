@@ -35,7 +35,8 @@ class CreateProgramViewModel {
         self.trainingLevelService = trainingLevelService
         
         scheduledDate = Date()
-        trainingLevel = TrainingLevel(id: 1, name: "Amateur")
+        //TODO: get level only from loading, and not hardcoded
+        trainingLevel = TrainingLevel(id: 1, name: "Scaled")
         isRestDay = false
         dailyProgram = DailyProgram(dayTrainings: [])
     }
