@@ -38,13 +38,30 @@ struct CreateProgramView: View {
                     }
                     
                     //TODO: make this being in the bottom as a separate button, and not as a part of the whole list
-                    NavigationLink("Add Day trainig") {
-                        AddTrainingView(trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1) { dayTraining in
-                            createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
-                        }
-                    }
+                    
                 }
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            NavigationLink(
+                destination: AddTrainingView(
+                    trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1
+                ) { dayTraining in
+                    createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
+                }
+            ) {
+                Text("Add Day training")
+                    .fontWeight(.medium)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                    )
+                    .foregroundColor(.blue)
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 10)
         }
         .navigationTitle("Create Program")
         .toolbar {
