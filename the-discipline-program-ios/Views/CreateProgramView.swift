@@ -36,9 +36,6 @@ struct CreateProgramView: View {
                             }
                         }
                     }
-                    
-                    //TODO: make this being in the bottom as a separate button, and not as a part of the whole list
-                    
                 }
             }
         }
