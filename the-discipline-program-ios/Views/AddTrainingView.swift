@@ -43,14 +43,24 @@ struct AddTrainingView: View {
                     addTrainingViewModel.dayTraining.blocks.append(block)
                 }
             }
-                        
-            Section {
-                Button("Add training to the day") {
-                    onAdd(addTrainingViewModel.dayTraining)
-                    dismiss()
-                }
-                .disabled(addTrainingViewModel.dayTraining.blocks.isEmpty)
+        }
+        .safeAreaInset(edge: .bottom) {
+            Button {
+                onAdd(addTrainingViewModel.dayTraining)
+                dismiss()
+            } label: {
+                Text("Add training to the day")
+                    .fontWeight(.medium)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                    )
+                    .foregroundColor(.blue)
             }
+            .disabled(addTrainingViewModel.dayTraining.blocks.isEmpty)
+            .padding()
         }
         .navigationTitle("Add Training to day")
         .navigationBarTitleDisplayMode(.inline)
@@ -58,4 +68,8 @@ struct AddTrainingView: View {
             EditButton()
         }
     }
+}
+
+#Preview {
+    AddTrainingView(trainingNumber: 1) { _ in }
 }
