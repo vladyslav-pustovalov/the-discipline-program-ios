@@ -21,8 +21,8 @@ class AuthViewModel {
     var userRole: UserRole?
     var authStatus: NetworkResponseStatus?
     
-    var email = "vladyslav.pustovalov@gmail.com"
-    var password = "12345"
+    var email = ""
+    var password = ""
     var isLoginButtonDisabled: Bool {
         email.isEmpty || password.isEmpty
     }

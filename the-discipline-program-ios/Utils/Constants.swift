@@ -10,7 +10,7 @@ import Foundation
 enum Constants {
     
     enum API {
-        static let baseURL = "http://127.0.0.1:8080"
+        static let baseURL = "https://thedisciplineprogram.com"
         static let basePath = "/api"
         static let versionAPI = "/v1"
     }
