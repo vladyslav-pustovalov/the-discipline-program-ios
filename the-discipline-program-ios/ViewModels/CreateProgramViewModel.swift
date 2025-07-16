@@ -16,7 +16,7 @@ class CreateProgramViewModel {
     var showingAlreadyExistsAlert = false
     var alertMessage = ""
     var showingAddProgramSheet = false
-    var trainigLevels: [TrainingLevel] = []
+    var trainingLevels: [TrainingLevel] = []
     
     private let programService: ProgramService
     private let trainingLevelService: TrainingLevelService
@@ -30,6 +30,7 @@ class CreateProgramViewModel {
     var dailyProgram: DailyProgram
     
     init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService()) {
+        
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         self.programService = programService
         self.trainingLevelService = trainingLevelService
@@ -43,7 +44,7 @@ class CreateProgramViewModel {
     
     func buildProgram() -> Program {
         //TODO: handle optional dayly program and handle that toggle isRestDay should set dailyProgram to nil
-        return Program(id: id, scheduledDate: scheduledDate, trainingLevel: TrainingLevel.mock, isRestDay: isRestDay, dailyProgram: dailyProgram)
+        return Program(id: id, scheduledDate: scheduledDate, trainingLevel: trainingLevel, isRestDay: isRestDay, dailyProgram: dailyProgram)
     }
     
     @MainActor
@@ -115,17 +116,13 @@ class CreateProgramViewModel {
     
     @MainActor
     func loadTrainingLevels() async {
-        guard let authToken else {
-            print("authToken is null in load training levels")
-            return
-        }
         
         do {
-            let result = try await trainingLevelService.loadTrainingLevels(authToken: authToken)
+            let result = try await trainingLevelService.loadTrainingLevels()
             
             switch result {
             case .success(let levels):
-                trainigLevels = levels
+                trainingLevels = levels
             case .failure(let error):
                 alertMessage = "Training levels are not Loaded: \(error.code), \(error.description)"
                 showingAlert = true

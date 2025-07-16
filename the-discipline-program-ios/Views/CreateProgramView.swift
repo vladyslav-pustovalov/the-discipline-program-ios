@@ -19,7 +19,7 @@ struct CreateProgramView: View {
             Section {
                 DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
                 Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
-                    ForEach(createProgramViewModel.trainigLevels) { level in
+                    ForEach(createProgramViewModel.trainingLevels) { level in
                         Text("\(level.name)").tag(level)
                     }
                 }
@@ -94,4 +94,8 @@ struct CreateProgramView: View {
             await createProgramViewModel.loadTrainingLevels()
         }
     }
+}
+
+#Preview {
+    CreateProgramView()
 }

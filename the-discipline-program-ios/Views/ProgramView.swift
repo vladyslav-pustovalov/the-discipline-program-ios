@@ -38,6 +38,7 @@ struct ProgramView: View {
                                             Text(exercise)
                                         }
                                     } header: {
+                                        //TODO: fix on the dark mode
                                         Text("\(block.name)")
                                             .font(.headline)
                                             .foregroundStyle(.black)
