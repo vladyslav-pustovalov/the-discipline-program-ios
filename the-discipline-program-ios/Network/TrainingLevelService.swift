@@ -9,10 +9,9 @@ import Foundation
 
 final class TrainingLevelService: NetworkService {
     
-    func loadTrainingLevels(authToken: String) async throws -> Result<[TrainingLevel], NetworkResponseStatus> {
+    func loadTrainingLevels() async throws -> Result<[TrainingLevel], NetworkResponseStatus> {
         let headers = [
-            "Content-Type": "application/json",
-            "Authorization": authToken
+            "Content-Type": "application/json"
         ]
         
         let result = try await performRequest(
@@ -25,7 +24,6 @@ final class TrainingLevelService: NetworkService {
         switch result {
         case .success(let data):
             let trainingLevels = try BaseDecoder().decode([TrainingLevel].self, from: data)
-            print("Level: \(trainingLevels.first?.name)")
             return .success(trainingLevels)
         case .failure(let status):
             return .failure(status)
