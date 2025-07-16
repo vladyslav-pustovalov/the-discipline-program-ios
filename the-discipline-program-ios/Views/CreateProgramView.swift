@@ -26,7 +26,6 @@ struct CreateProgramView: View {
                 Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
                 
                 if createProgramViewModel.isRestDay == false {
-                    //TODO: make all foreaches in view to work with indexs unless the name is 100% unique
                     ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
                         NavigationLink("Training number: \(createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber)") {
                             AddTrainingView(
