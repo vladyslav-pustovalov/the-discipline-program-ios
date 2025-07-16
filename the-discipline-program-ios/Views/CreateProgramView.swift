@@ -23,21 +23,26 @@ struct CreateProgramView: View {
                         Text("\(level.name)").tag(level)
                     }
                 }
+                Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
                 
-                ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
-                    NavigationLink("Training number: \(createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber)") {
-                        AddTrainingView(
-                            dayTraining: createProgramViewModel.dailyProgram.dayTrainings[index],
-                            trainingNumber: createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber
-                        ) { dayTraining in
-                            createProgramViewModel.dailyProgram.dayTrainings[index] = dayTraining
+                if createProgramViewModel.isRestDay == false {
+                    //TODO: make all foreaches in view to work with indexs unless the name is 100% unique
+                    ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
+                        NavigationLink("Training number: \(createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber)") {
+                            AddTrainingView(
+                                dayTraining: createProgramViewModel.dailyProgram.dayTrainings[index],
+                                trainingNumber: createProgramViewModel.dailyProgram.dayTrainings[index].trainingNumber
+                            ) { dayTraining in
+                                createProgramViewModel.dailyProgram.dayTrainings[index] = dayTraining
+                            }
                         }
                     }
-                }
-                
-                NavigationLink("Add Day trainig") {
-                    AddTrainingView(trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1) { dayTraining in
-                        createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
+                    
+                    //TODO: make this being in the bottom as a separate button, and not as a part of the whole list
+                    NavigationLink("Add Day trainig") {
+                        AddTrainingView(trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1) { dayTraining in
+                            createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
+                        }
                     }
                 }
             }
