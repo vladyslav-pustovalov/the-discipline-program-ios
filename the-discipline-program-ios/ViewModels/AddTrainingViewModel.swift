@@ -11,6 +11,10 @@ import Foundation
 class AddTrainingViewModel {
     var dayTraining: DayTrainig
     
+    var isDayTrainingEmpty: Bool {
+        dayTraining.blocks.isEmpty
+    }
+    
     init(trainingNumber: Int) {
         self.dayTraining = DayTrainig(
             trainingNumber: trainingNumber,

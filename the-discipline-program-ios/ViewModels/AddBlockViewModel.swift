@@ -12,6 +12,10 @@ class AddBlockViewModel {
     var block = Block(name: "", exercises: [])
     var newExercise = ""
     
+    var isBlockNameEmpty: Bool {
+        block.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     func addExercise() {
         let trimmed = newExercise.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }

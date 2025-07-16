@@ -40,25 +40,27 @@ struct CreateProgramView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            NavigationLink(
-                destination: AddTrainingView(
-                    trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1
-                ) { dayTraining in
-                    createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
+            if createProgramViewModel.isRestDay == false {
+                NavigationLink(
+                    destination: AddTrainingView(
+                        trainingNumber: (createProgramViewModel.dailyProgram.dayTrainings.last?.trainingNumber ?? 0) + 1
+                    ) { dayTraining in
+                        createProgramViewModel.dailyProgram.dayTrainings.append(dayTraining)
+                    }
+                ) {
+                    Text("Add Training to this day >")
+                        .fontWeight(.medium)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                        )
+                        .foregroundColor(.blue)
                 }
-            ) {
-                Text("Add Day training")
-                    .fontWeight(.medium)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
-                    )
-                    .foregroundColor(.blue)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 10)
         }
         .navigationTitle("Create Program")
         .toolbar {
