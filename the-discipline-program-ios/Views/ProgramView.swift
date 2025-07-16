@@ -32,13 +32,13 @@ struct ProgramView: View {
                             ForEach(dailyProgram.dayTrainings, id: \.trainingNumber) { training in
                                 Text("Training number: \(training.trainingNumber)")
                                     .font(.headline)
-                                ForEach(training.blocks, id: \.name) { block in
+                                ForEach(training.blocks.indices, id: \.self) { blockIndex in
                                     Section {
-                                        ForEach(block.exercises, id: \.self) { exercise in
-                                            Text(exercise)
+                                        ForEach(training.blocks[blockIndex].exercises.indices, id: \.self) { exerciseIndex in
+                                            Text(training.blocks[blockIndex].exercises[exerciseIndex])
                                         }
                                     } header: {
-                                        Text("\(block.name)")
+                                        Text("\(training.blocks[blockIndex].name)")
                                             .font(.headline)
                                             .fontWeight(.heavy)
                                     }
