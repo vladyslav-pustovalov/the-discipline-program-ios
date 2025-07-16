@@ -42,8 +42,7 @@ class CreateProgramViewModel {
         dailyProgram = DailyProgram(dayTrainings: [])
     }
     
-    func buildProgram() -> Program {
-        //TODO: handle optional dayly program and handle that toggle isRestDay should set dailyProgram to nil
+    private func buildProgram() -> Program {
         return Program(id: id, scheduledDate: scheduledDate, trainingLevel: trainingLevel, isRestDay: isRestDay, dailyProgram: isRestDay ? nil : dailyProgram)
     }
     
