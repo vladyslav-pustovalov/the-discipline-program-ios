@@ -53,14 +53,27 @@ struct AddBlockView: View {
                     .disabled(addBlockViewModel.newExercise.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
             }
-            
-            Section {
-                Button("Save") {
-                    onAdd(addBlockViewModel.block)
-                    dismiss()
-                }
-                .disabled(addBlockViewModel.block.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        }
+        .safeAreaInset(edge: .bottom) {
+            Button {
+                onAdd(addBlockViewModel.block)
+                dismiss()
+            } label: {
+                Text("Save Block")
+                    .fontWeight(.medium)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(addBlockViewModel.isBlockNameEmpty ?
+                                        Color.gray.opacity(0.5) :
+                                        Color.blue.opacity(0.5),
+                                    lineWidth: 2)
+                    )
+                    .foregroundColor(addBlockViewModel.isBlockNameEmpty ? .gray : .blue)
             }
+            .disabled(addBlockViewModel.isBlockNameEmpty)
+            .padding()
         }
         .navigationTitle("Edit Block")
         .navigationBarTitleDisplayMode(.inline)

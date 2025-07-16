@@ -49,17 +49,20 @@ struct AddTrainingView: View {
                 onAdd(addTrainingViewModel.dayTraining)
                 dismiss()
             } label: {
-                Text("Add training to the day")
+                Text("Save Training")
                     .fontWeight(.medium)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                            .stroke(addTrainingViewModel.isDayTrainingEmpty ?
+                                        Color.gray.opacity(0.5) :
+                                        Color.blue.opacity(0.5),
+                                    lineWidth: 2)
                     )
-                    .foregroundColor(.blue)
+                    .foregroundColor(addTrainingViewModel.isDayTrainingEmpty ? .gray : .blue)
             }
-            .disabled(addTrainingViewModel.dayTraining.blocks.isEmpty)
+            .disabled(addTrainingViewModel.isDayTrainingEmpty)
             .padding()
         }
         .navigationTitle("Add Training to day")

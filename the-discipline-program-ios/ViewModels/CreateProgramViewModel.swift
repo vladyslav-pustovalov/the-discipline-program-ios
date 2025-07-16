@@ -48,6 +48,7 @@ class CreateProgramViewModel {
     
     @MainActor
     func saveNewProgram() async {
+        //TODO: add check for DailyProgram not to be empty
         state = .loading
         
         guard let authToken else {
