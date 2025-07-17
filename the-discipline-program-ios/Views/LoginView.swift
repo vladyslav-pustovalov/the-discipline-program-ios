@@ -58,8 +58,8 @@ struct LoginView: View {
                 .background(
                     LinearGradient(
                         colors: authViewModel.isLoginButtonDisabled
-                        ? [.gray.opacity(0.6)]
-                        : [.gray, .black],
+                        ? [.gray.opacity(0.5)]
+                        : [.gray.opacity(0.2), .gray.opacity(0.8)],
                         startPoint: .bottomLeading,
                         endPoint: .topTrailing
                     )
