@@ -42,13 +42,18 @@ class CreateProgramViewModel {
         dailyProgram = DailyProgram(dayTrainings: [])
     }
     
-    private func buildProgram() -> Program {
+    private func buildProgram() throws -> Program {
+        if !isRestDay {
+            guard !dailyProgram.dayTrainings.isEmpty else {
+                throw EmptyDailyProgramError()
+            }
+        }
+        
         return Program(id: id, scheduledDate: scheduledDate, trainingLevel: trainingLevel, isRestDay: isRestDay, dailyProgram: isRestDay ? nil : dailyProgram)
     }
     
     @MainActor
     func saveNewProgram() async {
-        //TODO: add check for DailyProgram not to be empty
         state = .loading
         
         guard let authToken else {
@@ -75,6 +80,10 @@ class CreateProgramViewModel {
                 alertMessage = "Program is not saved. Error: \(error.code), \(error.description)"
                 showingAlert = true
             }
+        } catch is EmptyDailyProgramError {
+            alertMessage = "You can't save non rest day without adding at least one trainig to a program"
+            showingAlert = true
+            state = .idle
         } catch {
             alertMessage = "Unexpected error during loading saving new program: \(error.localizedDescription)"
             showingAlert = true
