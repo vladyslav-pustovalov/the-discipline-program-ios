@@ -14,8 +14,6 @@ struct ChangePasswordView: View {
     
     init() {
         _changePasswordViewModel = State(initialValue: ChangePasswordViewModel())
-        print("\(changePasswordViewModel.userId)")
-        print("\(changePasswordViewModel.authToken)")
     }
     
     var body: some View {

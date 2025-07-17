@@ -32,15 +32,13 @@ class ProgramViewModel {
     func loadProgram(for date: Date) {
         state = .loading
         Task {
-            
-            print("Date inside loadProgram: \(date)")
-            
+                        
             guard let userId else {
-                print("Nil userId in loadProgram")
+                Log.error("NIl userId in loadProgram")
                 return
             }
             guard let authToken else {
-                print("Nil authToken in loadProgram")
+                Log.error("Nil authToken in loadProgram")
                 return
             }
             
@@ -52,7 +50,6 @@ class ProgramViewModel {
             
             switch result {
             case .success(let tempProgram):
-                print("Program: \(tempProgram.scheduledDate)")
                 program = tempProgram
                 state = .loaded(tempProgram)
                 
@@ -62,7 +59,7 @@ class ProgramViewModel {
                 }
                 
                 if error.code == 404 {
-                    print("Program Not Found")
+                    Log.info("Program Not Found")
                     self.program = nil
                 }
                 
