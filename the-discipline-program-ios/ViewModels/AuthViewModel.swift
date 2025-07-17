@@ -38,9 +38,7 @@ class AuthViewModel {
         let userRoleData = UserDefaults.standard.data(forKey: Constants.Defaults.userRole)
         
         if let userRoleData {
-            print("userrole data is not null")
             if let role = try? BaseDecoder().decode(UserRole.self, from: userRoleData) {
-                print("userrole = \(role.name)")
                 userRole = role
             }
         }
@@ -55,7 +53,6 @@ class AuthViewModel {
             let result = try await authService.login(email: email, password: password)
             switch result {
             case .success(let jwt):
-                print("Token: \(jwt.accessToken), ID: \(jwt.userId), Role: \(jwt.userRole.name)")
                 saveJWTData(jwt: jwt)
                 authToken = jwt.accessToken
                 userId = jwt.userId
@@ -63,7 +60,7 @@ class AuthViewModel {
                 isAuthenticated = true
                 isLoading = false
             case .failure(let status):
-                print("Login fail: \(status.code); \(status.description)")
+                Log.info("Login fail: \(status.code); \(status.description)")
                 authStatus = status
                 showingAlert = true
                 isLoading = false
@@ -84,6 +81,5 @@ class AuthViewModel {
         if let data = try? BaseEncoder().encode(jwt.userRole) {
             UserDefaults.standard.set(data, forKey: Constants.Defaults.userRole)
         }
-        print("JWT data is saved")
     }
 }

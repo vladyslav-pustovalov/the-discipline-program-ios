@@ -49,7 +49,7 @@ class EditUserViewModel {
         state = .loading
         
         guard let authToken else {
-            print("authToken is null in update user")
+            Log.error("Nil authToken in update user")
             return
         }
         

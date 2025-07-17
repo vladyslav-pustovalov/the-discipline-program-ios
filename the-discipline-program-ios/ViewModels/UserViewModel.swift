@@ -30,11 +30,11 @@ class UserViewModel {
         state = .loading
         Task {
             guard let userId else {
-                print("Nil userId in loadUser")
+                Log.error("Nil userId in loadUser")
                 return
             }
             guard let authToken else {
-                print("Nil authToken in loadUser")
+                Log.error("Nil authToken in loadUser")
                 return
             }
             
@@ -49,10 +49,10 @@ class UserViewModel {
                 state = .loaded(tempUser)
             case .failure(let error):
                 if error.code == 403 {
-                    print("Forbidden")
+                    Log.info("Forbidden to load user")
                 }
                 if error.code == 404 {
-                    print("User Not Found")
+                    Log.info("User not found")
                     self.user = nil
                 }
                 state = .error(error)

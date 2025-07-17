@@ -40,11 +40,11 @@ class ChangePasswordViewModel {
         state = .loading
         
         guard let userId else {
-            print("Nil userId in changePassword")
+            Log.error("Nil userId in changePassword")
             return
         }
         guard let authToken else {
-            print("authToken is null in changePassword")
+            Log.error("authToken is null in changePassword")
             return
         }
         

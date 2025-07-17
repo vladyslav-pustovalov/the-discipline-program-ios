@@ -57,7 +57,7 @@ class CreateProgramViewModel {
         state = .loading
         
         guard let authToken else {
-            print("authToken is null in create program")
+            Log.error("Nil authToken in create program")
             return
         }
         
@@ -96,12 +96,10 @@ class CreateProgramViewModel {
         state = .loading
         
         guard let authToken else {
-            print("authToken is null in update program")
+            Log.error(("Nil authToken in update program"))
             return
         }
-        
-        print("Id in update: \(id)")
-        
+                
         do {
             let result = try await programService.updateProgram(authToken: authToken ,program: buildProgram())
             
@@ -150,10 +148,10 @@ class CreateProgramViewModel {
                 alertMessage = "The program for this date and this level already exists, update existing program with the new one?"
                 showingAlreadyExistsAlert = true
             } else {
-                print("Can't parse id from header string value")
+                Log.error("Can't parse id from header string value")
             }
         } else {
-            print("There is no header with id")
+            Log.error("There is no header with id")
         }
     }
 }

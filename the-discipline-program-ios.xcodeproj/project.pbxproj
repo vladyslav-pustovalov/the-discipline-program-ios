@@ -14,9 +14,22 @@
 		C97229142DD8DCDA00E21BBF /* the-discipline-program-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-discipline-program-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C9BB77282E2964CD0059FAAE /* Exceptions for "the-discipline-program-ios" folder in "the-discipline-program-ios" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C97229132DD8DCDA00E21BBF /* the-discipline-program-ios */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C9BB77282E2964CD0059FAAE /* Exceptions for "the-discipline-program-ios" folder in "the-discipline-program-ios" target */,
+			);
 			path = "the-discipline-program-ios";
 			sourceTree = "<group>";
 		};
@@ -266,6 +279,7 @@
 				DEVELOPMENT_TEAM = JFR96C4RKL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "the-discipline-program-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDP;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -299,6 +313,7 @@
 				DEVELOPMENT_TEAM = JFR96C4RKL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "the-discipline-program-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = TDP;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

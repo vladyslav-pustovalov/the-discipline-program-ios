@@ -11,7 +11,6 @@ final class ProgramService: NetworkService {
     
     func loadProgram(authToken: String, userId: Int, date: Date) async throws -> Result<Program, NetworkResponseStatus> {
         let stringDate = Constants.Formatter.dateFormatter.string(from: date)
-        print("String date: \(stringDate)")
         let stringURL = "\(baseURL)/program?userId=\(userId)&scheduledDate=\(stringDate)"
         let headers = [
             "Content-Type": "application/json",
@@ -31,7 +30,7 @@ final class ProgramService: NetworkService {
                 let program = try BaseDecoder().decode(Program.self, from: data)
                 return .success(program)
             } catch {
-                print("Error during program decoding: \(error.localizedDescription)")
+                Log.error("Error during program decoding: \(error.localizedDescription)")
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during program data decoding"))
             }
         case .failure(let status):
@@ -62,7 +61,7 @@ final class ProgramService: NetworkService {
                 let program = try BaseDecoder().decode(Program.self, from: data)
                 return .success(program)
             } catch {
-                print("Error during program decoding: \(error.localizedDescription)")
+                Log.error("Error during program decoding: \(error.localizedDescription)")
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during program data decoding"))
             }
         case .failure(let status):
@@ -92,7 +91,7 @@ final class ProgramService: NetworkService {
                 let program = try BaseDecoder().decode(Program.self, from: data)
                 return .success(program)
             } catch {
-                print("Error during program decoding: \(error.localizedDescription)")
+                Log.error("Error during program decoding: \(error.localizedDescription)")
                 return .failure(NetworkResponseStatus(statusCode: 422, message: "Error during program data decoding"))
             }
         case .failure(let status):
