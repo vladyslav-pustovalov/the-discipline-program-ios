@@ -1,0 +1,43 @@
+{
+    "id": 1,
+    "scheduledDate": "2024-06-07",
+    "trainingLevel": {
+        "id": 2,
+        "name": "RX"
+    },
+    "isRestDay": false,
+    "dailyProgram": {
+        "dayTrainings": [
+          {
+            "blocks": [
+              {
+                "name": "STRENGTH",
+                "exercises": [
+                  "5 sets [ choose weight ]:\n3 bench presses [ jerk grip ]\n3 chin pull-ups  [ w/ weight ]",
+                  "3 sets: \n3 deficit parallets strict HSPU [ OR NEGATIVE PHASE ] \n1 legless RC [ from the floor ] + 1 rope climb"
+                ]
+              },
+              {
+                "name": "STRENGTH ENDURANCE",
+                "exercises": [
+                  "EMOM 12 min | 3 rounds:\n\n1 min: 15/12 cal row\n2 min: 15/12 cal ski\n3 min: 15/12 cal Echo / Assault bike\n4 min: REST\n\n- REST UNTIL RECOVERY -",
+                  "STRENGTH ENDURANCE | 3 sets:\n\n18 V-ups\n14 m HS hold / 4 wall walks\n10/8 C2B pull-ups\n14 m HS hold / 4 wall walks\n18 GHD sit-ups / 18 V-ups\n- 2 min rest in between sets -\n\n- REST UNTIL RECOVERY -",
+                  "EMOM 12 min | 3 rounds:\n\n1 min: 15/12 cal row\n2 min: 15/12 cal ski\n3 min: 15/12 cal Echo / Assault bike\n4 min: REST"
+                ]
+              },
+              {
+                "name": "SUCCESSORY WORK:",
+                "exercises": [
+                  "3-4 sets:\n\n10 DB INCLINE bench presses [ SLOW down / normal speed UP ]\n10 vertical block behind the neck [ w/ pause in BOTTOM position ]"
+                ]
+              },
+              {
+                "name": "CORE MUSCLES",
+                "exercises": []
+              }
+            ],
+            "trainingNumber": 1
+          }
+        ]
+      }
+}
