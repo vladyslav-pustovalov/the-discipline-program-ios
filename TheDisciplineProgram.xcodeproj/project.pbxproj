@@ -7,58 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C9FB77582E08A3EB002532D6 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = C9FB77572E08A3EB002532D6 /* KeychainAccess */; };
+		C99F39D72E2C187A00B44C33 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = C99F39D62E2C187A00B44C33 /* KeychainAccess */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C97229142DD8DCDA00E21BBF /* the-discipline-program-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "the-discipline-program-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheDisciplineProgram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C9BB77282E2964CD0059FAAE /* Exceptions for "the-discipline-program-ios" folder in "the-discipline-program-ios" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = C97229132DD8DCDA00E21BBF /* the-discipline-program-ios */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */ = {
+		C9BB783B2E2C122A0059FAAE /* TheDisciplineProgram */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				C9BB77282E2964CD0059FAAE /* Exceptions for "the-discipline-program-ios" folder in "the-discipline-program-ios" target */,
-			);
-			path = "the-discipline-program-ios";
+			path = TheDisciplineProgram;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C97229112DD8DCDA00E21BBF /* Frameworks */ = {
+		C9BB78362E2C122A0059FAAE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9FB77582E08A3EB002532D6 /* KeychainAccess in Frameworks */,
+				C99F39D72E2C187A00B44C33 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C972290B2DD8DCDA00E21BBF = {
+		C9BB78302E2C122A0059FAAE = {
 			isa = PBXGroup;
 			children = (
-				C97229152DD8DCDA00E21BBF /* Products */,
-				C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */,
+				C9BB783B2E2C122A0059FAAE /* TheDisciplineProgram */,
+				C9BB783A2E2C122A0059FAAE /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		C97229152DD8DCDA00E21BBF /* Products */ = {
+		C9BB783A2E2C122A0059FAAE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C97229142DD8DCDA00E21BBF /* the-discipline-program-ios.app */,
+				C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,68 +53,68 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C97229132DD8DCDA00E21BBF /* the-discipline-program-ios */ = {
+		C9BB78382E2C122A0059FAAE /* TheDisciplineProgram */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C972291F2DD8DCDB00E21BBF /* Build configuration list for PBXNativeTarget "the-discipline-program-ios" */;
+			buildConfigurationList = C9BB78442E2C122C0059FAAE /* Build configuration list for PBXNativeTarget "TheDisciplineProgram" */;
 			buildPhases = (
-				C97229102DD8DCDA00E21BBF /* Sources */,
-				C97229112DD8DCDA00E21BBF /* Frameworks */,
-				C97229122DD8DCDA00E21BBF /* Resources */,
+				C9BB78352E2C122A0059FAAE /* Sources */,
+				C9BB78362E2C122A0059FAAE /* Frameworks */,
+				C9BB78372E2C122A0059FAAE /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				C97229162DD8DCDA00E21BBF /* the-discipline-program-ios */,
+				C9BB783B2E2C122A0059FAAE /* TheDisciplineProgram */,
 			);
-			name = "the-discipline-program-ios";
+			name = TheDisciplineProgram;
 			packageProductDependencies = (
-				C9FB77572E08A3EB002532D6 /* KeychainAccess */,
+				C99F39D62E2C187A00B44C33 /* KeychainAccess */,
 			);
-			productName = "the-discipline-program-ios";
-			productReference = C97229142DD8DCDA00E21BBF /* the-discipline-program-ios.app */;
+			productName = TheDisciplineProgram;
+			productReference = C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C972290C2DD8DCDA00E21BBF /* Project object */ = {
+		C9BB78312E2C122A0059FAAE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
-				LastUpgradeCheck = 1630;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					C97229132DD8DCDA00E21BBF = {
-						CreatedOnToolsVersion = 16.3;
+					C9BB78382E2C122A0059FAAE = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = C972290F2DD8DCDA00E21BBF /* Build configuration list for PBXProject "the-discipline-program-ios" */;
+			buildConfigurationList = C9BB78342E2C122A0059FAAE /* Build configuration list for PBXProject "TheDisciplineProgram" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = C972290B2DD8DCDA00E21BBF;
+			mainGroup = C9BB78302E2C122A0059FAAE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C9FB77562E08A3EB002532D6 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				C99F39D52E2C187A00B44C33 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C97229152DD8DCDA00E21BBF /* Products */;
+			productRefGroup = C9BB783A2E2C122A0059FAAE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C97229132DD8DCDA00E21BBF /* the-discipline-program-ios */,
+				C9BB78382E2C122A0059FAAE /* TheDisciplineProgram */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C97229122DD8DCDA00E21BBF /* Resources */ = {
+		C9BB78372E2C122A0059FAAE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -137,7 +124,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C97229102DD8DCDA00E21BBF /* Sources */ = {
+		C9BB78352E2C122A0059FAAE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -147,7 +134,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C972291D2DD8DCDB00E21BBF /* Debug */ = {
+		C9BB78422E2C122C0059FAAE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -200,7 +187,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -211,7 +198,7 @@
 			};
 			name = Debug;
 		};
-		C972291E2DD8DCDB00E21BBF /* Release */ = {
+		C9BB78432E2C122C0059FAAE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -258,7 +245,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -268,19 +255,16 @@
 			};
 			name = Release;
 		};
-		C97229202DD8DCDB00E21BBF /* Debug */ = {
+		C9BB78452E2C122C0059FAAE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JFR96C4RKL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "the-discipline-program-ios/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = TDP;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -294,7 +278,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.thedisciplineprogram.the-discipline-program-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thedisciplineprogram.TheDisciplineProgram;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -302,19 +286,16 @@
 			};
 			name = Debug;
 		};
-		C97229212DD8DCDB00E21BBF /* Release */ = {
+		C9BB78462E2C122C0059FAAE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JFR96C4RKL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "the-discipline-program-ios/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = TDP;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -328,7 +309,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.thedisciplineprogram.the-discipline-program-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thedisciplineprogram.TheDisciplineProgram;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -339,20 +320,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C972290F2DD8DCDA00E21BBF /* Build configuration list for PBXProject "the-discipline-program-ios" */ = {
+		C9BB78342E2C122A0059FAAE /* Build configuration list for PBXProject "TheDisciplineProgram" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C972291D2DD8DCDB00E21BBF /* Debug */,
-				C972291E2DD8DCDB00E21BBF /* Release */,
+				C9BB78422E2C122C0059FAAE /* Debug */,
+				C9BB78432E2C122C0059FAAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C972291F2DD8DCDB00E21BBF /* Build configuration list for PBXNativeTarget "the-discipline-program-ios" */ = {
+		C9BB78442E2C122C0059FAAE /* Build configuration list for PBXNativeTarget "TheDisciplineProgram" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C97229202DD8DCDB00E21BBF /* Debug */,
-				C97229212DD8DCDB00E21BBF /* Release */,
+				C9BB78452E2C122C0059FAAE /* Debug */,
+				C9BB78462E2C122C0059FAAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -360,7 +341,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C9FB77562E08A3EB002532D6 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+		C99F39D52E2C187A00B44C33 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
 			requirement = {
@@ -371,12 +352,12 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C9FB77572E08A3EB002532D6 /* KeychainAccess */ = {
+		C99F39D62E2C187A00B44C33 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C9FB77562E08A3EB002532D6 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			package = C99F39D52E2C187A00B44C33 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = C972290C2DD8DCDA00E21BBF /* Project object */;
+	rootObject = C9BB78312E2C122A0059FAAE /* Project object */;
 }
