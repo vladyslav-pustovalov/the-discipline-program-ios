@@ -30,9 +30,6 @@ struct EditUserView: View {
         .navigationTitle("Edit User")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", action: { dismiss() })
-            }
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = editUserViewModel.state {
                     ProgressView()

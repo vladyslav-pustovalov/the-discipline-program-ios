@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  the-discipline-program-ios
+//  TheDisciplineProgram
 //
-//  Created by Vladyslav Pustovalov on 17/05/2025.
+//  Created by Vladyslav Pustovalov on 19/07/2025.
 //
 
 import SwiftUI
@@ -25,3 +25,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+

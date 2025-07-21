@@ -22,7 +22,13 @@ struct ChangePasswordView: View {
                 SecureField("Old Password", text: $changePasswordViewModel.oldPassword)
                 SecureField("New Password", text: $changePasswordViewModel.newPassword)
                 SecureField("Confirm New Password", text: $changePasswordViewModel.confirmNewPassword)
-                if changePasswordViewModel.isOldAndNewPasswordsTheSame {
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            VStack {
+                if changePasswordViewModel.oldPassword.isEmpty || changePasswordViewModel.newPassword.isEmpty {
+                    
+                } else if changePasswordViewModel.isOldAndNewPasswordsTheSame {
                     Text("New password should be differen")
                         .foregroundStyle(.secondary)
                         .foregroundStyle(.red)
@@ -36,6 +42,7 @@ struct ChangePasswordView: View {
                         .foregroundStyle(.green)
                 }
             }
+            .padding()
         }
         .navigationTitle("Edit User")
         .navigationBarTitleDisplayMode(.inline)
