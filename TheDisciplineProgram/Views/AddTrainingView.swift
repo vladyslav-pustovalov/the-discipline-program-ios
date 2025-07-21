@@ -24,14 +24,16 @@ struct AddTrainingView: View {
     var body: some View {
         Form {
             ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { index in
+                let block = addTrainingViewModel.dayTraining.blocks[index]
+                
                 Section {
-                    ForEach(addTrainingViewModel.dayTraining.blocks[index].exercises.indices, id: \.self) { exerciseIndex in
-                        Text(addTrainingViewModel.dayTraining.blocks[index].exercises[exerciseIndex])
+                    ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
+                        Text(block.exercises[exerciseIndex])
                     }
                 } header: {
-                    NavigationLink("\(addTrainingViewModel.dayTraining.blocks[index].name)") {
-                        AddBlockView(block: addTrainingViewModel.dayTraining.blocks[index]) { block in
-                            addTrainingViewModel.dayTraining.blocks[index] = block
+                    NavigationLink("\(block.name)") {
+                        AddBlockView(block: block) { newBlock in
+                            addTrainingViewModel.dayTraining.blocks[index] = newBlock
                         }
                     }
                 }
