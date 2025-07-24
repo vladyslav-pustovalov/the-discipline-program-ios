@@ -11,7 +11,14 @@ enum Constants {
     
     enum API {
         static let baseURL = "https://thedisciplineprogram.com"
-        static let basePath = "/api"
+        static var basePath: String {
+            #if DEBUG
+                return "/dev-api"
+            #else
+                return "/api"
+            #endif
+        }
+            
         static let versionAPI = "/v1"
     }
     

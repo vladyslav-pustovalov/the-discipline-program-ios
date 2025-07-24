@@ -33,15 +33,18 @@ struct ProgramView: View {
                                 Text("Training number: \(training.trainingNumber)")
                                     .font(.headline)
                                 ForEach(training.blocks.indices, id: \.self) { blockIndex in
+                                    let block = training.blocks[blockIndex]
+                                    
                                     Section {
-                                        ForEach(training.blocks[blockIndex].exercises.indices, id: \.self) { exerciseIndex in
-                                            Text(training.blocks[blockIndex].exercises[exerciseIndex])
+                                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
+                                            Text(block.exercises[exerciseIndex])
                                         }
                                     } header: {
-                                        Text("\(training.blocks[blockIndex].name)")
+                                        Text("\(block.name)")
                                             .font(.headline)
                                             .fontWeight(.heavy)
                                     }
+                                    
                                 }
                             }
                         }

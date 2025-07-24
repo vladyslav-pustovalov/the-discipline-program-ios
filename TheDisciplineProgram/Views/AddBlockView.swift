@@ -24,7 +24,11 @@ struct AddBlockView: View {
     var body: some View {
         Form {
             Section(header: Text("Block name")) {
-                TextField("Enter block name", text: $addBlockViewModel.block.name)
+                TextField(
+                    "Enter block name",
+                    text: $addBlockViewModel.block.name,
+                    axis: .vertical
+                )
             }
             
             Section(header: Text("Exercises")) {
