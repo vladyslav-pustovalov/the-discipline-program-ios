@@ -22,31 +22,32 @@ struct AddTrainingView: View {
     }
     
     var body: some View {
-        Form {
-            ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { index in
-                let block = addTrainingViewModel.dayTraining.blocks[index]
-                
-                Section {
-                    ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
-                        Text(block.exercises[exerciseIndex])
-                    }
-                } header: {
-                    NavigationLink("\(block.name)") {
-                        AddBlockView(block: block) { newBlock in
-                            addTrainingViewModel.dayTraining.blocks[index] = newBlock
+        VStack {
+            Form {
+                ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { index in
+                    let block = addTrainingViewModel.dayTraining.blocks[index]
+                    
+                    Section {
+                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
+                            Text(block.exercises[exerciseIndex])
+                        }
+                    } header: {
+                        NavigationLink("\(block.name)") {
+                            AddBlockView(block: block) { newBlock in
+                                addTrainingViewModel.dayTraining.blocks[index] = newBlock
+                            }
                         }
                     }
                 }
-            }
-            .onDelete(perform: addTrainingViewModel.deleteBlock)
-            
-            NavigationLink("Add Block to training") {
-                AddBlockView { block in
-                    addTrainingViewModel.dayTraining.blocks.append(block)
+                .onDelete(perform: addTrainingViewModel.deleteBlock)
+                
+                NavigationLink("Add Block to training") {
+                    AddBlockView { block in
+                        addTrainingViewModel.dayTraining.blocks.append(block)
+                    }
                 }
             }
-        }
-        .safeAreaInset(edge: .bottom) {
+            
             Button {
                 onAdd(addTrainingViewModel.dayTraining)
                 dismiss()
