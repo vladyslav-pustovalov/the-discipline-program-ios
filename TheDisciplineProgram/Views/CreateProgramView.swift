@@ -15,33 +15,34 @@ struct CreateProgramView: View {
     }
     
     var body: some View {
-        Form {
-            Section {
-                DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
-                Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
-                    ForEach(createProgramViewModel.trainingLevels) { level in
-                        Text("\(level.name)").tag(level)
+        VStack {
+            Form {
+                Section {
+                    DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
+                    Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
+                        ForEach(createProgramViewModel.trainingLevels) { level in
+                            Text("\(level.name)").tag(level)
+                        }
                     }
-                }
-                Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
-                
-                if createProgramViewModel.isRestDay == false {
-                    ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
-                        let dayTraining = createProgramViewModel.dailyProgram.dayTrainings[index]
-                        
-                        NavigationLink("Training number: \(dayTraining.trainingNumber)") {
-                            AddTrainingView(
-                                dayTraining: dayTraining,
-                                trainingNumber: dayTraining.trainingNumber
-                            ) { newDayTraining in
-                                createProgramViewModel.dailyProgram.dayTrainings[index] = newDayTraining
+                    Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
+                    
+                    if createProgramViewModel.isRestDay == false {
+                        ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
+                            let dayTraining = createProgramViewModel.dailyProgram.dayTrainings[index]
+                            
+                            NavigationLink("Training number: \(dayTraining.trainingNumber)") {
+                                AddTrainingView(
+                                    dayTraining: dayTraining,
+                                    trainingNumber: dayTraining.trainingNumber
+                                ) { newDayTraining in
+                                    createProgramViewModel.dailyProgram.dayTrainings[index] = newDayTraining
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        .safeAreaInset(edge: .bottom) {
+            
             if createProgramViewModel.isRestDay == false {
                 NavigationLink(
                     destination: AddTrainingView(
