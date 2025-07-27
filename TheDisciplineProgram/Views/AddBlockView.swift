@@ -22,39 +22,44 @@ struct AddBlockView: View {
     }
     
     var body: some View {
-        Form {
-            Section(header: Text("Block name")) {
-                TextField("Enter block name", text: $addBlockViewModel.block.name)
+        VStack {
+            Form {
+                Section(header: Text("Block name")) {
+                    TextField(
+                        "Enter block name",
+                        text: $addBlockViewModel.block.name,
+                        axis: .vertical
+                    )
+                }
+                
+                Section(header: Text("Exercises")) {
+                    ForEach(addBlockViewModel.block.exercises.indices, id: \.self) { index in
+                        VStack(alignment: .leading) {
+                            Text("Exercise \(index + 1)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            
+                            TextEditor(text: Binding(
+                                get: { addBlockViewModel.block.exercises[index] },
+                                set: { addBlockViewModel.block.exercises[index] = $0 }
+                            ))
+                            .frame(minHeight: 80)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.3)))
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .onDelete(perform: addBlockViewModel.deleteExercise)
+                    
+                    HStack {
+                        TextField("New exercise", text: $addBlockViewModel.newExercise)
+                        Button(action: addBlockViewModel.addExercise) {
+                            Image(systemName: "plus.circle.fill")
+                        }
+                        .disabled(addBlockViewModel.newExercise.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                }
             }
             
-            Section(header: Text("Exercises")) {
-                ForEach(addBlockViewModel.block.exercises.indices, id: \.self) { index in
-                    VStack(alignment: .leading) {
-                        Text("Exercise \(index + 1)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-
-                        TextEditor(text: Binding(
-                            get: { addBlockViewModel.block.exercises[index] },
-                            set: { addBlockViewModel.block.exercises[index] = $0 }
-                        ))
-                        .frame(minHeight: 80)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.3)))
-                    }
-                    .padding(.vertical, 4)
-                }
-                .onDelete(perform: addBlockViewModel.deleteExercise)
-                
-                HStack {
-                    TextField("New exercise", text: $addBlockViewModel.newExercise)
-                    Button(action: addBlockViewModel.addExercise) {
-                        Image(systemName: "plus.circle.fill")
-                    }
-                    .disabled(addBlockViewModel.newExercise.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                }
-            }
-        }
-        .safeAreaInset(edge: .bottom) {
             Button {
                 onAdd(addBlockViewModel.block)
                 dismiss()
