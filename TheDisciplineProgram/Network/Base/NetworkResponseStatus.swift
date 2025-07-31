@@ -70,7 +70,7 @@ enum NetworkResponseStatus: Error, Equatable {
             return "Success Status: \(status), \(message ?? "")"
         case .redirection(let status, let message):
             return "Redirection Status: \(status), \(message ?? "")"
-        case .clientError(let status, let message, let httpResponse):
+        case .clientError(let status, let message, _):
             return "Client Error Status: \(status), \(message ?? "")"
         case .serverError(let status, let message):
             return "Server Error Status: \(status), \(message ?? "")"
