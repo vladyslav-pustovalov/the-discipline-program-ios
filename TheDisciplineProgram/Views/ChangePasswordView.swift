@@ -36,6 +36,12 @@ struct ChangePasswordView: View {
                     Text("New password is not confirmed")
                         .foregroundStyle(.secondary)
                         .foregroundStyle(.red)
+                } else if !changePasswordViewModel.isValidPassword {
+                    if let message = changePasswordViewModel.newPassword.passwordValidationMessage {
+                        Text(message)
+                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.red)
+                    }
                 } else {
                     Text("All is good")
                         .foregroundStyle(.secondary)
