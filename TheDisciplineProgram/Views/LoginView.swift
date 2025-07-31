@@ -78,8 +78,7 @@ struct LoginView: View {
         .alert("Authentication failed", isPresented: $authViewModel.showingAlert) {
                     Button("OK", role: .cancel) { }
         } message: {
-            Text("Error status: \(authViewModel.authStatus?.code)")
-            Text("Error message: \(authViewModel.authStatus?.description)")
+            Text("Something went wrong during auth attempt, check your login and password please")
         }
     }
 }
