@@ -31,9 +31,9 @@ extension String {
             return "Password must be 6–32 characters long."
         }
         
-        let disallowedCharacters = CharacterSet(charactersIn: "\"'`\\/<>\n\r\t ")
+        let disallowedCharacters = CharacterSet(charactersIn: "\"'`\\/<>{}[]()\n\r\t ")
         if self.rangeOfCharacter(from: disallowedCharacters) != nil {
-            return "Password contains disallowed characters (e.g. \", ', \\, <, >, `, or space)."
+            return "Password contains disallowed characters (e.g. \", ', \\, <, >, {, }, [, ], (, ), `, or space)."
         }
         
         if self.range(of: "[A-Z]", options: .regularExpression) == nil {
