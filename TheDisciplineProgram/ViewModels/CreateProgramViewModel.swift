@@ -37,7 +37,7 @@ class CreateProgramViewModel {
         
         scheduledDate = Date()
         //TODO: get level only from loading, and not hardcoded
-        trainingLevel = TrainingLevel(id: 1, name: "Scaled")
+        trainingLevel = TrainingLevel(id: 2, name: "Pro")
         isRestDay = false
         dailyProgram = DailyProgram(dayTrainings: [])
     }
