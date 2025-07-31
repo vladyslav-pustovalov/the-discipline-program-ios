@@ -17,14 +17,15 @@ struct ChangePasswordView: View {
     }
     
     var body: some View {
-        Form {
-            Section("Change Password") {
-                SecureField("Old Password", text: $changePasswordViewModel.oldPassword)
-                SecureField("New Password", text: $changePasswordViewModel.newPassword)
-                SecureField("Confirm New Password", text: $changePasswordViewModel.confirmNewPassword)
+        VStack {
+            Form {
+                Section() {
+                    SecureField("Old Password", text: $changePasswordViewModel.oldPassword)
+                    SecureField("New Password", text: $changePasswordViewModel.newPassword)
+                    SecureField("Confirm New Password", text: $changePasswordViewModel.confirmNewPassword)
+                }
             }
-        }
-        .safeAreaInset(edge: .bottom) {
+            
             VStack {
                 if changePasswordViewModel.oldPassword.isEmpty || changePasswordViewModel.newPassword.isEmpty {
                     
@@ -36,6 +37,12 @@ struct ChangePasswordView: View {
                     Text("New password is not confirmed")
                         .foregroundStyle(.secondary)
                         .foregroundStyle(.red)
+                } else if !changePasswordViewModel.isValidPassword {
+                    if let message = changePasswordViewModel.newPassword.passwordValidationMessage {
+                        Text(message)
+                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.red)
+                    }
                 } else {
                     Text("All is good")
                         .foregroundStyle(.secondary)
@@ -44,18 +51,17 @@ struct ChangePasswordView: View {
             }
             .padding()
         }
-        .navigationTitle("Edit User")
+        .navigationTitle("Change password")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", action: { dismiss() })
-            }
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = changePasswordViewModel.state {
                     ProgressView()
                 } else {
                     Button("Save", action: tryChangePassword)
-                        .disabled(!changePasswordViewModel.isNewPasswordConfirmed || changePasswordViewModel.isOldAndNewPasswordsTheSame)
+                        .disabled(!changePasswordViewModel.isNewPasswordConfirmed || changePasswordViewModel.isOldAndNewPasswordsTheSame || changePasswordViewModel.oldPassword.isEmpty ||
+                            changePasswordViewModel.newPassword.isEmpty ||
+                            !changePasswordViewModel.isValidPassword)
                 }
             }
         }

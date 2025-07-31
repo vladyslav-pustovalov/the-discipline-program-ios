@@ -28,6 +28,9 @@ class ChangePasswordViewModel {
     var isOldAndNewPasswordsTheSame: Bool {
         oldPassword == newPassword
     }
+    var isValidPassword: Bool {
+        newPassword.isValidPassword
+    }
     
     init(userService: UserService = UserService()) {
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
