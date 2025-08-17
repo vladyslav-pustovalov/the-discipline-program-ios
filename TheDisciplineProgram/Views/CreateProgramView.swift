@@ -111,12 +111,6 @@ struct CreateProgramView: View {
             await createProgramViewModel.updateProgram()
         }
     }
-    
-    private func tryLoadTrainingLevels() {
-        Task {
-            await createProgramViewModel.loadTrainingLevels()
-        }
-    }
 }
 
 #Preview {
