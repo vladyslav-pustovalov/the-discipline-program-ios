@@ -24,8 +24,8 @@ struct AddTrainingView: View {
     var body: some View {
         VStack {
             Form {
-                ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { index in
-                    let block = addTrainingViewModel.dayTraining.blocks[index]
+                ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { blockIndex in
+                    let block = addTrainingViewModel.dayTraining.blocks[blockIndex]
                     
                     Section {
                         ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
@@ -34,7 +34,7 @@ struct AddTrainingView: View {
                     } header: {
                         NavigationLink("\(block.name)") {
                             AddBlockView(block: block) { newBlock in
-                                addTrainingViewModel.dayTraining.blocks[index] = newBlock
+                                addTrainingViewModel.dayTraining.blocks[blockIndex] = newBlock
                             }
                         }
                     }
