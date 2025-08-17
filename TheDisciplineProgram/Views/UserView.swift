@@ -30,10 +30,27 @@ struct UserView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        NavigationLink("Change Password") {
+                        NavigationLink() {
                             ChangePasswordView()
+                        } label: {
+                            Text("Change Password")
+                                .padding()
+                                .padding(.bottom, 20)
                         }
                     }
+                    
+                    if authViewModel.userRole == UserRole(id: 2, name: "ADMIN") {
+                        ToolbarItem(placement: .automatic) {
+                            NavigationLink() {
+                                ChangeTrainingLevelView() {
+                                    userViewModel.reloadUser()
+                                }
+                            } label: {
+                                Text("Change User Role")
+                            }
+                        }
+                    }
+                    
                     ToolbarItem(placement: .primaryAction) {
                         NavigationLink("Edit") {
                             EditUserView(user: user) { updatedUser in
