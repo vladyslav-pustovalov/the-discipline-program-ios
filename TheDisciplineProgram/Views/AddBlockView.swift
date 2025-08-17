@@ -34,19 +34,18 @@ struct AddBlockView: View {
                 
                 Section(header: Text("Exercises")) {
                     ForEach(addBlockViewModel.block.exercises.indices, id: \.self) { index in
-                        VStack(alignment: .leading) {
-                            Text("Exercise \(index + 1)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            TextEditor(text: Binding(
-                                get: { addBlockViewModel.block.exercises[index] },
-                                set: { addBlockViewModel.block.exercises[index] = $0 }
-                            ))
-                            .frame(minHeight: 80)
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.3)))
+                        Safe($addBlockViewModel.block.exercises, index: index) { binding in
+                            VStack(alignment: .leading) {
+                                Text("Exercise \(index + 1)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                                TextEditor(text: binding)
+                                .frame(minHeight: 80)
+                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.3)))
+                            }
+                            .padding(.vertical, 4)
                         }
-                        .padding(.vertical, 4)
                     }
                     .onDelete(perform: addBlockViewModel.deleteExercise)
                     
