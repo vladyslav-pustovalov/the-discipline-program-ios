@@ -39,7 +39,7 @@ struct UserView: View {
                         }
                     }
                     
-                    if authViewModel.userRole == UserRole(id: 2, name: "ADMIN") {
+                    if authViewModel.userRole == UserRole.roleAdmin {
                         ToolbarItem(placement: .automatic) {
                             NavigationLink() {
                                 ChangeTrainingLevelView() {
