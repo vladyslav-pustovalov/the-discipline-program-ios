@@ -21,7 +21,7 @@ struct MainView: View {
                 Label("Program", systemImage: "list.dash")
             }
             
-            if authViewModel.userRole == UserRole(id: 2, name: "ADMIN") {
+            if authViewModel.userRole == UserRole.roleAdmin {
                 NavigationStack {
                     CreateProgramView()
                 }

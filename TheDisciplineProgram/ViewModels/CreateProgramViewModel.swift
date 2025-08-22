@@ -67,6 +67,7 @@ class CreateProgramViewModel {
             switch result {
             case .success(let createdProgram):
                 state = .loaded(createdProgram)
+                dailyProgram = DailyProgram(dayTrainings: [])
                 alertMessage = "Program is saved successfully"
                 showingAlert = true
                 
@@ -106,6 +107,7 @@ class CreateProgramViewModel {
             switch result {
             case .success(let createdProgram):
                 state = .loaded(createdProgram)
+                dailyProgram = DailyProgram(dayTrainings: [])
                 alertMessage = "Program is updated successfully"
                 showingAlert = true
                 

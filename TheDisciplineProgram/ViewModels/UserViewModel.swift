@@ -63,4 +63,8 @@ class UserViewModel {
     func updateUser(_ user: User) {
         self.state = .loaded(user)
     }
+    
+    func reloadUser() {
+        self.state = .idle
+    }
 }

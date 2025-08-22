@@ -81,4 +81,27 @@ final class UserService: NetworkService {
             return .failure(status)
         }
     }
+    
+    func changeTrainingLevel(authToken: String, userId: Int, trainingLevel: TrainingLevel) async throws -> Result<Bool, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        let body = try BaseEncoder().encode(trainingLevel)
+        
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/user/\(userId)/changeTrainingLevel",
+            method: Constants.HTTPMethods.patch,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(_):
+            return .success(true)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
 }
