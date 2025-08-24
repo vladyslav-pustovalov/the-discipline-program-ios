@@ -11,6 +11,7 @@ import SwiftUI
 struct MainView: View {
     @Environment(AuthViewModel.self) var authViewModel
     @State var programDate = Date.now
+    let notificationController = LocalNotificationController()
     
     var body: some View {
         TabView {
@@ -37,6 +38,7 @@ struct MainView: View {
                 Label("User", systemImage: "person.circle")
             }
         }
+        .onAppear(perform: notificationController.setUserNotification)
     }
 }
 
