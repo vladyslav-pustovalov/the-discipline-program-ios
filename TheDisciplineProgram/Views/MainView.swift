@@ -10,8 +10,13 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(AuthViewModel.self) var authViewModel
-    @State var programDate = Date.now
-    let notificationController = LocalNotificationController()
+    @State var programDate: Date
+    @State var notificationViewModel: LocalNotificationViewModel
+    
+    init() {
+        self._notificationViewModel = State(initialValue: LocalNotificationViewModel())
+        programDate = Date.now
+    }
     
     var body: some View {
         TabView {
@@ -38,7 +43,15 @@ struct MainView: View {
                 Label("User", systemImage: "person.circle")
             }
         }
-        .onAppear(perform: notificationController.setUserNotification)
+        .onAppear(perform: notificationViewModel.setUserNotification)
+        .alert("Notifications are disabled", isPresented: $notificationViewModel.isShowingAlert) {
+            Button("Go to Settings") {
+                notificationViewModel.openAppSettings()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("To enable reminders, please allow notifications in Settings.")
+        }
     }
 }
 

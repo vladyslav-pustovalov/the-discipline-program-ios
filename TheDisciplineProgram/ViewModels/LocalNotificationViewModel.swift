@@ -5,10 +5,24 @@
 //  Created by Vladyslav Pustovalov on 22/08/2025.
 //
 
+import UIKit
 import UserNotifications
 
-class LocalNotificationController {
-    var isPaymentNotificationSet = UserDefaults.standard.bool(forKey: Constants.Defaults.paymentNotificationStatus)
+@Observable
+class LocalNotificationViewModel {
+    private var isPaymentNotificationSet: Bool
+    private var nextNotificationsPermissionsReminder: Date
+    var isShowingAlert = false
+    
+    init() {
+        self.isPaymentNotificationSet = UserDefaults.standard.bool(forKey: Constants.Defaults.paymentNotificationStatus)
+        
+        if let nextDate = UserDefaults.standard.object(forKey: Constants.Defaults.nextNotificationsPermissionsReminder) as? Date {
+            self.nextNotificationsPermissionsReminder = nextDate
+        } else {
+            self.nextNotificationsPermissionsReminder = Date.now
+        }
+    }
     
     func setUserNotification() {
         Log.info("Setting user notification")
@@ -16,36 +30,47 @@ class LocalNotificationController {
             Log.info("Payment notification is already set")
             return
         } else {
-            
-            isNotificationAllowed { allowed in
-                if allowed {
+            getUserNotificationPermission { status in
+                switch status {
+                case .authorized, .ephemeral, .provisional:
+                    Log.info("Notificaton is allowed")
                     self.addPaymentNotification()
-                } else {
+                case .denied:
+                    Log.info("Notificaton is NOT allowed")
+                    if Date.now < self.nextNotificationsPermissionsReminder {
+                        Log.info("Did not reask for notification permission, next reasing will be: \(self.nextNotificationsPermissionsReminder.formatted())")
+                        return
+                    } else {
+                        if let oneMonthLater = Calendar.current.date(byAdding: .month, value: 1, to: self.nextNotificationsPermissionsReminder) {
+                            UserDefaults.standard.set(oneMonthLater, forKey: Constants.Defaults.nextNotificationsPermissionsReminder)
+                        }
+                        self.isShowingAlert = true
+                    }
+                case .notDetermined:
+                    Log.info("Notificaton permission is NOT set")
                     self.askNotificationPermission { granted in
                         if granted {
                             self.addPaymentNotification()
                         }
                     }
+                @unknown default:
+                    Log.info("Notificaton status is unknown")
                 }
             }
         }
     }
     
-    private func isNotificationAllowed(completion: @escaping (Bool) -> Void) {
+    func openAppSettings() {
+        if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(appSettings)
+        }
+    }
+    
+    private func getUserNotificationPermission(completion: @escaping (UNAuthorizationStatus) -> Void) {
         Log.info("Checking if notificatoin is allowed")
         UNUserNotificationCenter.current().getNotificationSettings { settings in
                 DispatchQueue.main.async {
-                    switch settings.authorizationStatus {
-                    case .authorized, .provisional, .ephemeral:
-                        Log.info("Notificaton is allowed")
-                        completion(true)
-                    case .denied, .notDetermined:
-                        Log.info("Notificaton is NOT allowed")
-                        completion(false)
-                    @unknown default:
-                        Log.info("Notificaton status is unknown")
-                        completion(false)
-                    }
+                    completion(settings.authorizationStatus)
                 }
             }
     }
