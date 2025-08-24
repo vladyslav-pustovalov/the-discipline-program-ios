@@ -42,6 +42,8 @@ enum Constants {
         static let accessToken = "AccessToken"
         static let userId = "UserID"
         static let userRole = "UserRole"
+        static let paymentNotificationStatus = "IsPaymentNotificationSet"
+        static let nextNotificationsPermissionsReminder = "NextPeymentNotificationsPermissionsReminder"
     }
     
     enum Bundle {
