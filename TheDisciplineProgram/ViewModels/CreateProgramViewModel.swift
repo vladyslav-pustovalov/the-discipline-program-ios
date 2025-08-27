@@ -29,27 +29,17 @@ class CreateProgramViewModel {
     var isRestDay: Bool
     var dailyProgram: DailyProgram
     
-    init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService(), program: Program? = nil) {
+    init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService()) {
         
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         self.programService = programService
         self.trainingLevelService = trainingLevelService
         
-        let dafaultTrainingLevel = TrainingLevel(id: 2, name: "Pro")
-        let emptyDailyProgram = DailyProgram(dayTrainings: [])
-        
-        if let program {
-            scheduledDate = program.scheduledDate
-            trainingLevel = program.trainingLevel ?? dafaultTrainingLevel
-            isRestDay = program.isRestDay
-            dailyProgram = program.dailyProgram ?? DailyProgram(dayTrainings: [])
-        } else {
-            scheduledDate = Date()
-            //TODO: get level only from loading, and not hardcoded
-            trainingLevel = dafaultTrainingLevel
-            isRestDay = false
-            dailyProgram = emptyDailyProgram
-        }
+        scheduledDate = Date()
+        //TODO: get level only from loading, and not hardcoded
+        trainingLevel = TrainingLevel(id: 2, name: "Pro")
+        isRestDay = false
+        dailyProgram = DailyProgram(dayTrainings: [])
     }
     
     private func buildProgram() throws -> Program {

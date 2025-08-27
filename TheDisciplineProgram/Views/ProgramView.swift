@@ -28,44 +28,24 @@ struct ProgramView: View {
                     Text("Today is the rest day")
                 } else {
                     if let dailyProgram = program.dailyProgram {
-                        VStack {
-                            Form {
-                                ForEach(dailyProgram.dayTrainings, id: \.trainingNumber) { training in
-                                    Text("Training number: \(training.trainingNumber)")
-                                        .font(.headline)
-                                    ForEach(training.blocks.indices, id: \.self) { blockIndex in
-                                        let block = training.blocks[blockIndex]
-                                        
-                                        Section {
-                                            ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
-                                                Text(block.exercises[exerciseIndex])
-                                            }
-                                        } header: {
-                                            Text("\(block.name)")
-                                                .font(.headline)
-                                                .fontWeight(.heavy)
+                        Form {
+                            ForEach(dailyProgram.dayTrainings, id: \.trainingNumber) { training in
+                                Text("Training number: \(training.trainingNumber)")
+                                    .font(.headline)
+                                ForEach(training.blocks.indices, id: \.self) { blockIndex in
+                                    let block = training.blocks[blockIndex]
+                                    
+                                    Section {
+                                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
+                                            Text(block.exercises[exerciseIndex])
                                         }
-                                        
+                                    } header: {
+                                        Text("\(block.name)")
+                                            .font(.headline)
+                                            .fontWeight(.heavy)
                                     }
+                                    
                                 }
-                            }
-                            
-                            if authViewModel.userRole == UserRole.roleAdmin {
-                                NavigationLink(
-                                    destination: CreateProgramView(program: program)
-                                ) {
-                                    Text("Edit this day's training >")
-                                        .fontWeight(.medium)
-                                        .padding()
-                                        .frame(maxWidth: .infinity)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color.blue.opacity(0.5), lineWidth: 2)
-                                        )
-                                        .foregroundColor(.blue)
-                                }
-                                .padding(.horizontal)
-                                .padding(.vertical, 10)
                             }
                         }
                     } else {

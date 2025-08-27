@@ -10,8 +10,8 @@ import SwiftUI
 struct CreateProgramView: View {
     @State private var createProgramViewModel: CreateProgramViewModel
     
-    init(program: Program? = nil) {
-        self._createProgramViewModel = State(initialValue: CreateProgramViewModel(program: program))
+    init() {
+        self._createProgramViewModel = State(initialValue: CreateProgramViewModel())
     }
     
     var body: some View {
