@@ -33,11 +33,11 @@ jobs:
           git push origin release/release-${VERSION}
 
       - name: Create Pull Request to master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
             --base master \
             --head release/release-${{ github.event.inputs.version }} \
             --title "Release ${{ github.event.inputs.version }}" \
             --body "Auto-created release branch for version ${{ github.event.inputs.version }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
