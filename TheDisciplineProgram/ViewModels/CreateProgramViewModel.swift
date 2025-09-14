@@ -169,4 +169,8 @@ class CreateProgramViewModel {
             Log.error("There is no header with id")
         }
     }
+    
+    func deleteTraining(at offsets: IndexSet) {
+        dailyProgram.dayTrainings.remove(atOffsets: offsets)
+    }
 }

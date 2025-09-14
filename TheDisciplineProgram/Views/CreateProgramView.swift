@@ -41,6 +41,7 @@ struct CreateProgramView: View {
                                 }
                             }
                         }
+                        .onDelete(perform: createProgramViewModel.deleteTraining)
                     }
                 }
             }
@@ -74,6 +75,11 @@ struct CreateProgramView: View {
                     ProgressView()
                 } else {
                     Button("Save", action: trySaveNewProgram)
+                }
+            }
+            ToolbarItem(placement: .automatic) {
+                if !createProgramViewModel.dailyProgram.dayTrainings.isEmpty {
+                    EditButton()
                 }
             }
         }
