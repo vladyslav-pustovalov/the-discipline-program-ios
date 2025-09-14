@@ -58,31 +58,20 @@ struct AddBlockView: View {
                     }
                 }
             }
-            
-            Button {
-                onAdd(addBlockViewModel.block)
-                dismiss()
-            } label: {
-                Text("Save Block")
-                    .fontWeight(.medium)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(addBlockViewModel.isBlockNameEmpty ?
-                                        Color.gray.opacity(0.5) :
-                                        Color.blue.opacity(0.5),
-                                    lineWidth: 2)
-                    )
-                    .foregroundColor(addBlockViewModel.isBlockNameEmpty ? .gray : .blue)
-            }
-            .disabled(addBlockViewModel.isBlockNameEmpty)
-            .padding()
         }
         .navigationTitle("Edit Block")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            EditButton()
+            ToolbarItem(placement: .automatic) {
+                EditButton()
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    onAdd(addBlockViewModel.block)
+                    dismiss()
+                }
+                .disabled(addBlockViewModel.isBlockNameEmpty)
+            }
         }
     }
 }

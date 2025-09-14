@@ -54,38 +54,39 @@ struct AddTrainingView: View {
                     }
                 }
                 .onDelete(perform: addTrainingViewModel.deleteBlock)
-                
-                NavigationLink("Add Block to training") {
-                    AddBlockView { block in
-                        addTrainingViewModel.dayTraining.blocks.append(block)
-                    }
-                }
             }
             
-            Button {
-                onAdd(addTrainingViewModel.dayTraining)
-                dismiss()
-            } label: {
-                Text("Save Training")
+            NavigationLink(
+                destination: AddBlockView { block in
+                    addTrainingViewModel.dayTraining.blocks.append(block)
+                }
+            ) {
+                Text("Add Block to training >")
                     .fontWeight(.medium)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(addTrainingViewModel.isDayTrainingEmpty ?
-                                        Color.gray.opacity(0.5) :
-                                        Color.blue.opacity(0.5),
-                                    lineWidth: 2)
+                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
                     )
-                    .foregroundColor(addTrainingViewModel.isDayTrainingEmpty ? .gray : .blue)
+                    .foregroundColor(.blue)
             }
-            .disabled(addTrainingViewModel.isDayTrainingEmpty)
-            .padding()
+            .padding(.horizontal)
+            .padding(.vertical, 10)
         }
         .navigationTitle("Add Training to day")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            EditButton()
+            ToolbarItem(placement: .automatic) {
+                EditButton()
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    onAdd(addTrainingViewModel.dayTraining)
+                    dismiss()
+                }
+                .disabled(addTrainingViewModel.isDayTrainingEmpty)
+            }
         }
     }
 }
