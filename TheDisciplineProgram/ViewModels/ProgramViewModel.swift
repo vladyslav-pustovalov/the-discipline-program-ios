@@ -13,6 +13,8 @@ class ProgramViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<Program> = .idle
     
+    var isShownPicker: Bool = false
+    
     var authToken: String?
     var userId: Int?
     var program: Program?
