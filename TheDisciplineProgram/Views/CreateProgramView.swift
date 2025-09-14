@@ -28,14 +28,14 @@ struct CreateProgramView: View {
                     
                     if createProgramViewModel.isRestDay == false {
                         ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
-                            let dayTraining = createProgramViewModel.dailyProgram.dayTrainings[index]
-                            
-                            NavigationLink("Training number: \(dayTraining.trainingNumber)") {
-                                AddTrainingView(
-                                    dayTraining: dayTraining,
-                                    trainingNumber: dayTraining.trainingNumber
-                                ) { newDayTraining in
-                                    createProgramViewModel.dailyProgram.dayTrainings[index] = newDayTraining
+                            Safe($createProgramViewModel.dailyProgram.dayTrainings, index: index) { dayTrainingBinding in
+                                NavigationLink("Training number: \(dayTrainingBinding.wrappedValue.trainingNumber)") {
+                                    AddTrainingView(
+                                        dayTraining: dayTrainingBinding.wrappedValue,
+                                        trainingNumber: dayTrainingBinding.wrappedValue.trainingNumber
+                                    ) { newDayTraining in
+                                        dayTrainingBinding.wrappedValue = newDayTraining
+                                    }
                                 }
                             }
                         }
