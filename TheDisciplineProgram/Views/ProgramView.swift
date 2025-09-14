@@ -84,6 +84,22 @@ struct ProgramView: View {
                 }
             }
             
+            ToolbarItem(placement: .principal) {
+                Button("Choose Program Date", systemImage: "calendar") {
+                    programViewModel.isShownPicker.toggle()
+                }
+                .popover(
+                    isPresented: $programViewModel.isShownPicker,
+                ) {
+                    DatePicker(
+                        "",
+                        selection: $programViewModel.programDate,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+                }
+            }
+            
             ToolbarItem(placement: .automatic) {
                 if authViewModel.userRole == UserRole.roleAdmin && programViewModel.program != nil {
                     NavigationLink(
@@ -100,6 +116,10 @@ struct ProgramView: View {
             if case .idle = programViewModel.state {
                 programViewModel.loadProgram(for: programViewModel.programDate)
             }
+        }
+        .onChange(of: programViewModel.programDate) {
+            programViewModel.loadProgram(for: programViewModel.programDate)
+            programViewModel.isShownPicker = false
         }
     }
 }
