@@ -25,8 +25,10 @@ struct CreateProgramView: View {
                         }
                     }
                     Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
-                    
-                    if createProgramViewModel.isRestDay == false {
+                }
+                
+                if createProgramViewModel.isRestDay == false {
+                    Section {
                         ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
                             Safe($createProgramViewModel.dailyProgram.dayTrainings, index: index) { dayTrainingBinding in
                                 NavigationLink("Training number: \(dayTrainingBinding.wrappedValue.trainingNumber)") {
