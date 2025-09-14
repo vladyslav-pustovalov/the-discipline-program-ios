@@ -47,6 +47,24 @@ struct ProgramView: View {
                                     
                                 }
                             }
+                            
+                            if authViewModel.userRole == UserRole.roleAdmin {
+                                NavigationLink(
+                                    destination: CreateProgramView(program: program, navigationTitle: "Edit Program")
+                                ) {
+                                    Text("Edit this day's training >")
+                                        .fontWeight(.medium)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                                        )
+                                        .foregroundColor(.blue)
+                                }
+                                .padding(.horizontal)
+                                .padding(.vertical, 10)
+                            }
                         }
                     } else {
                         fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
@@ -81,6 +99,18 @@ struct ProgramView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Next day") {
                     programViewModel.loadNextDay()
+                }
+            }
+            
+            ToolbarItem(placement: .automatic) {
+                if authViewModel.userRole == UserRole.roleAdmin {
+                    NavigationLink(
+                        "Edit",
+                        destination: CreateProgramView(
+                            program: programViewModel.program,
+                            navigationTitle: "Edit Program"
+                        )
+                    )
                 }
             }
         }

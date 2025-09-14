@@ -10,8 +10,8 @@ import SwiftUI
 struct CreateProgramView: View {
     @State private var createProgramViewModel: CreateProgramViewModel
     
-    init() {
-        self._createProgramViewModel = State(initialValue: CreateProgramViewModel())
+    init(program: Program? = nil, navigationTitle: String? = nil) {
+        self._createProgramViewModel = State(initialValue: CreateProgramViewModel(program: program, navigationTitle: navigationTitle))
     }
     
     var body: some View {
@@ -65,7 +65,7 @@ struct CreateProgramView: View {
                 .padding(.vertical, 10)
             }
         }
-        .navigationTitle("Create Program")
+        .navigationTitle(createProgramViewModel.navigationTitle)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = createProgramViewModel.state {
