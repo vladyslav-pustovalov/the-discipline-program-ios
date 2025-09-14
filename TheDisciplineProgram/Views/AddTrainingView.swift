@@ -35,6 +35,7 @@ struct AddTrainingView: View {
                                 ForEach(blockBinding.wrappedValue.exercises.indices, id: \.self) { exerciseIndex in
                                     Safe(blockBinding.exercises, index: exerciseIndex) { exerciseBinding in
                                         Text(exerciseBinding.wrappedValue)
+                                            .padding(.vertical, 3)
                                             .frame(maxWidth: .infinity, alignment: .leading)
 
                                         // Add divider except after the last exercise text
