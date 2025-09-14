@@ -25,16 +25,30 @@ struct AddTrainingView: View {
         VStack {
             Form {
                 ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { blockIndex in
-                    let block = addTrainingViewModel.dayTraining.blocks[blockIndex]
                     
-                    Section {
-                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
-                            Text(block.exercises[exerciseIndex])
-                        }
-                    } header: {
-                        NavigationLink("\(block.name)") {
-                            AddBlockView(block: block) { newBlock in
-                                addTrainingViewModel.dayTraining.blocks[blockIndex] = newBlock
+                    Safe($addTrainingViewModel.dayTraining.blocks, index: blockIndex) { blockBinding in
+                        
+                        Section {
+                            //wrapping ForEach into VStack for it being as one item when swipe onDelete
+                            VStack(alignment: .leading, spacing: 6) {
+                                
+                                ForEach(blockBinding.wrappedValue.exercises.indices, id: \.self) { exerciseIndex in
+                                    Safe(blockBinding.exercises, index: exerciseIndex) { exerciseBinding in
+                                        Text(exerciseBinding.wrappedValue)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                                        // Add divider except after the last exercise text
+                                        if exerciseIndex < blockBinding.wrappedValue.exercises.count - 1 {
+                                            Divider()
+                                        }
+                                    }
+                                }
+                            }
+                        } header: {
+                            NavigationLink("\(blockBinding.wrappedValue.name)") {
+                                AddBlockView(block: blockBinding.wrappedValue) { newBlock in
+                                    addTrainingViewModel.dayTraining.blocks[blockIndex] = newBlock
+                                }
                             }
                         }
                     }
