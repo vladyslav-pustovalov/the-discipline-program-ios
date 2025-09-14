@@ -18,7 +18,8 @@ class AddTrainingViewModel {
     init(trainingNumber: Int) {
         self.dayTraining = DayTrainig(
             trainingNumber: trainingNumber,
-            blocks: [])
+            blocks: []
+        )
     }
     
     func deleteBlock(at offsets: IndexSet) {
