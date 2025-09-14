@@ -83,6 +83,18 @@ struct ProgramView: View {
                     programViewModel.loadNextDay()
                 }
             }
+            
+            ToolbarItem(placement: .automatic) {
+                if authViewModel.userRole == UserRole.roleAdmin && programViewModel.program != nil {
+                    NavigationLink(
+                        "Edit",
+                        destination: CreateProgramView(
+                            program: programViewModel.program,
+                            navigationTitle: "Edit Program"
+                        )
+                    )
+                }
+            }
         }
         .onAppear {
             if case .idle = programViewModel.state {
