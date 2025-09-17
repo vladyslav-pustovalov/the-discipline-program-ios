@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 09/06/2025.
 //
 
-struct Block: Codable, Equatable {
+struct Block: Codable, Equatable, Hashable {
     var name: String
     var exercises: [String]
 }

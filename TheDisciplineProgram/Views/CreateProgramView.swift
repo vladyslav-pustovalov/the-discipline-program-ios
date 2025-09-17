@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CreateProgramView: View {
+    @Environment(\.editMode) var editMode
     @State private var createProgramViewModel: CreateProgramViewModel
     
     init(program: Program? = nil, navigationTitle: String? = nil) {
@@ -29,15 +30,13 @@ struct CreateProgramView: View {
                 
                 if createProgramViewModel.isRestDay == false {
                     Section {
-                        ForEach(createProgramViewModel.dailyProgram.dayTrainings.indices, id: \.self) { index in
-                            Safe($createProgramViewModel.dailyProgram.dayTrainings, index: index) { dayTrainingBinding in
-                                NavigationLink("Training number: \(dayTrainingBinding.wrappedValue.trainingNumber)") {
-                                    AddTrainingView(
-                                        dayTraining: dayTrainingBinding.wrappedValue,
-                                        trainingNumber: dayTrainingBinding.wrappedValue.trainingNumber
-                                    ) { newDayTraining in
-                                        dayTrainingBinding.wrappedValue = newDayTraining
-                                    }
+                        ForEach($createProgramViewModel.dailyProgram.dayTrainings) { $dayTraining in
+                            NavigationLink("Training number: \(dayTraining.trainingNumber)") {
+                                AddTrainingView(
+                                    dayTraining: dayTraining,
+                                    trainingNumber: dayTraining.trainingNumber
+                                ) { newDayTraining in
+                                    dayTraining = newDayTraining
                                 }
                             }
                         }
@@ -78,9 +77,7 @@ struct CreateProgramView: View {
                 }
             }
             ToolbarItem(placement: .automatic) {
-                if !createProgramViewModel.dailyProgram.dayTrainings.isEmpty {
-                    EditButton()
-                }
+                EditButton()
             }
         }
         .alert(createProgramViewModel.alertMessage, isPresented: $createProgramViewModel.showingAlert) {
