@@ -8,6 +8,7 @@
 import Foundation
 
 extension String {
+    
     var isValidPassword: Bool {
         guard self.count >= 6 && self.count <= 32 else { return false }
         
@@ -55,3 +56,5 @@ extension String {
         return nil
     }
 }
+
+

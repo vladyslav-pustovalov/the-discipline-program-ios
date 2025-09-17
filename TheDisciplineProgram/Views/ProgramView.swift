@@ -83,11 +83,43 @@ struct ProgramView: View {
                     programViewModel.loadNextDay()
                 }
             }
+            
+            ToolbarItem(placement: .principal) {
+                Button("Choose Program Date", systemImage: "calendar") {
+                    programViewModel.isShownPicker.toggle()
+                }
+                .popover(
+                    isPresented: $programViewModel.isShownPicker,
+                ) {
+                    DatePicker(
+                        "",
+                        selection: $programViewModel.programDate,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+                }
+            }
+            
+            ToolbarItem(placement: .automatic) {
+                if authViewModel.userRole == UserRole.roleAdmin && programViewModel.program != nil {
+                    NavigationLink(
+                        "Edit",
+                        destination: CreateProgramView(
+                            program: programViewModel.program,
+                            navigationTitle: "Edit Program"
+                        )
+                    )
+                }
+            }
         }
         .onAppear {
             if case .idle = programViewModel.state {
                 programViewModel.loadProgram(for: programViewModel.programDate)
             }
+        }
+        .onChange(of: programViewModel.programDate) {
+            programViewModel.loadProgram(for: programViewModel.programDate)
+            programViewModel.isShownPicker = false
         }
     }
 }

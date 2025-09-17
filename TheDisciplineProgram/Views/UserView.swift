@@ -46,7 +46,7 @@ struct UserView: View {
                                     userViewModel.reloadUser()
                                 }
                             } label: {
-                                Text("Change User Role")
+                                Text("Change Training Level")
                             }
                         }
                     }

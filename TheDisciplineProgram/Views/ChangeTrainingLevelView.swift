@@ -30,7 +30,7 @@ struct ChangeTrainingLevelView: View {
                 .pickerStyle(.palette)
             }
         }
-        .navigationTitle("Chagne User Role")
+        .navigationTitle("Change Training Level")
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = changeTrainingLevelViewModel.state {

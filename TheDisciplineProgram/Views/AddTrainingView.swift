@@ -25,53 +25,69 @@ struct AddTrainingView: View {
         VStack {
             Form {
                 ForEach(addTrainingViewModel.dayTraining.blocks.indices, id: \.self) { blockIndex in
-                    let block = addTrainingViewModel.dayTraining.blocks[blockIndex]
                     
-                    Section {
-                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
-                            Text(block.exercises[exerciseIndex])
-                        }
-                    } header: {
-                        NavigationLink("\(block.name)") {
-                            AddBlockView(block: block) { newBlock in
-                                addTrainingViewModel.dayTraining.blocks[blockIndex] = newBlock
+                    Safe($addTrainingViewModel.dayTraining.blocks, index: blockIndex) { blockBinding in
+                        
+                        Section {
+                            //wrapping ForEach into VStack for it being as one item when swipe onDelete
+                            VStack(alignment: .leading, spacing: 6) {
+                                
+                                ForEach(blockBinding.wrappedValue.exercises.indices, id: \.self) { exerciseIndex in
+                                    Safe(blockBinding.exercises, index: exerciseIndex) { exerciseBinding in
+                                        Text(exerciseBinding.wrappedValue)
+                                            .padding(.vertical, 3)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                                        // Add divider except after the last exercise text
+                                        if exerciseIndex < blockBinding.wrappedValue.exercises.count - 1 {
+                                            Divider()
+                                        }
+                                    }
+                                }
+                            }
+                        } header: {
+                            NavigationLink("\(blockBinding.wrappedValue.name)") {
+                                AddBlockView(block: blockBinding.wrappedValue) { newBlock in
+                                    addTrainingViewModel.dayTraining.blocks[blockIndex] = newBlock
+                                }
                             }
                         }
                     }
                 }
                 .onDelete(perform: addTrainingViewModel.deleteBlock)
-                
-                NavigationLink("Add Block to training") {
-                    AddBlockView { block in
-                        addTrainingViewModel.dayTraining.blocks.append(block)
-                    }
-                }
             }
             
-            Button {
-                onAdd(addTrainingViewModel.dayTraining)
-                dismiss()
-            } label: {
-                Text("Save Training")
+            NavigationLink(
+                destination: AddBlockView { block in
+                    addTrainingViewModel.dayTraining.blocks.append(block)
+                }
+            ) {
+                Text("Add Block to training >")
                     .fontWeight(.medium)
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(addTrainingViewModel.isDayTrainingEmpty ?
-                                        Color.gray.opacity(0.5) :
-                                        Color.blue.opacity(0.5),
-                                    lineWidth: 2)
+                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
                     )
-                    .foregroundColor(addTrainingViewModel.isDayTrainingEmpty ? .gray : .blue)
+                    .foregroundColor(.blue)
             }
-            .disabled(addTrainingViewModel.isDayTrainingEmpty)
-            .padding()
+            .padding(.horizontal)
+            .padding(.vertical, 10)
         }
         .navigationTitle("Add Training to day")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            EditButton()
+            ToolbarItem(placement: .automatic) {
+                EditButton()
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    onAdd(addTrainingViewModel.dayTraining)
+                    dismiss()
+                }
+                .disabled(addTrainingViewModel.isDayTrainingEmpty)
+            }
         }
     }
 }

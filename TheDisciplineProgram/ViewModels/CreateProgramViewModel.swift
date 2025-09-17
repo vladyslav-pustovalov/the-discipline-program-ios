@@ -17,6 +17,7 @@ class CreateProgramViewModel {
     var alertMessage = ""
     var showingAddProgramSheet = false
     var trainingLevels: [TrainingLevel] = []
+    var navigationTitle: String
     
     private let programService: ProgramService
     private let trainingLevelService: TrainingLevelService
@@ -29,17 +30,29 @@ class CreateProgramViewModel {
     var isRestDay: Bool
     var dailyProgram: DailyProgram
     
-    init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService()) {
+    init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService(), program: Program? = nil, navigationTitle: String?) {
         
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         self.programService = programService
         self.trainingLevelService = trainingLevelService
         
-        scheduledDate = Date()
-        //TODO: get level only from loading, and not hardcoded
-        trainingLevel = TrainingLevel(id: 2, name: "Pro")
-        isRestDay = false
-        dailyProgram = DailyProgram(dayTrainings: [])
+        self.navigationTitle = navigationTitle ?? "Create Program"
+        
+        let dafaultTrainingLevel = TrainingLevel(id: 2, name: "Pro")
+        let emptyDailyProgram = DailyProgram(dayTrainings: [])
+        
+        if let program {
+            scheduledDate = program.scheduledDate
+            trainingLevel = program.trainingLevel ?? dafaultTrainingLevel
+            isRestDay = program.isRestDay
+            dailyProgram = program.dailyProgram ?? DailyProgram(dayTrainings: [])
+        } else {
+            scheduledDate = Date()
+            //TODO: get level only from loading, and not hardcoded
+            trainingLevel = dafaultTrainingLevel
+            isRestDay = false
+            dailyProgram = emptyDailyProgram
+        }
     }
     
     private func buildProgram() throws -> Program {
@@ -155,5 +168,9 @@ class CreateProgramViewModel {
         } else {
             Log.error("There is no header with id")
         }
+    }
+    
+    func deleteTraining(at offsets: IndexSet) {
+        dailyProgram.dayTrainings.remove(atOffsets: offsets)
     }
 }
