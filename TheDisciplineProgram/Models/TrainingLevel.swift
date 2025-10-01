@@ -11,5 +11,7 @@ struct TrainingLevel: Codable, Equatable, Identifiable, Hashable {
 }
 
 extension TrainingLevel {
-    static var mock = TrainingLevel(id: 1, name: "Scaled")
+    static var scaled = TrainingLevel(id: 1, name: "Scaled")
+    static var pro = TrainingLevel(id: 2, name: "Pro")
+    static var advanced = TrainingLevel(id: 3, name: "Advanced")
 }
