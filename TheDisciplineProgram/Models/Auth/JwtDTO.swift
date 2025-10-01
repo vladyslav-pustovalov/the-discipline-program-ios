@@ -9,4 +9,5 @@ struct JwtDTO: Codable {
     let userId: Int
     let accessToken: String
     let userRole: UserRole
+    let userPlan: UserPlan
 }
