@@ -23,12 +23,14 @@ struct LoginView: View {
                     .bold()
                     .padding(.top, 100)
                 
+                Spacer()
+                                
                 VStack(spacing: 15) {
                     TextField("Email", text: $authViewModel.email)
                         .padding()
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
@@ -37,7 +39,7 @@ struct LoginView: View {
                         .padding()
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
                 }
                 .padding()
                 
@@ -64,19 +66,16 @@ struct LoginView: View {
                         endPoint: .topTrailing
                     )
                 )
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .clipShape(RoundedRectangle(cornerRadius: 30))
                 .disabled(authViewModel.isLoginButtonDisabled)
                 
                 Spacer()
-                                
-                }
-                
                 Spacer()
                 
-            
+            }
         }
         .alert("Authentication failed", isPresented: $authViewModel.showingAlert) {
-                    Button("OK", role: .cancel) { }
+            Button("OK", role: .cancel) { }
         } message: {
             Text("Something went wrong during auth attempt, check your login and password please")
         }

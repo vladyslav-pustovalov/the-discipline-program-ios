@@ -9,21 +9,39 @@ import SwiftUI
 
 struct CreateProgramView: View {
     @State private var createProgramViewModel: CreateProgramViewModel
-    
+
     init(program: Program? = nil, navigationTitle: String? = nil) {
-        self._createProgramViewModel = State(initialValue: CreateProgramViewModel(program: program, navigationTitle: navigationTitle))
+        self._createProgramViewModel = State(
+            initialValue: CreateProgramViewModel(
+                program: program,
+                navigationTitle: navigationTitle
+            )
+        )
     }
     
     var body: some View {
         VStack {
+            ProgramTypeSelector()
+                        
             Form {
                 Section {
-                    DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
-                    Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
-                        ForEach(createProgramViewModel.trainingLevels) { level in
-                            Text("\(level.name)").tag(level)
+                    switch createProgramViewModel.programType {
+                    case .generalProgram:
+                        Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
+                            Text("").tag(Optional<TrainingLevel>(nil))
+                            ForEach(createProgramViewModel.trainingLevels) { level in
+                                Text("\(level.name)").tag(Optional(level))
+                            }
                         }
+                    case .individualProgram:
+                        NavigationLink(
+                            "\(createProgramViewModel.individualUser?.visibleName ?? "Individual User")",
+                            destination: ChooseIndividualUserView()
+                        )
                     }
+                    
+                    DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
+                                        
                     Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
                 }
                 
@@ -59,16 +77,17 @@ struct CreateProgramView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(
-                            RoundedRectangle(cornerRadius: 10)
+                            RoundedRectangle(cornerRadius: 30)
                                 .stroke(Color.blue.opacity(0.5), lineWidth: 2)
                         )
                         .foregroundColor(.blue)
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 30)
                 .padding(.vertical, 10)
+                .padding(.bottom, 20)
             }
         }
-        .navigationTitle(createProgramViewModel.navigationTitle)
+        .environment(createProgramViewModel)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = createProgramViewModel.state {
