@@ -9,7 +9,7 @@ import Foundation
 import KeychainAccess
 
 @Observable
-class ChangeTrainingLevelViewModel {
+class ChangePrivateUserDataViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<Bool> = .idle
     var showingAlert = false
