@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ProgramTypeButton: View {
-    @Binding var isSelected: Bool
+    @Binding var selectedProgramType: ProgramType
+    var programType: ProgramType
     var text: String
     var action: () -> Void
     
@@ -16,18 +17,21 @@ struct ProgramTypeButton: View {
         Button(action: action, label: {
             Text(text)
                 .font(.headline)
-                .foregroundColor(isSelected ? Color.white : Color.gray)
+                .foregroundColor(programType == selectedProgramType ? Color.white : Color.gray)
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                .background(isSelected ? Color.blue : Color.white)
+                .background(programType == selectedProgramType ? Color.blue : Color.clear)
                 .cornerRadius(40)
         })
     }
 }
 
 #Preview {
-    @Previewable @State var isSelected = true
+    @Previewable @State var selectedProgramType = ProgramType.generalProgram
     
-    return ProgramTypeButton(isSelected: $isSelected, text: "Base Button") {
-        
-    }
+    return ProgramTypeButton(
+        selectedProgramType: $selectedProgramType,
+        programType: ProgramType.generalProgram,
+        text: "Type"
+    ) { }
+        .preferredColorScheme(.dark)
 }

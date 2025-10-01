@@ -67,13 +67,14 @@ struct AddTrainingView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 30)
                             .stroke(Color.blue.opacity(0.5), lineWidth: 2)
                     )
                     .foregroundColor(.blue)
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 30)
             .padding(.vertical, 10)
+            .padding(.bottom, 20)
         }
         .navigationTitle("Add Training to day")
         .navigationBarTitleDisplayMode(.inline)

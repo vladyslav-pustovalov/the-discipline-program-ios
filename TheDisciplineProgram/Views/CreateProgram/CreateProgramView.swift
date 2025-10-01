@@ -9,34 +9,39 @@ import SwiftUI
 
 struct CreateProgramView: View {
     @State private var createProgramViewModel: CreateProgramViewModel
-    
+
     init(program: Program? = nil, navigationTitle: String? = nil) {
-        self._createProgramViewModel = State(initialValue: CreateProgramViewModel(program: program, navigationTitle: navigationTitle))
+        self._createProgramViewModel = State(
+            initialValue: CreateProgramViewModel(
+                program: program,
+                navigationTitle: navigationTitle
+            )
+        )
     }
     
     var body: some View {
         VStack {
             ProgramTypeSelector()
-            
+                        
             Form {
                 Section {
+                    switch createProgramViewModel.programType {
+                    case .generalProgram:
+                        Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
+                            Text("").tag(Optional<TrainingLevel>(nil))
+                            ForEach(createProgramViewModel.trainingLevels) { level in
+                                Text("\(level.name)").tag(Optional(level))
+                            }
+                        }
+                    case .individualProgram:
+                        NavigationLink(
+                            "\(createProgramViewModel.individualUser?.visibleName ?? "Individual User")",
+                            destination: ChooseIndividualUserView()
+                        )
+                    }
+                    
                     DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
-                    
-                    //                    Picker("Training Level", selection: $createProgramViewModel.trainingLevel) {
-                    //                        ForEach(createProgramViewModel.trainingLevels) { level in
-                    //                            Text("\(level.name)").tag(level)
-                    //                        }
-                    //                    }
-                    
-                    
-                    
-                    NavigationLink("Choose training level", destination: ChooseTrainingLevelView())
-                        .disabled(createProgramViewModel.programType != .generalProgram)
-                    
-                    NavigationLink("Choose individual user", destination: ChooseIndividualUserView())
-                        .disabled(createProgramViewModel.programType != .individualProgram)
-                    
-                    
+                                        
                     Toggle("Is Rest Day", isOn: $createProgramViewModel.isRestDay)
                 }
                 
@@ -82,7 +87,7 @@ struct CreateProgramView: View {
                 .padding(.bottom, 20)
             }
         }
-        .navigationTitle(createProgramViewModel.navigationTitle)
+        .environment(createProgramViewModel)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 if case .loading = createProgramViewModel.state {
@@ -133,14 +138,6 @@ struct CreateProgramView: View {
             await createProgramViewModel.updateProgram()
         }
     }
-    
-    private func linkTitle(for programType: ProgramType) -> String {
-        switch programType {
-        case .generalProgram: return "Choose training level"
-        case .individualProgram: return "Choose individual user"
-        }
-    }
-    
 }
 
 #Preview {

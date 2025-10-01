@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct ChooseIndividualUserView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(CreateProgramViewModel.self) var createProgramViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        @Bindable var createProgramViewModel = createProgramViewModel
+
+        VStack {
+            if let users = createProgramViewModel.users {
+                
+                List(users) { user in
+                    Button(user.visibleName) {
+                        createProgramViewModel.individualUser = user
+                        dismiss()
+                    }
+                }
+                
+            }
+        }
+        .navigationTitle("Individual Users")
+        .onAppear {
+            Task {
+                await createProgramViewModel.loadIndividualUsers()
+            }
+        }
     }
 }
 
 #Preview {
-    ChooseIndividualUserView()
+    ChooseIndividualUserView(createProgramViewModel: CreateProgramViewModel(program: nil ,navigationTitle: nil))
 }

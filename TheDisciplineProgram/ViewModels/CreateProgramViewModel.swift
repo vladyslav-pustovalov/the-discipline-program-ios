@@ -8,51 +8,64 @@
 import Foundation
 import KeychainAccess
 
+enum ProgramType {
+    case generalProgram
+    case individualProgram
+}
+
 @Observable
 class CreateProgramViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
     private(set) var state: LoadingState<Program> = .idle
+        
     var showingAlert = false
     var showingAlreadyExistsAlert = false
     var alertMessage = ""
     var showingAddProgramSheet = false
     var trainingLevels: [TrainingLevel] = []
-    var navigationTitle: String
     
     private let programService: ProgramService
     private let trainingLevelService: TrainingLevelService
+    private let userService: UserService
     
     var authToken: String?
     
+    var programType: ProgramType = .generalProgram
+    var users: [User]?
+    
     var id = 1
     var scheduledDate: Date
-    var trainingLevel: TrainingLevel
+    var trainingLevel: TrainingLevel?
+    var individualUser: User?
     var isRestDay: Bool
     var dailyProgram: DailyProgram
     
-    init(programService: ProgramService = ProgramService(), trainingLevelService: TrainingLevelService = TrainingLevelService(), program: Program? = nil, navigationTitle: String?) {
-        
+    init(
+        programService: ProgramService = ProgramService(),
+        trainingLevelService: TrainingLevelService = TrainingLevelService(),
+        userService: UserService = UserService(),
+        program: Program? = nil,
+        navigationTitle: String?
+    ) {
         authToken = try? keychain.get(Constants.Bundle.tokenKey)
         self.programService = programService
         self.trainingLevelService = trainingLevelService
-        
-        self.navigationTitle = navigationTitle ?? "Create Program"
-        
-        let dafaultTrainingLevel = TrainingLevel(id: 2, name: "Pro")
-        let emptyDailyProgram = DailyProgram(dayTrainings: [])
-        
+        self.userService = userService
+                        
         if let program {
             scheduledDate = program.scheduledDate
-            trainingLevel = program.trainingLevel ?? dafaultTrainingLevel
+            trainingLevel = program.trainingLevel // ?? dafaultTrainingLevel
             isRestDay = program.isRestDay
             dailyProgram = program.dailyProgram ?? DailyProgram(dayTrainings: [])
         } else {
             scheduledDate = Date()
-            //TODO: get level only from loading, and not hardcoded
-            trainingLevel = dafaultTrainingLevel
             isRestDay = false
-            dailyProgram = emptyDailyProgram
+            dailyProgram = DailyProgram(dayTrainings: [])
         }
+    }
+    
+    func changeProgramType(to type: ProgramType) {
+        self.programType = type
     }
     
     private func buildProgram() throws -> Program {
@@ -62,7 +75,22 @@ class CreateProgramViewModel {
             }
         }
         
-        return Program(id: id, scheduledDate: scheduledDate, trainingLevel: trainingLevel, isRestDay: isRestDay, dailyProgram: isRestDay ? nil : dailyProgram)
+        switch programType {
+        case .generalProgram:
+            guard let trainingLevel else {
+                alertMessage = "You must provide training level for this program"
+                showingAlert = true
+                throw NotProvidedTrainingLevelError()
+            }
+            return Program(id: id, scheduledDate: scheduledDate, trainingLevel: trainingLevel, isRestDay: isRestDay, dailyProgram: isRestDay ? nil : dailyProgram)
+        case .individualProgram:
+            guard let individualUser else {
+                alertMessage = "You must provide individual user for whom this program is"
+                showingAlert = true
+                throw NotProvidedIndividualUserError()
+            }
+            return Program(id: id, scheduledDate: scheduledDate, userId: individualUser.id, isRestDay: isRestDay, dailyProgram: isRestDay ? nil : dailyProgram)
+        }
     }
     
     @MainActor
@@ -75,7 +103,7 @@ class CreateProgramViewModel {
         }
         
         do {
-            let result = try await programService.createProgram(authToken: authToken ,program: buildProgram())
+            let result = try await programService.createProgram(authToken: authToken, type: programType,program: buildProgram())
             
             switch result {
             case .success(let createdProgram):
@@ -115,7 +143,7 @@ class CreateProgramViewModel {
         }
                 
         do {
-            let result = try await programService.updateProgram(authToken: authToken ,program: buildProgram())
+            let result = try await programService.updateProgram(authToken: authToken, type: programType, program: buildProgram())
             
             switch result {
             case .success(let createdProgram):
@@ -138,7 +166,6 @@ class CreateProgramViewModel {
     
     @MainActor
     func loadTrainingLevels() async {
-        
         do {
             let result = try await trainingLevelService.loadTrainingLevels()
             
@@ -146,11 +173,34 @@ class CreateProgramViewModel {
             case .success(let levels):
                 trainingLevels = levels
             case .failure(let error):
-                alertMessage = "Training levels are not Loaded: \(error.code), \(error.description)"
+                alertMessage = "Training levels are not loaded: \(error.code), \(error.description)"
                 showingAlert = true
             }
         } catch {
             alertMessage = "Unexpected error during loading training levels: \(error.localizedDescription)"
+            showingAlert = true
+        }
+    }
+    
+    @MainActor
+    func loadIndividualUsers() async {
+        guard let authToken else {
+            Log.error(("Nil authToken in update program"))
+            return
+        }
+        
+        do {
+            let result = try await userService.loadUsers(authToken: authToken, userPlanId: 2)
+            
+            switch result {
+            case .success(let users):
+                self.users = users
+            case .failure(let error):
+                alertMessage = "Users are not loaded: \(error.code), \(error.description)"
+                showingAlert = true
+            }
+        } catch {
+            alertMessage = "Unexpected error during loading users: \(error.localizedDescription)"
             showingAlert = true
         }
     }
