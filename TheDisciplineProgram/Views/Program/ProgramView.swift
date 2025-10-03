@@ -22,53 +22,93 @@ struct ProgramView: View {
     }
     
     var body: some View {
-        VStack {            
-            LoadingView(state: programViewModel.state) { program in
-                if program.isRestDay {
-                    Text("Today is the rest day")
-                } else {
-                    if let dailyProgram = program.dailyProgram {
-                        Form {
-                            ForEach(dailyProgram.dayTrainings, id: \.trainingNumber) { training in
-                                Text("Training number: \(training.trainingNumber)")
-                                    .font(.headline)
-                                ForEach(training.blocks.indices, id: \.self) { blockIndex in
-                                    let block = training.blocks[blockIndex]
-                                    
-                                    Section {
-                                        ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
-                                            Text(block.exercises[exerciseIndex])
+        ZStack {
+            VStack {
+                LoadingView(state: programViewModel.state) { program in
+                    if program.isRestDay {
+                        Text("Today is the rest day")
+                    } else {
+                        if let dailyProgram = program.dailyProgram {
+                            Form {
+                                ForEach(dailyProgram.dayTrainings, id: \.trainingNumber) { training in
+                                    Text("Training number: \(training.trainingNumber)")
+                                        .font(.headline)
+                                    ForEach(training.blocks.indices, id: \.self) { blockIndex in
+                                        let block = training.blocks[blockIndex]
+                                        
+                                        Section {
+                                            ForEach(block.exercises.indices, id: \.self) { exerciseIndex in
+                                                Text(block.exercises[exerciseIndex])
+                                            }
+                                        } header: {
+                                            Text("\(block.name)")
+                                                .font(.headline)
+                                                .fontWeight(.heavy)
                                         }
-                                    } header: {
-                                        Text("\(block.name)")
-                                            .font(.headline)
-                                            .fontWeight(.heavy)
+                                        
                                     }
-                                    
                                 }
                             }
+                        } else {
+                            fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
+                        }
+                    }
+                } errorContent: { error in
+                    if error.code == 404 {
+                        ContentUnavailableView {
+                            Text("There is no program for today")
+                        }
+                    } else if error.code == 403 {
+                        ContentUnavailableView {
+                            Text("Forbidden")
+                        }
+                        .onAppear {
+                            authViewModel.signOut()
                         }
                     } else {
-                        fatalError("Somehow Program is nil with isRestDay == false, check the DB and the app code")
+                        ContentUnavailableView {
+                            Text("Something went wrong with loading today's program")
+                        }
                     }
                 }
-            } errorContent: { error in
-                if error.code == 404 {
-                    ContentUnavailableView {
-                        Text("There is no program for today")
+            }
+            
+            if programViewModel.isShownPicker {
+                Color.black.opacity(0.8)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        programViewModel.isShownPicker.toggle()
                     }
-                } else if error.code == 403 {
-                    ContentUnavailableView {
-                        Text("Forbidden")
+                
+                VStack {
+                    DatePicker(
+                        "Program Date",
+                        selection: $programViewModel.programDate,
+                        displayedComponents: [.date]
+                    )
+                    .datePickerStyle(.graphical)
+                    
+                    Button("Select date") {
+                        programViewModel.loadProgram(for: programViewModel.programDate)
+                        programViewModel.isShownPicker.toggle()
                     }
-                    .onAppear {
-                        authViewModel.signOut()
-                    }
-                } else {
-                    ContentUnavailableView {
-                        Text("Something went wrong with loading today's program")
-                    }
+                    .fontWeight(.medium)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color.blue.opacity(0.5), lineWidth: 2)
+                    )
+                    .foregroundColor(.blue)
+                    .padding(15)
                 }
+                .padding()
+                .background(Color(UIColor.secondarySystemBackground))
+                .cornerRadius(50)
+                .frame(maxWidth: 400)
+                .shadow(radius: 10)
+                .transition(.scale)
+                .zIndex(1)
             }
         }
         .navigationTitle("\(programViewDateFormatter.string(from: programViewModel.programDate))")
@@ -88,16 +128,6 @@ struct ProgramView: View {
                 Button("Choose Program Date", systemImage: "calendar") {
                     programViewModel.isShownPicker.toggle()
                 }
-                .popover(
-                    isPresented: $programViewModel.isShownPicker,
-                ) {
-                    DatePicker(
-                        "",
-                        selection: $programViewModel.programDate,
-                        displayedComponents: .date
-                    )
-                    .datePickerStyle(.graphical)
-                }
             }
             
             ToolbarItem(placement: .automatic) {
@@ -116,10 +146,6 @@ struct ProgramView: View {
             if case .idle = programViewModel.state {
                 programViewModel.loadProgram(for: programViewModel.programDate)
             }
-        }
-        .onChange(of: programViewModel.programDate) {
-            programViewModel.loadProgram(for: programViewModel.programDate)
-            programViewModel.isShownPicker = false
         }
     }
 }

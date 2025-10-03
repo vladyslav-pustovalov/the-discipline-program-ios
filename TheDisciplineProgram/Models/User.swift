@@ -9,6 +9,7 @@ import Foundation
 
 struct User: Codable, Equatable, Hashable, Identifiable {
     var id: Int
+    var isEnabled: Bool
     var username: String
     var userRole: UserRole
     
@@ -35,6 +36,7 @@ extension User {
     static var mock: User {
         User(
             id: 1,
+            isEnabled: true,
             username: "user@email.com",
             userRole: UserRole.roleUser,
             trainingLevel: TrainingLevel.pro,
