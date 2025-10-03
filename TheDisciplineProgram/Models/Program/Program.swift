@@ -11,6 +11,7 @@ struct Program: Codable, Equatable {
     var id: Int
     var scheduledDate: Date
     var trainingLevel: TrainingLevel?
+    var userId: Int?
     var isRestDay: Bool
     var dailyProgram: DailyProgram?
 }

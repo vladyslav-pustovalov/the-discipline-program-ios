@@ -24,6 +24,7 @@ struct UserView: View {
                         Text("First name: \(user.firstName ?? "")")
                         Text("Last name: \(user.lastName ?? "")")
                         Text("Level: \(user.trainingLevel != nil ? user.trainingLevel!.name : "")")
+                        Text("Plan: \(user.userPlan != nil ? user.userPlan!.name : "")")
                         UserBirthdayView(date: user.dateOfBirth)
                         Text("Phone: \(user.phoneNumber ?? "")")
                     }
@@ -42,11 +43,11 @@ struct UserView: View {
                     if authViewModel.userRole == UserRole.roleAdmin {
                         ToolbarItem(placement: .automatic) {
                             NavigationLink() {
-                                ChangeTrainingLevelView() {
+                                ChangePrivateUserDataView() {
                                     userViewModel.reloadUser()
                                 }
                             } label: {
-                                Text("Change Training Level")
+                                Text("Change Private")
                             }
                         }
                     }

@@ -35,7 +35,7 @@ class EditUserViewModel {
     }
     
     private func updatedUser() -> User {
-        var updatedUser = User(id: user.id, username: user.username, userRole: user.userRole, trainingLevel: user.trainingLevel)
+        var updatedUser = User(id: user.id, isEnabled: user.isEnabled, username: user.username, userRole: user.userRole, trainingLevel: user.trainingLevel)
         updatedUser.firstName = firstName
         updatedUser.lastName = lastName
         updatedUser.phoneNumber = phoneNumber

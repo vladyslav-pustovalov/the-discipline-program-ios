@@ -31,6 +31,35 @@ final class UserService: NetworkService {
         }
     }
     
+    func loadUsers(authToken: String, userPlanId: Int? = nil) async throws -> Result<[User], NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        var stringURL: String {
+            if let userPlanId {
+                return "\(baseURL)/user?userPlanId=\(userPlanId)"
+            }
+            return "\(baseURL)/user"
+        }
+        
+        let result = try await performRequest(
+            stringURL: stringURL,
+            method: Constants.HTTPMethods.get,
+            headers: headers,
+            body: nil
+        )
+        
+        switch result {
+        case .success(let data):
+            let users = try BaseDecoder().decode([User].self, from: data)
+            return .success(users)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
+    
     func updateUser(authToken: String, user: User) async throws -> Result<User, NetworkResponseStatus> {
         let headers = [
             "Content-Type": "application/json",
@@ -92,6 +121,29 @@ final class UserService: NetworkService {
         
         let result = try await performRequest(
             stringURL: "\(baseURL)/user/\(userId)/changeTrainingLevel",
+            method: Constants.HTTPMethods.patch,
+            headers: headers,
+            body: body
+        )
+        
+        switch result {
+        case .success(_):
+            return .success(true)
+        case .failure(let status):
+            return .failure(status)
+        }
+    }
+    
+    func changeUserPlan(authToken: String, userId: Int, userPlan: UserPlan) async throws -> Result<Bool, NetworkResponseStatus> {
+        let headers = [
+            "Content-Type": "application/json",
+            "Authorization": authToken
+        ]
+        
+        let body = try BaseEncoder().encode(userPlan)
+        
+        let result = try await performRequest(
+            stringURL: "\(baseURL)/user/\(userId)/changeUserPlan",
             method: Constants.HTTPMethods.patch,
             headers: headers,
             body: body

@@ -5,7 +5,7 @@
 //  Created by Vladyslav Pustovalov on 16/08/2025.
 //
 
-import SwiftUICore
+import SwiftUI
 
 struct Safe<T: RandomAccessCollection & MutableCollection, C: View>: View {
    typealias BoundElement = Binding<T.Element>

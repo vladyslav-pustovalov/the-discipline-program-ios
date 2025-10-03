@@ -22,9 +22,13 @@ struct EditUserView: View {
         Form {
             Section(header: Text("User Details")) {
                 TextField("First Name", text: $editUserViewModel.firstName)
+                    .textContentType(.name)
                 TextField("Last Name", text: $editUserViewModel.lastName)
+                    .textContentType(.familyName)
                 TextField("Phone Number", text: $editUserViewModel.phoneNumber)
+                    .textContentType(.telephoneNumber)
                 DatePicker("Date of Birth", selection: $editUserViewModel.dateOfBirth, displayedComponents: .date)
+                    .textContentType(.birthdate)
             }
         }
         .navigationTitle("Edit User")

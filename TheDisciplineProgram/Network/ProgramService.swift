@@ -9,6 +9,15 @@ import Foundation
 
 final class ProgramService: NetworkService {
     
+    private func getProgramURLBy(_ type: ProgramType) -> String {
+        switch type {
+        case .generalProgram:
+            "\(baseURL)/generalProgram"
+        case .individualProgram:
+            "\(baseURL)/individualProgram"
+        }
+    }
+    
     func loadProgram(authToken: String, userId: Int, date: Date) async throws -> Result<Program, NetworkResponseStatus> {
         let stringDate = Constants.Formatter.dateFormatter.string(from: date)
         let stringURL = "\(baseURL)/program?userId=\(userId)&scheduledDate=\(stringDate)"
@@ -38,15 +47,17 @@ final class ProgramService: NetworkService {
         }
     }
     
-    func createProgram(authToken: String, program: Program) async throws -> Result<Program, NetworkResponseStatus> {
+    func createProgram(authToken: String, type: ProgramType, program: Program) async throws -> Result<Program, NetworkResponseStatus> {
         
-        let stringURL = "\(baseURL)/program"
+        let stringURL = getProgramURLBy(type)
         let headers = [
             "Content-Type": "application/json",
             "Authorization": authToken
         ]
         
         let body = try BaseEncoder().encode(program)
+        
+        Log.info("Creating \(type) program with body: \(String(describing: body.jsonString))")
         
         let result = try await performRequest(
             stringURL: stringURL,
@@ -69,8 +80,8 @@ final class ProgramService: NetworkService {
         }
     }
     
-    func updateProgram(authToken: String, program: Program) async throws -> Result<Program, NetworkResponseStatus> {
-        let stringURL = "\(baseURL)/program"
+    func updateProgram(authToken: String, type: ProgramType, program: Program) async throws -> Result<Program, NetworkResponseStatus> {
+        let stringURL = getProgramURLBy(type)
         let headers = [
             "Content-Type": "application/json",
             "Authorization": authToken
