@@ -21,8 +21,11 @@ struct ChangePasswordView: View {
             Form {
                 Section() {
                     SecureField("Old Password", text: $changePasswordViewModel.oldPassword)
+                        .textContentType(.password)
                     SecureField("New Password", text: $changePasswordViewModel.newPassword)
+                        .textContentType(.newPassword)
                     SecureField("Confirm New Password", text: $changePasswordViewModel.confirmNewPassword)
+                        .textContentType(.newPassword)
                 }
             }
             

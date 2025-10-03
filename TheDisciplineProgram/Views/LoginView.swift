@@ -31,6 +31,7 @@ struct LoginView: View {
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 30))
+                        .textContentType(.username)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
@@ -40,6 +41,7 @@ struct LoginView: View {
                         .frame(width: 300)
                         .background(.gray.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 30))
+                        .textContentType(.password)
                 }
                 .padding()
                 

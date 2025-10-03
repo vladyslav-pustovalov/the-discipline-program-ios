@@ -36,7 +36,7 @@ struct CreateProgramView: View {
                     case .individualProgram:
                         NavigationLink(
                             "\(createProgramViewModel.individualUser?.visibleName ?? "Individual User")",
-                            destination: ChooseIndividualUserView()
+                            destination: ChooseIndividualUserView().environment(createProgramViewModel)
                         )
                     }
                     

@@ -34,6 +34,13 @@ struct MainView: View {
                 .tabItem {
                     Label("Create Program", systemImage: "document.badge.plus")
                 }
+                
+                NavigationStack {
+                    UsersControllView()
+                }
+                .tabItem {
+                    Label("Users Controll", systemImage: "person.2.badge.gearshape.fill")
+                }
             }
             
             NavigationStack {

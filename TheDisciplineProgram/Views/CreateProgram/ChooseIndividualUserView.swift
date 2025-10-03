@@ -8,21 +8,28 @@
 import SwiftUI
 
 struct ChooseIndividualUserView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(CreateProgramViewModel.self) var createProgramViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         @Bindable var createProgramViewModel = createProgramViewModel
 
         VStack {
             if let users = createProgramViewModel.users {
+                let filteredUsers = users.filter { user in
+                    createProgramViewModel.usersSearchText.isEmpty ||
+                    user.visibleName
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                        .localizedCaseInsensitiveContains(createProgramViewModel.usersSearchText)
+                }
                 
-                List(users) { user in
+                List(filteredUsers) { user in
                     Button(user.visibleName) {
                         createProgramViewModel.individualUser = user
                         dismiss()
                     }
                 }
+                .searchable(text: $createProgramViewModel.usersSearchText)
                 
             }
         }
@@ -36,5 +43,5 @@ struct ChooseIndividualUserView: View {
 }
 
 #Preview {
-    ChooseIndividualUserView(createProgramViewModel: CreateProgramViewModel(program: nil ,navigationTitle: nil))
+    ChooseIndividualUserView()
 }

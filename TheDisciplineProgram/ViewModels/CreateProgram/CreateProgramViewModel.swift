@@ -23,6 +23,8 @@ class CreateProgramViewModel {
     var alertMessage = ""
     var showingAddProgramSheet = false
     var trainingLevels: [TrainingLevel] = []
+    var usersSearchText = ""
+
     
     private let programService: ProgramService
     private let trainingLevelService: TrainingLevelService
@@ -184,6 +186,7 @@ class CreateProgramViewModel {
     
     @MainActor
     func loadIndividualUsers() async {
+        
         guard let authToken else {
             Log.error(("Nil authToken in update program"))
             return
