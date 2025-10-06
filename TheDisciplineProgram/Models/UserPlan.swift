@@ -8,8 +8,8 @@
 import Foundation
 
 struct UserPlan: Codable, Identifiable, Hashable, Equatable {
-    private(set) var id: Int
-    private(set) var name: String
+    var id: Int
+    var name: String
 }
 
 enum UserPlanType {
