@@ -68,6 +68,8 @@ final class UserService: NetworkService {
         
         let body = try BaseEncoder().encode(user)
         
+        Log.info("Updating \(user.id) user with body: \(String(describing: body.jsonString))")
+        
         let result = try await performRequest(
             stringURL: "\(baseURL)/user",
             method: Constants.HTTPMethods.put,
