@@ -35,9 +35,10 @@ struct CreateProgramView: View {
                         }
                     case .individualProgram:
                         NavigationLink(
-                            "\(createProgramViewModel.individualUser?.visibleName ?? "Individual User")",
                             destination: ChooseIndividualUserView().environment(createProgramViewModel)
-                        )
+                        ) {
+                            Text(createProgramViewModel.individualUser?.visibleName ?? NSLocalizedString("Individual User", comment: "Fallback for individual user"))
+                        }
                     }
                     
                     DatePicker("Scheduled date", selection: $createProgramViewModel.scheduledDate, displayedComponents: .date)
