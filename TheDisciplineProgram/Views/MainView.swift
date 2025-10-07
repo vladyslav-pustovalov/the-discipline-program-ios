@@ -39,7 +39,7 @@ struct MainView: View {
                     UsersControllView()
                 }
                 .tabItem {
-                    Label("Users Controll", systemImage: "person.2.badge.gearshape.fill")
+                    Label("Users Control", systemImage: "person.2.badge.gearshape.fill")
                 }
             }
             

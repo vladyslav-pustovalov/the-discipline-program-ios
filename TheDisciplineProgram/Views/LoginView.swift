@@ -74,12 +74,54 @@ struct LoginView: View {
                 Spacer()
                 Spacer()
                 
+                HStack {
+                    Button(action: openInstagram) {
+                        Image("InstagramIcon")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                        .labelStyle(.iconOnly)
+                        .padding()
+                    
+                    
+                    Button(action: openTelegram) {
+                        Image("TelegramIcon")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                        .labelStyle(.iconOnly)
+                        .padding()
+                }
             }
         }
         .alert("Authentication failed", isPresented: $authViewModel.showingAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Something went wrong during auth attempt, check your login and password please")
+        }
+    }
+    
+    private func openInstagram() {
+        let username = "the_discipline_program"
+        let appURL = URL(string: "instagram://user?username=\(username)")!
+        let webURL = URL(string: "https://instagram.com/\(username)")!
+        
+        if UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else {
+            UIApplication.shared.open(webURL)
+        }
+    }
+    
+    private func openTelegram() {
+        let username = "the_discipline_channel"
+        let appURL = URL(string: "tg://resolve?domain=\(username)")!
+        let webURL = URL(string: "https://t.me/\(username)")!
+        
+        if UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else {
+            UIApplication.shared.open(webURL)
         }
     }
 }
