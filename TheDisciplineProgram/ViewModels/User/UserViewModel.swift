@@ -11,7 +11,7 @@ import SwiftUI
 @Observable
 class UserViewModel {
     private let keychain = Keychain(service: Constants.Bundle.id)
-    private(set) var state: LoadingState<User> = .loaded(User(id: 1, isEnabled: true, username: "vlad", userRole: UserRole.roleAdmin, trainingLevel: TrainingLevel.advanced, userPlan: UserPlan.general))
+    private(set) var state: LoadingState<User> = .idle
     
     var authToken: String?
     var userId: Int?
