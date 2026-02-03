@@ -29,17 +29,16 @@ struct UserView: View {
                         Text("Phone: \(user.phoneNumber ?? "")")
                     }
                 }
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        NavigationLink() {
-                            ChangePasswordView()
-                        } label: {
-                            Text("Change Password")
-                                .padding()
-                                .padding(.bottom, 20)
-                        }
+                .safeAreaInset(edge: .bottom) {
+                    NavigationLink() {
+                        ChangePasswordView()
+                    } label: {
+                        Text("Change Password")
+                            .padding()
+                            .padding(.bottom, 20)
                     }
-                    
+                }
+                .toolbar {                    
                     if authViewModel.userRole == UserRole.roleAdmin {
                         ToolbarItem(placement: .automatic) {
                             NavigationLink() {
