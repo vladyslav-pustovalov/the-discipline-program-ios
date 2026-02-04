@@ -74,23 +74,36 @@ struct LoginView: View {
                 Spacer()
                 Spacer()
                 
-                HStack {
+                HStack(spacing: 20) {
                     Button(action: openInstagram) {
                         Image("InstagramIcon")
                             .resizable()
+                            .scaledToFit()
                             .frame(width: 40, height: 40)
                     }
-                        .labelStyle(.iconOnly)
-                        .padding()
-                    
+                    .labelStyle(.iconOnly)
+                    .frame(width: 60, height: 60)
+                    .padding()
                     
                     Button(action: openTelegram) {
                         Image("TelegramIcon")
                             .resizable()
+                            .scaledToFit()
                             .frame(width: 40, height: 40)
                     }
-                        .labelStyle(.iconOnly)
-                        .padding()
+                    .labelStyle(.iconOnly)
+                    .frame(width: 60, height: 60)
+                    .padding()
+                    
+                    Button(action: openYouTube) {
+                        Image("YouTubeIcon")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .labelStyle(.iconOnly)
+                    .frame(width: 60, height: 60)
+                    .padding()
                 }
             }
         }
@@ -124,6 +137,17 @@ struct LoginView: View {
             UIApplication.shared.open(webURL)
         }
     }
+    
+    private func openYouTube() {
+        let channelName = "@The_Discipline_Program/shorts"
+        let appURL = URL(string: "youtube://\(channelName)")!
+        let webURL = URL(string: "https://www.youtube.com/\(channelName)")!
+        
+        if UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL)
+        } else {
+            UIApplication.shared.open(webURL)
+        }    }
 }
 
 #Preview {
