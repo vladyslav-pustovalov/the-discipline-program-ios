@@ -22,6 +22,7 @@ struct LoginView: View {
                     .font(.largeTitle)
                     .bold()
                     .padding(.top, 100)
+                    .accessibilityIdentifier("login_screen_welcome_msg")
                 
                 Spacer()
                                 
@@ -35,6 +36,7 @@ struct LoginView: View {
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
+                        .accessibilityIdentifier("login_screen_email_tf")
                     
                     SecureField("Password", text: $authViewModel.password)
                         .padding()
@@ -42,6 +44,7 @@ struct LoginView: View {
                         .background(.gray.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 30))
                         .textContentType(.password)
+                        .accessibilityIdentifier("login_screen_password_stf")
                 }
                 .padding()
                 
@@ -70,6 +73,7 @@ struct LoginView: View {
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .disabled(authViewModel.isLoginButtonDisabled)
+                .accessibilityIdentifier("login_screen_sign_in_btn")
                 
                 Spacer()
                 Spacer()
@@ -84,6 +88,7 @@ struct LoginView: View {
                     .labelStyle(.iconOnly)
                     .frame(width: 60, height: 60)
                     .padding()
+                    .accessibilityIdentifier("login_screen_instagram_btn")
                     
                     Button(action: openTelegram) {
                         Image("TelegramIcon")
@@ -94,6 +99,7 @@ struct LoginView: View {
                     .labelStyle(.iconOnly)
                     .frame(width: 60, height: 60)
                     .padding()
+                    .accessibilityIdentifier("login_screen_telegram_btn")
                     
                     Button(action: openYouTube) {
                         Image("YouTubeIcon")
@@ -104,13 +110,16 @@ struct LoginView: View {
                     .labelStyle(.iconOnly)
                     .frame(width: 60, height: 60)
                     .padding()
+                    .accessibilityIdentifier("login_screen_youtube_btn")
                 }
             }
         }
         .alert("Authentication failed", isPresented: $authViewModel.showingAlert) {
             Button("OK", role: .cancel) { }
+                .accessibilityIdentifier("login_screen_auth_failed_alert_ok_btn")
         } message: {
             Text("Something went wrong during auth attempt, check your login and password please")
+                .accessibilityIdentifier("login_screen_auth_failed_alert_msg")
         }
     }
     

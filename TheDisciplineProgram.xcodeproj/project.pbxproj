@@ -10,8 +10,19 @@
 		C99F39D72E2C187A00B44C33 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = C99F39D62E2C187A00B44C33 /* KeychainAccess */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C9D4A6CC3073A45500B0A243 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9BB78312E2C122A0059FAAE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9BB78382E2C122A0059FAAE;
+			remoteInfo = TheDisciplineProgram;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheDisciplineProgram.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9D4A6C83073A45500B0A243 /* TheDisciplineProgramUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TheDisciplineProgramUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -22,6 +33,13 @@
 			);
 			target = C9BB78382E2C122A0059FAAE /* TheDisciplineProgram */;
 		};
+		C9D4A6D63073A69300B0A243 /* Exceptions for "TheDisciplineProgramUITests" folder in "TheDisciplineProgramUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				TestPlans/Regression.xctestplan,
+			);
+			target = C9D4A6C73073A45500B0A243 /* TheDisciplineProgramUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +49,14 @@
 				C96EABBC2E368A9A00D440EB /* Exceptions for "TheDisciplineProgram" folder in "TheDisciplineProgram" target */,
 			);
 			path = TheDisciplineProgram;
+			sourceTree = "<group>";
+		};
+		C9D4A6C93073A45500B0A243 /* TheDisciplineProgramUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C9D4A6D63073A69300B0A243 /* Exceptions for "TheDisciplineProgramUITests" folder in "TheDisciplineProgramUITests" target */,
+			);
+			path = TheDisciplineProgramUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +70,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9D4A6C53073A45500B0A243 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				C9BB783B2E2C122A0059FAAE /* TheDisciplineProgram */,
+				C9D4A6C93073A45500B0A243 /* TheDisciplineProgramUITests */,
 				C9BB783A2E2C122A0059FAAE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */,
+				C9D4A6C83073A45500B0A243 /* TheDisciplineProgramUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +124,29 @@
 			productReference = C9BB78392E2C122A0059FAAE /* TheDisciplineProgram.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C9D4A6C73073A45500B0A243 /* TheDisciplineProgramUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C9D4A6D03073A45500B0A243 /* Build configuration list for PBXNativeTarget "TheDisciplineProgramUITests" */;
+			buildPhases = (
+				C9D4A6C43073A45500B0A243 /* Sources */,
+				C9D4A6C53073A45500B0A243 /* Frameworks */,
+				C9D4A6C63073A45500B0A243 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C9D4A6CD3073A45500B0A243 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C9D4A6C93073A45500B0A243 /* TheDisciplineProgramUITests */,
+			);
+			name = TheDisciplineProgramUITests;
+			packageProductDependencies = (
+			);
+			productName = TheDisciplineProgramUITests;
+			productReference = C9D4A6C83073A45500B0A243 /* TheDisciplineProgramUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -96,11 +154,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					C9BB78382E2C122A0059FAAE = {
 						CreatedOnToolsVersion = 16.4;
+					};
+					C9D4A6C73073A45500B0A243 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = C9BB78382E2C122A0059FAAE;
 					};
 				};
 			};
@@ -122,12 +184,20 @@
 			projectRoot = "";
 			targets = (
 				C9BB78382E2C122A0059FAAE /* TheDisciplineProgram */,
+				C9D4A6C73073A45500B0A243 /* TheDisciplineProgramUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C9BB78372E2C122A0059FAAE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9D4A6C63073A45500B0A243 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -144,7 +214,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C9D4A6C43073A45500B0A243 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C9D4A6CD3073A45500B0A243 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C9BB78382E2C122A0059FAAE /* TheDisciplineProgram */;
+			targetProxy = C9D4A6CC3073A45500B0A243 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C9BB78422E2C122C0059FAAE /* Debug */ = {
@@ -346,6 +431,48 @@
 			};
 			name = Release;
 		};
+		C9D4A6CE3073A45500B0A243 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JFR96C4RKL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thedisciplineprogram.TheDisciplineProgramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TheDisciplineProgram;
+			};
+			name = Debug;
+		};
+		C9D4A6CF3073A45500B0A243 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JFR96C4RKL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thedisciplineprogram.TheDisciplineProgramUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TheDisciplineProgram;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -363,6 +490,15 @@
 			buildConfigurations = (
 				C9BB78452E2C122C0059FAAE /* Debug */,
 				C9BB78462E2C122C0059FAAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C9D4A6D03073A45500B0A243 /* Build configuration list for PBXNativeTarget "TheDisciplineProgramUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9D4A6CE3073A45500B0A243 /* Debug */,
+				C9D4A6CF3073A45500B0A243 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

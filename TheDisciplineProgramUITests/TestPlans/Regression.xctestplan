@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "358E3A30-F1A5-4144-873F-0A2A727F2373",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "selectedTags" : {
+        "includeXCTests" : true
+      },
+      "skippedTests" : [
+        "BaseTest",
+        "TheDisciplineProgramUITests"
+      ],
+      "target" : {
+        "containerPath" : "container:TheDisciplineProgram.xcodeproj",
+        "identifier" : "C9D4A6C73073A45500B0A243",
+        "name" : "TheDisciplineProgramUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
