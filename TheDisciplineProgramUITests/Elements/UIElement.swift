@@ -108,26 +108,5 @@ class TextFieldElement: BaseUIElement {
     func typeText(_ text: String) {
         element.tap()
         element.typeText(text)
-        closeKeyboard()
-    }
-    
-    private func closeKeyboard() {
-        let predicate = NSPredicate(format: "identifier == 'Toolbar'")
-        if let button = XCUIApplication().toolbars
-            .element(matching: predicate)
-            .buttons
-            .allElementsBoundByIndex
-            .last {
-            button.tap()
-        } else if XCUIApplication().buttons["keyboard_done_button"].exists {
-            XCUIApplication().buttons["keyboard_done_button"].firstMatch.tap()
-        } else if XCUIApplication().buttons["Return"].exists {
-            XCUIApplication().keyboards.buttons.matching(identifier: "Return").element.tap()
-        } else if XCUIApplication().buttons["Done"].exists {
-            XCUIApplication().keyboards.buttons.matching(identifier: "Done").element.tap()
-        } else {
-            typeText("\n")
-            XCUIApplication().keyboards.element.waitForNonExistence(timeout: 2)
-        }
     }
 }
