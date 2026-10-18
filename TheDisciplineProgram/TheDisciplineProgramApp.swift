@@ -7,6 +7,9 @@
 
 import SwiftUI
 import KeychainAccess
+#if DEBUG
+import UserNotifications
+#endif
 
 @main
 struct TheDisciplineProgramApp: App {
@@ -17,7 +20,7 @@ struct TheDisciplineProgramApp: App {
         }
     }
 
-    #if DEBUG
+#if DEBUG
     init() {
         if ProcessInfo.processInfo.arguments.contains("-ResetState") {
             resetAppState()
@@ -30,7 +33,9 @@ struct TheDisciplineProgramApp: App {
         }
 
         try? Keychain(service: Constants.Bundle.id).removeAll()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
-    #endif
+#endif
 }
 

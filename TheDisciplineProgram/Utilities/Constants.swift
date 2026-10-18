@@ -44,6 +44,9 @@ enum Constants {
         static let userRole = "UserRole"
         static let paymentNotificationStatus = "IsPaymentNotificationSet"
         static let nextNotificationsPermissionsReminder = "NextPeymentNotificationsPermissionsReminder"
+        #if DEBUG
+        static let mockNotificationStatus = "MockNotificationStatus"
+        #endif
     }
     
     enum Bundle {

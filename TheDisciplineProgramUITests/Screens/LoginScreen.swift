@@ -40,6 +40,7 @@ extension LoginScreen {
     
     @discardableResult func signInSuccessfully() -> MainScreen {
         clickSignIn()
+        XCUIApplication().dismissSavePasswordAlertIfPresent()
         return MainScreen()
     }
     
