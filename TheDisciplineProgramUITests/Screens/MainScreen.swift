@@ -8,10 +8,10 @@
 import XCTest
 
 class MainScreen: BaseScreen {
-    lazy var programTabBtn = ButtonElement("main_screen_program_tab_btn")
-    lazy var createProgramTabBtn = ButtonElement("main_screen_create_program_tab_btn")
-    lazy var usersControlTabBtn = ButtonElement("main_screen_users_control_tab_btn")
-    lazy var userTabBtn = ButtonElement("main_screen_user_tab_btn")
+    lazy var programTabBtn = ButtonElement("list.dash")
+    lazy var createProgramTabBtn = ButtonElement("document.badge.plus")
+    lazy var usersControlTabBtn = ButtonElement("person.2.badge.gearshape.fill")
+    lazy var userTabBtn = ButtonElement("person.circle")
     
     override var identifiebleElement: BaseUIElement { programTabBtn }
 }
