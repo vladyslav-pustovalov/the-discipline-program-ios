@@ -7,9 +7,6 @@
 
 import SwiftUI
 import KeychainAccess
-#if DEBUG
-import UserNotifications
-#endif
 
 @main
 struct TheDisciplineProgramApp: App {

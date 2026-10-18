@@ -8,12 +8,23 @@
 import XCTest
 
 class MainScreen: BaseScreen {
-    lazy var programTabBtn = ButtonElement("list.dash")
-    lazy var createProgramTabBtn = ButtonElement("document.badge.plus")
-    lazy var usersControlTabBtn = ButtonElement("person.2.badge.gearshape.fill")
-    lazy var userTabBtn = ButtonElement("person.circle")
+    private lazy var notificationDisabledAlert = NotificationsDisabledAlert()
+    private lazy var savePasswordAlert = SavePasswordAlert()
+    
+    private lazy var programTabBtn = ButtonElement("list.dash")
+    private lazy var createProgramTabBtn = ButtonElement("document.badge.plus")
+    private lazy var usersControlTabBtn = ButtonElement("person.2.badge.gearshape.fill")
+    private lazy var userTabBtn = ButtonElement("person.circle")
     
     override var identifiebleElement: BaseUIElement { programTabBtn }
+    
+    @discardableResult
+    override func isOnScreen(timeout: TimeInterval = defaultTimeout) -> Self {
+        savePasswordAlert.clickNotNow()
+        notificationDisabledAlert.close()
+        identifiebleElement.waitFor()
+        return self
+    }
 }
 
 // MARK: - Actions

@@ -55,7 +55,13 @@ struct MainView: View {
             Button("Go to Settings") {
                 notificationViewModel.openAppSettings()
             }
+            .accessibilityIdentifier(
+                "notifications_disabled_alert_go_to_settings_btn"
+            )
             Button("Cancel", role: .cancel) { }
+            .accessibilityIdentifier(
+                "notifications_disabled_alert_cancel_btn"
+            )
         } message: {
             Text("To enable reminders, please allow notifications in Settings.")
         }

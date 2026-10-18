@@ -102,7 +102,7 @@ class TextFieldElement: BaseUIElement {
             return
         }
         element.tap()
-        let deleteString = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
+        _ = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
     }
     
     func typeText(_ text: String) {

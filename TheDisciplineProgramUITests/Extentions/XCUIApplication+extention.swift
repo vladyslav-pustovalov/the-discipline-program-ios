@@ -52,53 +52,9 @@ extension XCUIApplication {
     }
 }
 
-enum MockNotificationStatus {
-    case notDetermined
-    case authorized
-    case denied
-
-    var argument: String {
-        switch self {
-        case .notDetermined: return "-MockNotificationNotDetermined"
-        case .authorized: return "-MockNotificationAuthorized"
-        case .denied: return "-MockNotificationDenied"
-        }
-    }
-}
-
 extension XCUIApplication {
-    func launchWithCleanState(
-        notificationStatus: MockNotificationStatus? = nil,
-        autoResolvePermissionRequest: Bool? = nil
-    ) {
+    func launchWithCleanState() {
         launchArguments.append("-ResetState")
-
-        if let status = notificationStatus {
-            launchArguments.append(status.argument)
-        }
-
-        if let autoResolve = autoResolvePermissionRequest {
-            launchArguments.append(autoResolve ? "-MockNotificationRequestGranted" : "-MockNotificationRequestDenied")
-        }
-
         launch()
-    }
-
-    /// Attempts to dismiss the system "Save Password" alert without saving, if present on SpringBoard.
-    /// - Parameter timeout: Maximum time to wait for the alert button to appear.
-    /// - Returns: `true` if the alert was found and dismissed, `false` otherwise.
-    @discardableResult
-    func dismissSavePasswordAlertIfPresent(timeout: TimeInterval = 5.0) -> Bool {
-        let springboard = XCUIApplication()
-        let notNowButtons = ["Not Now"]
-
-        for title in notNowButtons {
-            let button = springboard.buttons[title]
-            if button.waitForExistence(timeout: timeout) {
-                button.tap()
-                return true
-            }
-        }
-        return false
     }
 }

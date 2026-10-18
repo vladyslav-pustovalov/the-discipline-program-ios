@@ -17,15 +17,17 @@ class BaseScreen {
     init(window: XCUIElement = app) {
         self.window = window
     }
-}
-
-//MARK: - Assertions
-
-extension BaseScreen {
     
     @discardableResult
     func isOnScreen(timeout: TimeInterval = defaultTimeout) -> Self {
         identifiebleElement.waitFor()
         return self
     }
+}
+
+//MARK: - Assertions
+
+extension BaseScreen {
+    
+
 }

@@ -67,15 +67,6 @@ class LocalNotificationViewModel {
     }
     
     private func getUserNotificationPermission(completion: @escaping (UNAuthorizationStatus) -> Void) {
-        #if DEBUG
-        if let mockedStatus = getMockedNotificationStatus() {
-            Log.info("Using mocked notification permission status: \(mockedStatus.rawValue)")
-            DispatchQueue.main.async {
-                completion(mockedStatus)
-            }
-            return
-        }
-        #endif
 
         Log.info("Checking if notificatoin is allowed")
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -87,33 +78,9 @@ class LocalNotificationViewModel {
     
     private func askNotificationPermission(completion: @escaping (Bool) -> Void) {
         Log.info("Asking notification permission")
-        
-        #if DEBUG
-        let arguments = ProcessInfo.processInfo.arguments
-        if arguments.contains("-MockNotificationRequestGranted") {
-            Log.info("Mocked notification permission request granted")
-            saveMockedNotificationStatus(.authorized)
-            DispatchQueue.main.async {
-                completion(true)
-            }
-            return
-        } else if arguments.contains("-MockNotificationRequestDenied") {
-            Log.info("Mocked notification permission request denied")
-            saveMockedNotificationStatus(.denied)
-            DispatchQueue.main.async {
-                completion(false)
-            }
-            return
-        }
-        #endif
 
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
-                #if DEBUG
-                if self.isNotificationMockingActive {
-                    self.saveMockedNotificationStatus(granted ? .authorized : .denied)
-                }
-                #endif
 
                 switch granted {
                 case true:
@@ -150,49 +117,4 @@ class LocalNotificationViewModel {
         Log.info("Payment notification is set")
     }
 }
-
-#if DEBUG
-extension LocalNotificationViewModel {
-    private var isNotificationMockingActive: Bool {
-        let arguments = ProcessInfo.processInfo.arguments
-        return arguments.contains("-ResetState") ||
-            arguments.contains("-MockNotificationNotDetermined") ||
-            arguments.contains("-MockNotificationAuthorized") ||
-            arguments.contains("-MockNotificationDenied")
-    }
-
-    private func getMockedNotificationStatus() -> UNAuthorizationStatus? {
-        let arguments = ProcessInfo.processInfo.arguments
-
-        if arguments.contains("-MockNotificationNotDetermined") {
-            return .notDetermined
-        }
-        if arguments.contains("-MockNotificationAuthorized") {
-            return .authorized
-        }
-        if arguments.contains("-MockNotificationDenied") {
-            return .denied
-        }
-
-        if arguments.contains("-ResetState") {
-            if let rawValue = UserDefaults.standard.object(forKey: Constants.Defaults.mockNotificationStatus) as? Int,
-               let status = UNAuthorizationStatus(rawValue: rawValue) {
-                return status
-            }
-            return .notDetermined
-        }
-
-        if let rawValue = UserDefaults.standard.object(forKey: Constants.Defaults.mockNotificationStatus) as? Int,
-           let status = UNAuthorizationStatus(rawValue: rawValue) {
-            return status
-        }
-
-        return nil
-    }
-
-    private func saveMockedNotificationStatus(_ status: UNAuthorizationStatus) {
-        UserDefaults.standard.set(status.rawValue, forKey: Constants.Defaults.mockNotificationStatus)
-    }
-}
-#endif
 
