@@ -8,11 +8,24 @@
 import XCTest
 
 class BaseUIElement {
-    static let app = XCUIApplication()
-    fileprivate var element: XCUIElement
+    private let app: XCUIApplication
+    let element: XCUIElement
     
-    init(elementType: ElementType, identifier: String) {
-        element = elementType.toQuery().matching(identifier: identifier).firstMatch
+    init(elementType: ElementType, identifier: String, bundleIdentifier: String? = nil) {
+        app = if let bundleIdentifier { XCUIApplication(bundleIdentifier: bundleIdentifier) } else { XCUIApplication() }
+        element = elementType.toQuery(for: app).matching(identifier: identifier).firstMatch
+    }
+    
+    func `is`(_ condition: ElementCondition, within timeout: TimeInterval = defaultTimeout) -> Bool {
+        let predicate = switch condition {
+        case .exist: "exists == true"
+        case .notExist: "exists == false"
+        case .enabled: ""
+        case .notEnabled: "isEnabled == false"
+        case .hittable: "isHittable == true"
+        case .notVisible: "isHittable == false"
+        }
+        return waitForPredicate(NSPredicate(format: predicate), timeout: timeout)
     }
     
     @discardableResult
@@ -23,90 +36,27 @@ class BaseUIElement {
         return self
     }
     
-    enum ElementType {
-        case button, icon, staticText, secureTextField, tabView, textField
-        
-        fileprivate func toQuery() -> XCUIElementQuery {
-            switch self {
-            case .button: return app.buttons
-            case .icon: return app.icons
-            case .staticText: return app.staticTexts
-            case .secureTextField: return app.secureTextFields
-            case .tabView: return app.tabs
-            case .textField: return app.textFields
-            }
+    private func waitForPredicate(_ predicate: NSPredicate, timeout: TimeInterval) -> Bool {
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
+        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
+    }
+}
+
+enum ElementCondition {
+    case exist, enabled, hittable, notExist, notEnabled, notVisible
+}
+
+enum ElementType {
+    case button, icon, staticText, secureTextField, tabView, textField
+    
+    func toQuery(for app: XCUIApplication = XCUIApplication()) -> XCUIElementQuery {
+        switch self {
+        case .button: return app.buttons
+        case .icon: return app.icons
+        case .staticText: return app.staticTexts
+        case .secureTextField: return app.secureTextFields
+        case .tabView: return app.tabs
+        case .textField: return app.textFields
         }
-    }
-}
-
-final class ButtonElement: BaseUIElement {
-    
-    init(_ identifier: String) {
-        super.init(elementType: .button, identifier: identifier)
-    }
-    
-    func click() {
-        self.waitFor(5)
-        element.tap()
-    }
-}
-
-final class IconElement: BaseUIElement {
-    
-    init(_ identifier: String) {
-        super.init(elementType: .icon, identifier: identifier)
-    }
-    
-    func press(for duration: TimeInterval) {
-        self.waitFor(5)
-        element.press(forDuration: duration)
-    }
-}
-
-final class StaticTextElement: BaseUIElement {
-    var text: String {
-        element.label
-    }
-    
-    init(_ identifier: String) {
-        super.init(elementType: .staticText, identifier: identifier)
-    }
-}
-
-final class SecureTextFieldElement: TextFieldElement {
-    
-    override init(_ identifier: String) {
-        super.init(elementType: .secureTextField, identifier: identifier)
-    }
-}
-
-final class TabViewElement: BaseUIElement {
-    init(_ identifier: String) {
-        super.init(elementType: .tabView, identifier: identifier)
-    }
-}
-
-class TextFieldElement: BaseUIElement {
-    
-    init(_ identifier: String) {
-        super.init(elementType: .textField, identifier: identifier)
-    }
-    
-    fileprivate override init(elementType: BaseUIElement.ElementType, identifier: String) {
-        super.init(elementType: elementType, identifier: identifier)
-    }
-    
-    func clearText() {
-        guard let stringValue = self.element.value as? String else {
-            XCTFail("Tried to clear and enter text into a non string value")
-            return
-        }
-        element.tap()
-        _ = String(repeating: XCUIKeyboardKey.delete.rawValue, count: stringValue.count)
-    }
-    
-    func typeText(_ text: String) {
-        element.tap()
-        element.typeText(text)
     }
 }

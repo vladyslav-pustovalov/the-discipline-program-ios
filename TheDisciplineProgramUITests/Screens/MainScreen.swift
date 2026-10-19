@@ -10,6 +10,7 @@ import XCTest
 class MainScreen: BaseScreen {
     private lazy var notificationDisabledAlert = NotificationsDisabledAlert()
     private lazy var savePasswordAlert = SavePasswordAlert()
+    private lazy var systemNotificationAlert = SystemNotificationAlert()
     
     private lazy var programTabBtn = ButtonElement("list.dash")
     private lazy var createProgramTabBtn = ButtonElement("document.badge.plus")
@@ -20,8 +21,9 @@ class MainScreen: BaseScreen {
     
     @discardableResult
     override func isOnScreen(timeout: TimeInterval = defaultTimeout) -> Self {
+        let wasSystemAlertShown = systemNotificationAlert.dontAllowIfShown()
         savePasswordAlert.clickNotNow()
-        notificationDisabledAlert.close()
+        if !wasSystemAlertShown { notificationDisabledAlert.close() }
         identifiebleElement.waitFor()
         return self
     }

@@ -23,15 +23,11 @@ struct TheDisciplineProgramApp: App {
             resetAppState()
         }
     }
-
     private func resetAppState() {
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)
         }
-
         try? Keychain(service: Constants.Bundle.id).removeAll()
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 #endif
 }

@@ -18,8 +18,6 @@ extension NotificationsDisabledAlert {
     
     func close() {
         calcelBtn.click()
-        
-        let a = addUIInterruptionMonitor(withDescription: <#T##String#>, handler: <#T##(XCUIElement) -> Bool#>)
     }
     
     func goToSettings() {
