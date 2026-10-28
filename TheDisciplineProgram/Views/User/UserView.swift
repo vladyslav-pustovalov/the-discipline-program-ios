@@ -81,6 +81,7 @@ struct UserView: View {
                         .foregroundStyle(.red)
                         .clipShape(.buttonBorder)
                 }
+                .accessibilityIdentifier("user_screen_sign_out_btn")
                 
             }
         }

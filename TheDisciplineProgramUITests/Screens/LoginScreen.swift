@@ -38,9 +38,9 @@ extension LoginScreen {
         return self
     }
     
-    @discardableResult func signInSuccessfully() -> MainScreen {
+    @discardableResult func signInExpecting<Screen: BaseScreen>(_ screen: Screen.Type) -> Screen {
         clickSignIn()
-        return MainScreen()
+        return screen.init()
     }
     
     private func clickSignIn() {

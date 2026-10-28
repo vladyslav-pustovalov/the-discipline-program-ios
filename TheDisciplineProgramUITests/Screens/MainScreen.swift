@@ -51,9 +51,9 @@ extension MainScreen {
     }
     
     @discardableResult
-    func selectUserTab() -> Self {
+    func selectUserTab() -> UserScreen {
         userTabBtn.click()
-        return self
+        return UserScreen()
     }
 }
 

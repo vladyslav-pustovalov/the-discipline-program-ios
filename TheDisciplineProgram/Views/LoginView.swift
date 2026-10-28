@@ -119,7 +119,6 @@ struct LoginView: View {
                 .accessibilityIdentifier("login_screen_auth_failed_alert_ok_btn")
         } message: {
             Text("Something went wrong during auth attempt, check your login and password please")
-                .accessibilityIdentifier("login_screen_auth_failed_alert_msg")
         }
     }
     

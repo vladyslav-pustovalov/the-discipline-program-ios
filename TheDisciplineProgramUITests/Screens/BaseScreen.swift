@@ -14,7 +14,7 @@ class BaseScreen {
         fatalError("Abstract here, should be overwritten by the clild class")
     }
     
-    init(window: XCUIElement = app) {
+    required init(window: XCUIElement = app) {
         self.window = window
     }
     
@@ -29,5 +29,4 @@ class BaseScreen {
 
 extension BaseScreen {
     
-
 }
