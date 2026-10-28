@@ -17,6 +17,12 @@ final class ButtonElement: BaseUIElement {
         self.waitFor(5)
         element.tap()
     }
+    
+    func clickIfShown(within timeout: TimeInterval = 3) {
+        if self.is(.exist, within: timeout) {
+            self.click()
+        }
+    }
 }
 
 final class IconElement: BaseUIElement {

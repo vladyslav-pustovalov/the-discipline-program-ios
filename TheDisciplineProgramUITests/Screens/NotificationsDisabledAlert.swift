@@ -16,8 +16,8 @@ final class NotificationsDisabledAlert: BaseScreen {
 
 extension NotificationsDisabledAlert {
     
-    func close() {
-        calcelBtn.click()
+    func closeIfShown() {
+        calcelBtn.clickIfShown()
     }
     
     func goToSettings() {

@@ -26,7 +26,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TheDisciplineProgramUITests/TestPlans/Regression.xctestplan">
+            reference = "container:TheDisciplineProgramUITests/TestPlans/Regression.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>

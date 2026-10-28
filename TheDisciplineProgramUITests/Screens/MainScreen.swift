@@ -21,9 +21,9 @@ class MainScreen: BaseScreen {
     
     @discardableResult
     override func isOnScreen(timeout: TimeInterval = defaultTimeout) -> Self {
-        let wasSystemAlertShown = systemNotificationAlert.dontAllowIfShown()
+        systemNotificationAlert.dontAllowIfShown()
         savePasswordAlert.clickNotNow()
-        if !wasSystemAlertShown { notificationDisabledAlert.close() }
+        notificationDisabledAlert.closeIfShown()
         identifiebleElement.waitFor()
         return self
     }

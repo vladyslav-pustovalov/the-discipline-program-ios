@@ -15,13 +15,8 @@ final class SystemNotificationAlert: BaseScreen {
 
 extension SystemNotificationAlert {
     
-    @discardableResult
-    func dontAllowIfShown(timeout: TimeInterval = 3) -> Bool {
-        if dontAllowBtn.is(.exist, within: timeout) {
-            dontAllowBtn.click()
-            return true
-        }
-        return false
+    func dontAllowIfShown() {
+        dontAllowBtn.clickIfShown()
     }
 }
 
