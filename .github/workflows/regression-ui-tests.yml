@@ -1,0 +1,58 @@
+name: Regression UI Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: 'iOS Simulator Device (e.g. iPhone 16 Pro, iPhone 18 Pro)'
+        required: true
+        default: 'iPhone 18 Pro'
+      os:
+        description: 'iOS Version'
+        required: true
+        default: 'latest'
+
+jobs:
+  regression-ui-tests:
+    name: Run UI Tests (Regression)
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Clean Previous Build Artifacts
+        run: |
+          rm -rf TestResults.xcresult
+          rm -rf DerivedData
+
+      - name: Run Xcode UI Tests
+        run: |
+          xcodebuild test \
+            -project TheDisciplineProgram.xcodeproj \
+            -scheme TheDisciplineProgramRegressionUITests \
+            -destination "platform=iOS Simulator,name=${{ inputs.device }},OS=${{ inputs.os }}" \
+            -resultBundlePath TestResults.xcresult \
+            -derivedDataPath DerivedData
+
+      - name: Report Test Results Summary
+        uses: kishikawakatsumi/xcresulttool@v1
+        if: always()
+        with:
+          path: TestResults.xcresult
+          title: "Regression UI Test Report"
+
+      - name: Upload Test Results (.xcresult)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-ui-test-results-${{ github.run_id }}
+          path: TestResults.xcresult
+          retention-days: 14
+
+      - name: Clean Up Self-Hosted Runner Files
+        if: always()
+        run: |
+          echo "Cleaning up local test bundle and derived data..."
+          rm -rf TestResults.xcresult
+          rm -rf DerivedData
