@@ -34,10 +34,24 @@ jobs:
 
       - name: Run Xcode UI Tests
         run: |
+          DEVICE_NAME="${{ inputs.device }}"
+          SIM_UDID=$(xcrun simctl list devices | grep -E "${DEVICE_NAME} \([0-9A-F-]+\)" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -n 1)
+
+          if [ -z "$SIM_UDID" ]; then
+            SIM_UDID=$(xcrun simctl list devices | grep -F "${DEVICE_NAME}" | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}' | head -n 1)
+          fi
+
+          if [ -z "$SIM_UDID" ]; then
+            echo "Error: Could not find any iOS Simulator matching device name '${DEVICE_NAME}'"
+            exit 1
+          fi
+
+          echo "Resolved Simulator UDID: $SIM_UDID for device '${DEVICE_NAME}'"
+
           xcodebuild test \
             -project TheDisciplineProgram.xcodeproj \
             -scheme TheDisciplineProgramRegressionUITests \
-            -destination "platform=iOS Simulator,name=${{ inputs.device }},OS=${{ inputs.os }}" \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
             -resultBundlePath TestResults.xcresult \
             -derivedDataPath DerivedData
 
