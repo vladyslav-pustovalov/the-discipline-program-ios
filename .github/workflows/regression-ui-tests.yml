@@ -3,6 +3,10 @@ name: Regression UI Tests
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Branch to run tests on'
+        required: true
+        default: 'develop'
       device:
         description: 'iOS Simulator Device (e.g. iPhone 16 Pro, iPhone 18 Pro)'
         required: true
@@ -20,6 +24,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
 
       - name: Clean Previous Build Artifacts
         run: |
