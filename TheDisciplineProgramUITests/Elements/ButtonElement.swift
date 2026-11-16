@@ -56,7 +56,7 @@ final class StaticTextElement: BaseUIElement {
 
 final class TabViewElement: BaseUIElement {
     init(_ identifier: String, bundleIdentifier: String? = nil) {
-        super.init(elementType: .tabView, identifier: identifier, bundleIdentifier: bundleIdentifier)
+        super.init(elementType: .tab, identifier: identifier, bundleIdentifier: bundleIdentifier)
     }
 }
 
@@ -66,7 +66,7 @@ class TextFieldElement: BaseUIElement {
         super.init(elementType: .textField, identifier: identifier, bundleIdentifier: bundleIdentifier)
     }
     
-    override init(elementType: ElementType, identifier: String, bundleIdentifier: String? = nil) {
+    override init(elementType: XCUIElement.ElementType, identifier: String, bundleIdentifier: String? = nil) {
         super.init(elementType: elementType, identifier: identifier, bundleIdentifier: bundleIdentifier)
     }
     

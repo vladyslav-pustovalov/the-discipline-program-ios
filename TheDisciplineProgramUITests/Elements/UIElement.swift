@@ -11,9 +11,13 @@ class BaseUIElement {
     private let app: XCUIApplication
     let element: XCUIElement
     
-    init(elementType: ElementType, identifier: String, bundleIdentifier: String? = nil) {
+    init(
+        elementType: XCUIElement.ElementType,
+        identifier: String,
+        bundleIdentifier: String? = nil
+    ) {
         app = if let bundleIdentifier { XCUIApplication(bundleIdentifier: bundleIdentifier) } else { XCUIApplication() }
-        element = elementType.toQuery(for: app).matching(identifier: identifier).firstMatch
+        element = app.descendants(matching: elementType).matching(identifier: identifier).firstMatch
     }
     
     func `is`(_ condition: ElementCondition, within timeout: TimeInterval = defaultTimeout) -> Bool {
@@ -44,19 +48,4 @@ class BaseUIElement {
 
 enum ElementCondition {
     case exist, enabled, hittable, notExist, notEnabled, notVisible
-}
-
-enum ElementType {
-    case button, icon, staticText, secureTextField, tabView, textField
-    
-    func toQuery(for app: XCUIApplication = XCUIApplication()) -> XCUIElementQuery {
-        switch self {
-        case .button: return app.buttons
-        case .icon: return app.icons
-        case .staticText: return app.staticTexts
-        case .secureTextField: return app.secureTextFields
-        case .tabView: return app.tabs
-        case .textField: return app.textFields
-        }
-    }
 }
